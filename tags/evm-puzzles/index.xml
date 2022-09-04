@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>EVM puzzles - Tag - della&#39;s blog</title>
+        <link>https://dellalibera.github.io/tags/evm-puzzles/</link>
+        <description>EVM puzzles - Tag - della&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 04 Sep 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/tags/evm-puzzles/" rel="self" type="application/rss+xml" /><item>
+    <title>EVM Puzzles solutions</title>
+    <link>https://dellalibera.github.io/posts/evm-puzzles_solutions/</link>
+    <pubDate>Sun, 04 Sep 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/posts/evm-puzzles_solutions/</guid>
+    <description><![CDATA[<div id="id-1">Solution for EVM puzzles.</div>]]></description>
+</item>
+</channel>
+</rss>

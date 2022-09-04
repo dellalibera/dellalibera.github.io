@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>EVM Puzzles solutions - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="EVM Puzzles solutions" />
+<meta property="og:description" content="Solution for EVM puzzles." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/evm-puzzles_solutions/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-04T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="EVM Puzzles solutions"/>
+<meta name="twitter:description" content="Solution for EVM puzzles."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/evm-puzzles_solutions/" /><link rel="prev" href="https://dellalibera.github.io/posts/damnvulnerabledefi_01_unstoppable/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "EVM Puzzles solutions",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/evm-puzzles_solutions\/"
+        },"genre": "posts","keywords": "EVM puzzles, CTF, Solidity, Blockchain, EVM","wordcount":  2880 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/evm-puzzles_solutions\/","datePublished": "2022-09-04T00:00:00+00:00","dateModified": "2022-09-04T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">EVM Puzzles solutions</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="September 4, 2022">September 4, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2880 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;14 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#puzzle-1">Puzzle 1</a>
+      <ul>
+        <li><a href="#solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#puzzle-2">Puzzle 2</a>
+      <ul>
+        <li><a href="#solution-1">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#puzzle-3">Puzzle 3</a>
+      <ul>
+        <li><a href="#solution-2">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#puzzle-4">Puzzle 4</a>
+      <ul>
+        <li><a href="#solution-3">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#puzzle-5">Puzzle 5</a>
+      <ul>
+        <li><a href="#solution-4">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#puzzle-6">Puzzle 6</a>
+      <ul>
+        <li><a href="#solution-5">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#puzzle-7">Puzzle 7</a>
+      <ul>
+        <li><a href="#solution-6">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#puzzle-8">Puzzle 8</a>
+      <ul>
+        <li><a href="#solution-7">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#puzzle-9">Puzzle 9</a>
+      <ul>
+        <li><a href="#solution-8">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#puzzle-10">Puzzle 10</a>
+      <ul>
+        <li><a href="#solution-9">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for EVM puzzles.</div>
+<h2 id="intro">Intro</h2>
+<p><div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Puzzles Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">A collection of EVM puzzles. Each puzzle consists on sending a successful transaction to a contract. The bytecode of the contract is provided, and you must fill the transaction data that won&rsquo;t revert the execution.</div>
+        </div>
+    </div>
+Credit for the challenges goes to <a href="https://twitter.com/fvictorio_nan" target="_blank" rel="noopener noreffer ">@fvictorio_nan</a>.</p>
+<p>Source code with installation instructions and how to play can be found <a href="https://github.com/fvictorio/evm-puzzles" target="_blank" rel="noopener noreffer ">here</a>.</p>
+<p>I&rsquo;ll use the <a href="https://www.evm.codes/" target="_blank" rel="noopener noreffer ">evm.code</a> website to debug the bytecode and for documentation references.</p>
+<h2 id="puzzle-1">Puzzle 1</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%273456FDFDFDFDFDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      34      CALLVALUE
+01      56      JUMP
+02      FD      REVERT
+03      FD      REVERT
+04      FD      REVERT
+05      FD      REVERT
+06      FD      REVERT
+07      FD      REVERT
+08      5B      JUMPDEST
+09      00      STOP     
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis:</p>
+<ul>
+<li><code>CALLVALUE</code> gets the transaction value (in wei) sent to this contract and pushes it on top of the stack</li>
+<li><code>JUMP</code> jumps to the instruction at the offset value stored on top of the stack</li>
+</ul>
+<p>Our goal is to send a transaction value (in wei) such that we reach the <code>JUMPDEST</code> opcode and not revert the execution.</p>
+<p>The <code>JUMP</code> instruction will jump at a location equal to the transaction value sent (<code>CALLVALUE</code>).
+Since the instruction <code>JUMPDEST</code> is at PC <code>08</code>, the value that must be stored on top of the stack when executing the <code>JUMP</code> instruction is <code>8</code>.</p>
+<p>In other words, we need to send <code>8</code> wei to solve this challenge.</p>
+<h3 id="solution">Solution</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">8</span>,<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x&#34;</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=8&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%273456FDFDFDFDFDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<h2 id="puzzle-2">Puzzle 2</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2734380356FDFD5B00FDFD%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      34      CALLVALUE
+01      38      CODESIZE
+02      03      SUB
+03      56      JUMP
+04      FD      REVERT
+05      FD      REVERT
+06      5B      JUMPDEST
+07      00      STOP
+08      FD      REVERT
+09      FD      REVERT
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis (opcodes unseen from previous challenges):</p>
+<ul>
+<li><code>CODESIZE</code> pushes the size of the contract code in bytes on top of the stack</li>
+<li><code>SUB</code> pops the first two values from the stack, subtracts the second from the first one, and pushes the result</li>
+</ul>
+<p>This puzzle has <code>10</code> instructions (each instruction is <code>1</code> byte), so the <code>CODESIZE</code> will push <code>0a</code> on top of the stack when executed. <code>SUB</code> will compute the difference between <code>0a</code> and the <code>msg.value</code> (output of <code>CALLVALUE</code>).</p>
+<p>The <code>JUMP</code> instruction will jump at the location returned by <code>SUB</code>. Since the <code>JUMPDEST</code> instruction is at location <code>6</code>, we need to solve the following:
+<data id="id-2" data-raw></data>
+where $x$ is the amount (in wei) sent to this contract (i.e. <code>msg.value</code>).</p>
+<p>If we convert the hex values to decimal, this translates to:
+<data id="id-3" data-raw></data></p>
+<p>To reach the <code>JUMPDEST</code> instruction, we need to send <code>4</code> wei.</p>
+<h3 id="solution-1">Solution</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">4</span>,<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x&#34;</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=4&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2734380356FDFD5B00FDFD%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<h2 id="puzzle-3">Puzzle 3</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%273656FDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      36      CALLDATASIZE
+01      56      JUMP
+02      FD      REVERT
+03      FD      REVERT
+04      5B      JUMPDEST
+05      00      STOP
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis (opcodes unseen from previous challenges):</p>
+<ul>
+<li><code>CALLDATASIZE</code> pushes the size of the <code>calldata</code> on top of the stack</li>
+</ul>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">What is the <code>calladata</code>?</div>
+        </div>
+    </div>
+<p>The evm.codes website provide a simple and clear explanation (<a href="https://www.evm.codes/about#calldata" target="_blank" rel="noopener noreffer ">link</a>):</p>
+<blockquote>
+<p>The call data region is the data that is sent with a transaction. In the case of contract creation, it would be the constructor code. This region is immutable and can be read with the instructions CALLDATALOAD, CALLDATASIZE, and CALLDATACOPY.</p>
+</blockquote>
+<p>This puzzle is similar to <a href="#puzzle-1" rel="">Puzzle 1</a>. The only difference is that the value pushed on top of the stack is not the <code>msg.value</code> but the size of the <code>calldata</code>. The <code>JUMPDEST</code> instruction is at PC <code>04</code>, so we need to send a <code>calldata</code> of size <code>4</code> bytes, for example, <code>0x01010101</code>.</p>
+<h3 id="solution-2">Solution</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x01010101&#34;</span>,<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">0</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=0&amp;unit=Wei&amp;callData=0x01010101&amp;codeType=Bytecode&amp;code=%273656FDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a></p>
+<h2 id="puzzle-4">Puzzle 4</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2734381856FDFDFDFDFDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      34      CALLVALUE
+01      38      CODESIZE
+02      18      XOR
+03      56      JUMP
+04      FD      REVERT
+05      FD      REVERT
+06      FD      REVERT
+07      FD      REVERT
+08      FD      REVERT
+09      FD      REVERT
+0A      5B      JUMPDEST
+0B      00      STOP
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis (opcodes unseen from previous challenges):</p>
+<ul>
+<li><code>XOR</code> pops the first two values from the stack, computes their bitwise XOR, and pushes the result</li>
+</ul>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>XOR table<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>x	 y	 x^y
+------------
+0	 0	  0 
+0	 1	  1 
+1	 0	  1 
+1	 1	  0 
+</code></pre></div>
+        </div>
+    </div>
+<p><code>CALLVALUE</code> pushes the <code>msg.value</code> on top of the stack. The next instruction, <code>CODESIZE</code> pushes the code size on top of the stack. We know this value will be <code>0c</code> (<code>12</code> in decimal) since our puzzle code has <code>12</code> instructions. <code>JUMP</code> will use the result from the <code>XOR</code> instruction to jump to the next instruction. We want to reach the location of <code>JUMPDEST</code> at PC <code>0a</code> (<code>10</code> in decimal). It means the result of the <code>XOR</code> instruction must be <code>0a</code>.</p>
+<p>The only unknown is the <code>CALLVALUE</code> (i.e. the <code>msg.value</code>). The formula we want to compute,
+where $x$ is the value returned by <code>CALLVALUE</code>, is the following:
+<data id="id-4" data-raw></data></p>
+<data id="id-5" data-raw></data>
+<p>The amount of wei we need to send is <code>6</code>.</p>
+<h3 id="solution-3">Solution</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">6</span>,<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x&#34;</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=6&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2734381856FDFDFDFDFDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a></p>
+<h2 id="puzzle-5">Puzzle 5</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2734800261010014600C57FDFD5B00FDFD%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      34      CALLVALUE
+01      80      DUP1
+02      02      MUL
+03      610100  PUSH2 0100
+06      14      EQ
+07      600C    PUSH1 0C
+09      57      JUMPI
+0A      FD      REVERT
+0B      FD      REVERT
+0C      5B      JUMPDEST
+0D      00      STOP
+0E      FD      REVERT
+0F      FD      REVERT
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis (opcodes unseen from previous challenges):</p>
+<ul>
+<li><code>DUP1</code> duplicates the value on top of the stack and pushes it on top of the stack</li>
+<li><code>MUL</code> pops the first two values from the stack and pushes the result of the multiplication of these two numbers</li>
+<li><code>PUSH2</code> pushes two bytes on top of the stack</li>
+<li><code>EQ</code> pops the first two values from the stack and pushes <code>1</code> if the values are equal, <code>0</code> otherwise</li>
+<li><code>PUSH1</code> pushes one byte on top of the stack</li>
+<li><code>JUMPI</code> jumps to the instruction on top of the stack if the second value is different from <code>0</code></li>
+</ul>
+<p>The location of <code>JUMPDEST</code> at PC <code>0c</code> (<code>12</code> in decimal). This value is pushed on top of the stack by <code>PUSH1 0C</code>. <code>JUMPI</code> will jump at that location if the second value on top of the stack differs from <code>0</code>. It means the <code>EQ</code> instruction must return <code>1</code>, which is possible only if the output of the <code>MUL</code> instruction and <code>PUSH2 0100</code> are equal. The output of <code>MUL</code> is, in turn, computed by multiplying the value of <code>msg.value</code> by himself (because of the <code>DUP</code> instruction).</p>
+<p>The formula we want to compute to obtain $1$ from <code>EQ</code> instruction,
+where $x$ is the value returned by <code>CALLVALUE</code>, is the following:</p>
+<data id="id-6" data-raw></data>
+<p>The amount of wei we need to send is <code>16</code> (<code>10</code> in hexadecimal).</p>
+<h3 id="solution-4">Solution</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">16</span>,<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x&#34;</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=16&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2734800261010014600C57FDFD5B00FDFD%27_" target="_blank" rel="noopener noreffer ">link</a></p>
+<h2 id="puzzle-6">Puzzle 6</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2760003556FDFDFDFDFDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      6000    PUSH1 00
+02      35      CALLDATALOAD
+03      56      JUMP
+04      FD      REVERT
+05      FD      REVERT
+06      FD      REVERT
+07      FD      REVERT
+08      FD      REVERT
+09      FD      REVERT
+0A      5B      JUMPDEST
+0B      00      STOP
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis (opcodes unseen from previous challenges):</p>
+<ul>
+<li><code>PUSH1 00</code> pushes <code>00</code> on top of the stack</li>
+<li><code>CALLDATALOAD</code> pops the offset of the <code>calldata</code> to read from the stack and pushes this data on top of the stack</li>
+</ul>
+<p>The location of <code>JUMPDEST</code> at PC <code>0a</code>. <code>PUSH1 00</code> sets the offset that the <code>CALLDATALOAD</code> instruction will use. Since we need to jump at location <code>0a</code> and the <code>calldata</code> is read at offset <code>0</code>, we need to send a <code>calldata</code> of <code>32</code> bytes with all <code>0</code> except for the right-most byte that will be the exact value of <code>JUMPDEST</code> location, that is <code>0a</code>.</p>
+<p>The <code>calldata</code> we need to send is: <code>0x000000000000000000000000000000000000000000000000000000000000000A</code>.</p>
+<h3 id="solution-5">Solution</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x000000000000000000000000000000000000000000000000000000000000000A&#34;</span>,<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">0</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=0&amp;unit=Wei&amp;callData=0x000000000000000000000000000000000000000000000000000000000000000A&amp;codeType=Bytecode&amp;code=%2760003556FDFDFDFDFDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a></p>
+<h2 id="puzzle-7">Puzzle 7</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2736600080373660006000F03B600114601357FD5B00%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      36      CALLDATASIZE
+01      6000    PUSH1 00
+03      80      DUP1
+04      37      CALLDATACOPY
+05      36      CALLDATASIZE
+06      6000    PUSH1 00
+08      6000    PUSH1 00
+0A      F0      CREATE
+0B      3B      EXTCODESIZE
+0C      6001    PUSH1 01
+0E      14      EQ
+0F      6013    PUSH1 13
+11      57      JUMPI
+12      FD      REVERT
+13      5B      JUMPDEST
+14      00      STOP
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis (opcodes unseen from previous challenges):</p>
+<ul>
+<li><code>CALLDATACOPY</code> copies transaction data (<code>calldata</code>) into <code>memory</code>. It uses <code>3</code> values from the stack:
+<ul>
+<li><code>destOffset</code> is the bytes offset in <code>memory</code> where the <code>calldata</code> data will be copied</li>
+<li><code>offset</code> is the bytes offset of the <code>calldata</code> from where we want to start copying the data</li>
+<li><code>size</code> is the byte size of the <code>calldata</code> to be copied in <code>memory</code></li>
+</ul>
+</li>
+<li><code>CREATE</code> is used to create a new contract. Like <code>CALLDATACOPY</code>, it uses <code>3</code> values from the stack:
+<ul>
+<li><code>value</code> is the amount of wei we want to send to the contact</li>
+<li><code>offset</code> is the bytes offset in the <code>memory</code> where to start coping contract code</li>
+<li><code>size</code> is the size of the initialization code (i.e. the bytes we want to copy from <code>memory</code> starting from the <code>offset</code>).
+This instruction pushes on top of the stack the address of the contract deployed or <code>0</code> if it fails</li>
+</ul>
+</li>
+<li><code>EXTCODESIZE</code> pops a 20-bytes address from the stack; as a result, it pushes the byte size of the contract code</li>
+</ul>
+<p><code>JUMPDEST</code> is at PC <code>13</code> (value pushed on the stack by <code>PUSH1 13</code>). <code>JUMPI</code> is used to jump to the <code>JUMPDEST</code> location if the value of the second element on the stack is different from <code>0</code>. This value is the result of the following OP codes:
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+0B      3B      EXTCODESIZE
+0C      6001    PUSH1 01
+0E      14      EQ
+0F      6013    PUSH1 13
+</code></pre></div>
+        </div>
+    </div>
+<code>EQ</code> compares <code>01</code> and the output of <code>EXTCODESIZE</code> and returns <code>1</code> if they are equal, <code>0</code> otherwise. We want this value to be different from <code>0</code>, so the output of <code>EXTCODESIZE</code> must be <code>1</code>.</p>
+<p><code>EXTCODESIZE</code> reads the 20 bytes address returned by <code>CREATE</code> and returns the byte size of that contract code. So we need to create a contract that, when deployed, returns only <code>1</code> instruction (<code>1</code> bytecode size).</p>
+<p>We can use the following code that uses the <code>RETURN</code> instruction to return only <code>1</code> instruction: <code>0x60016000F3</code>:
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Contract Code<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>OPCODE   NAME
+-----------------------
+6001     PUSH 01 (size of the data we want to copy)
+6000     PUSH 00 (where we want to start copying the data from memory)
+F3       RETURN
+</code></pre></div>
+        </div>
+    </div></p>
+<p><code>RETURN</code> pops two values from the stack:</p>
+<ul>
+<li>bytes <code>offset</code> where we want to start copying the data from memory</li>
+<li>bytes <code>size</code> of the data we want to copy</li>
+</ul>
+<p>Since the <code>memory</code> is initialized to <code>0</code> by default (<a href="https://www.evm.codes/about#memory" target="_blank" rel="noopener noreffer ">docs</a>), in the above code, the <code>RETURN</code> instruction will return <code>1</code> byte from memory (starting at offset <code>0</code>), that is <code>00</code> that corresponds to the <code>STOP</code> instruction.</p>
+<h3 id="solution-6">Solution</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x60016000F3&#34;</span>,<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">0</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=0&amp;unit=Wei&amp;callData=0x60016000F3&amp;codeType=Bytecode&amp;code=%2736600080373660006000F03B600114601357FD5B00%27_" target="_blank" rel="noopener noreffer ">link</a></p>
+<h2 id="puzzle-8">Puzzle 8</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2736600080373660006000F0600080808080945AF1600014601B57FD5B00%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      36      CALLDATASIZE
+01      6000    PUSH1 00
+03      80      DUP1
+04      37      CALLDATACOPY
+05      36      CALLDATASIZE
+06      6000    PUSH1 00
+08      6000    PUSH1 00
+0A      F0      CREATE
+0B      6000    PUSH1 00
+0D      80      DUP1
+0E      80      DUP1
+0F      80      DUP1
+10      80      DUP1
+11      94      SWAP5
+12      5A      GAS
+13      F1      CALL
+14      6000    PUSH1 00
+16      14      EQ
+17      601B    PUSH1 1B
+19      57      JUMPI
+1A      FD      REVERT
+1B      5B      JUMPDEST
+1C      00      STOP
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis (opcodes unseen from previous challenges):</p>
+<ul>
+<li><code>SWAP5</code> swaps the value at the top of the stack with the value at position <code>5</code> (i.e. <code>1 0 0 0 0 0 2</code> -&gt; <code>2 0 0 0 0 0 1</code>)</li>
+<li><code>GAS</code> pushes the gas remaining after this instruction</li>
+<li><code>CALL</code>  calls a contract at a given address. It returns <code>0</code> if the call succeeds, <code>0</code> otherwise. It accepts different values:
+<ul>
+<li><code>gas</code> is the gas to send during the call</li>
+<li><code>address</code> is the address where the call will execute the call.</li>
+<li><code>value</code> is the amount of wei sent</li>
+<li><code>argsOffset</code> is the byte offset in the memory in bytes</li>
+<li><code>argsSize</code> is the byte size to copy</li>
+<li><code>retOffset</code> is the byte offset in the memory in bytes, where to store the return data</li>
+<li><code>retSize</code> is the byte size to copy</li>
+</ul>
+</li>
+</ul>
+<p>Let&rsquo;s do the same reasoning as the previous challenge. <code>JUMPDEST</code> is at PC <code>1B</code> (value pushed on the stack by <code>PUSH1 1B</code>). <code>JUMPI</code> is used to jump to the <code>JUMPDEST</code> location if the value of the second element on the stack is different from <code>0</code>. This value is the result of the following OP codes:
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+13      F1      CALL
+14      6000    PUSH1 00
+16      14      EQ
+17      601B    PUSH1 1B
+</code></pre></div>
+        </div>
+    </div></p>
+<p><code>EQ</code> compares <code>00</code> and the output of <code>CALL</code> and returns <code>1</code> if they are equal, <code>0</code> otherwise. We want this value to be different from <code>0</code>, so the output of <code>CALL</code> must be <code>00</code>. It means we want the call to our contract to revert (<code>CALL</code> must return <code>0</code>).</p>
+<p>To create a contract that returns the <code>REVERT</code> instruction, we can use the following bytecode (similar to the previous challenge):
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Contract Code<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>OPCODE   NAME
+-----------------------
+60FD     PUSH FD (REVERT instruction)
+6000     PUSH 00 (offset in memory)
+53       MSTORE8 (stores REVERT instruction starting at offset `00`)
+6001     PUSH 01 (size of the data we want to copy)
+6000     PUSH 00 (where we want to start copying the data from memory)
+F3       RETURN
+</code></pre></div>
+        </div>
+    </div></p>
+<p>The first three instructions above push the <code>FD</code> instruction and load it into memory. The <code>REVERT</code> instruction will be the code of our contract. When the contract is called, it will revert; thus, the return value from the <code>CALL</code> instruction will be <code>0</code>.</p>
+<h3 id="solution-7">Solution</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x60FD60005360016000F3&#34;</span>,<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">0</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=0&amp;unit=Wei&amp;callData=0x60FD60005360016000F3&amp;codeType=Bytecode&amp;code=%2736600080373660006000F0600080808080945AF1600014601B57FD5B00%27_" target="_blank" rel="noopener noreffer ">link</a></p>
+<h2 id="puzzle-9">Puzzle 9</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2736600310600957FDFD5B343602600814601457FD5B00%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      36      CALLDATASIZE
+01      6003    PUSH1 03
+03      10      LT
+04      6009    PUSH1 09
+06      57      JUMPI
+07      FD      REVERT
+08      FD      REVERT
+09      5B      JUMPDEST
+0A      34      CALLVALUE
+0B      36      CALLDATASIZE
+0C      02      MUL
+0D      6008    PUSH1 08
+0F      14      EQ
+10      6014    PUSH1 14
+12      57      JUMPI
+13      FD      REVERT
+14      5B      JUMPDEST
+15      00      STOP
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis (opcodes unseen from previous challenges):</p>
+<ul>
+<li><code>LT</code> pops two values from the stack and returns <code>1</code> if <code>a &lt; b</code> , <code>0</code> otherwise, where <code>a</code> is the element at the top of the stack</li>
+</ul>
+<p>First, we need to reach the <code>JUMPDEST</code> at PC <code>09</code>. <code>PUSH1 09</code> pushes this location on top of the stack, and <code>JUMPI</code> is used to jump to that instruction. To succeed, <code>CALLDATASIZE</code> must be greater than <code>03</code>, so <code>LT</code> will return <code>1</code>.</p>
+<p>The first condition we need to satisfy is:
+<data id="id-7" data-raw></data></p>
+<p>where $x$ is the <code>CALLDATASIZE</code>.</p>
+<p>Then, we need to reach the<code>JUMPDEST</code> at PC <code>14</code>. This value is pushed by <code>PUSH1 14</code>. For <code>JUMPI</code> instruction to jump to that instruction, <code>EQ</code> must return <code>1</code>. <code>EQ</code> compares <code>08</code> with the product between <code>CALLVALUE</code> and <code>CALLDATASIZE</code>.</p>
+<p>The second condition we need to satisfy is:
+<data id="id-8" data-raw></data></p>
+<p>where $x$ is the <code>CALLDATASISE</code>, and $y$ is the <code>CALLVALUE</code>.</p>
+<p>To summarize, we need to solve the following:
+<data id="id-9" data-raw></data></p>
+<p>The values that satisfy the above are:
+<data id="id-10" data-raw></data></p>
+<p>We need to send <code>2</code> wei and a <code>calldata</code> of <code>4</code> bytes (for example, <code>01010101</code>).</p>
+<h3 id="solution-8">Solution</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">2</span>,<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x01010101&#34;</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=2&amp;unit=Wei&amp;callData=0x01010101&amp;codeType=Bytecode&amp;code=%2736600310600957FDFD5B343602600814601457FD5B00%27_" target="_blank" rel="noopener noreffer ">link</a></p>
+<h2 id="puzzle-10">Puzzle 10</h2>
+<p>evm.code bytecode challenge: <a href="https://www.evm.codes/playground?callValue=&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2738349011600857FD5B3661000390061534600A0157FDFDFDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a>.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Bytecode<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><pre tabindex="0"><code>PC    OPCODE    NAME
+-----------------------
+00      38      CODESIZE
+01      34      CALLVALUE
+02      90      SWAP1
+03      11      GT
+04      6008    PUSH1 08
+06      57      JUMPI
+07      FD      REVERT
+08      5B      JUMPDEST
+09      36      CALLDATASIZE
+0A      610003  PUSH2 0003
+0D      90      SWAP1
+0E      06      MOD
+0F      15      ISZERO
+10      34      CALLVALUE
+11      600A    PUSH1 0A
+13      01      ADD
+14      57      JUMPI
+15      FD      REVERT
+16      FD      REVERT
+17      FD      REVERT
+18      FD      REVERT
+19      5B      JUMPDEST
+1A      00      STOP
+</code></pre></div>
+        </div>
+    </div>
+<p>Bytecode analysis (opcodes unseen from previous challenges):</p>
+<ul>
+<li><code>GT</code> pops two values from the stack and returns <code>1</code> if <code>a &gt; b</code>, <code>0</code> otherwise, where <code>a</code> is the element at the top of the stack</li>
+<li><code>SWAP1</code> swaps the first two values from the stack</li>
+<li><code>MOD</code> computes the integer modulo <code>a % b</code>. If the denominator is <code>0</code>, the result will be <code>0</code>.</li>
+<li><code>ISZERO</code> pops the value from the stack and pushes <code>1</code> if the value is <code>0</code>, <code>0</code> otherwise</li>
+</ul>
+<p>First, we need to reach the <code>JUMPDEST</code> at PC <code>08</code>. <code>PUSH1 08</code> pushes this location on top of the stack, and <code>JUMPI</code> is used to jump to that instruction. To succeed, <code>GT</code> must return<code> 1</code>, which is possible if <code>CODESIZE &gt; CALLVALUE</code>. We know that the <code>CODESIZE</code> is <code>1b</code> (there are <code>27</code> instructions).</p>
+<p>The first condition we need to satisfy is:<br>
+<data id="id-11" data-raw></data>
+where $x$ is the <code>CALLVALUE</code>.</p>
+<p>Then, we need to reach the <code>JUMPDEST</code> at PC <code>19</code>.   The result of <code>ISZERO</code> must be different from <code>0</code> (this value is used by <code>JUMPI</code>), and this is possible if <code>CALLDATASIZE % 3 = 0</code>. Then, <code>0A</code> is pushed on top of the stack ad added to the <code>CALLVALUE</code>. We want this sum to be <code>19</code>, so <code>CALLVALUE + A0 = 19</code>.</p>
+<p>Here are the conditions we need to satisfy:
+<data id="id-12" data-raw></data></p>
+<p>where $y$ is the <code>CALLDATASIZE</code>.</p>
+<p>To summarize, we need to solve the following:<br>
+<data id="id-13" data-raw></data></p>
+<p>The values that satisfy the above are:
+<data id="id-14" data-raw></data></p>
+<p>The <code>CALLDATASIZE</code> can have multiple values as long the result from <code>CALLDATASIZE mod 3</code> is zero (<code>0 mod 3 = 0</code>, <code>3 mod 3 = 0</code>, <code>6 mod 3 = 0</code>, etcc).</p>
+<p>To solve this challenge, we can send <code>15</code> wei and a <code>calldata</code> of <code>3</code> bytes (for example, <code>010101</code>), or we can omit the <code>calldata</code> (this way, <code>0 mod 3</code> will still return <code>0</code> ).</p>
+<h3 id="solution-9">Solution</h3>
+<ul>
+<li><code>15</code> wei and <code>calldata</code> of <code>3</code> bytes</li>
+</ul>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">15</span>,<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x010101&#34;</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=15&amp;unit=Wei&amp;callData=0x010101&amp;codeType=Bytecode&amp;code=%2738349011600857FD5B3661000390061534600A0157FDFDFDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a></p>
+<ul>
+<li><code>15</code> wei and no <code>calldata</code></li>
+</ul>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#000">&#34;value&#34;</span>:<span style="color:#3af">15</span>,<span style="color:#000">&#34;data&#34;</span>:<span style="color:#5a2">&#34;0x&#34;</span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>evm.code bytecode solution challenge: <a href="https://www.evm.codes/playground?callValue=15&amp;unit=Wei&amp;callData=&amp;codeType=Bytecode&amp;code=%2738349011600857FD5B3661000390061534600A0157FDFDFDFD5B00%27_" target="_blank" rel="noopener noreffer ">link</a></p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.evm.codes/#02" target="_blank" rel="noopener noreffer ">MUL</a></li>
+<li><a href="https://www.evm.codes/#03" target="_blank" rel="noopener noreffer ">SUB</a></li>
+<li><a href="https://www.evm.codes/#06" target="_blank" rel="noopener noreffer ">MOD</a></li>
+<li><a href="https://www.evm.codes/#10" target="_blank" rel="noopener noreffer ">LT</a></li>
+<li><a href="https://www.evm.codes/#11" target="_blank" rel="noopener noreffer ">GT</a></li>
+<li><a href="https://www.evm.codes/#14" target="_blank" rel="noopener noreffer ">EQ</a></li>
+<li><a href="https://www.evm.codes/#15" target="_blank" rel="noopener noreffer ">ISZERO</a></li>
+<li><a href="https://www.evm.codes/#18" target="_blank" rel="noopener noreffer ">XOR</a></li>
+<li><a href="https://www.evm.codes/#34" target="_blank" rel="noopener noreffer ">CALLVALUE</a></li>
+<li><a href="https://www.evm.codes/#35" target="_blank" rel="noopener noreffer ">CALLDATALOAD</a></li>
+<li><a href="https://www.evm.codes/#36" target="_blank" rel="noopener noreffer ">CALLDATASIZE</a></li>
+<li><a href="https://www.evm.codes/#37" target="_blank" rel="noopener noreffer ">CALLDATACOPY</a></li>
+<li><a href="https://www.evm.codes/#38" target="_blank" rel="noopener noreffer ">CODESIZE</a></li>
+<li><a href="https://www.evm.codes/#3b" target="_blank" rel="noopener noreffer ">EXTCODESIZE</a></li>
+<li><a href="https://www.evm.codes/#56" target="_blank" rel="noopener noreffer ">JUMP</a></li>
+<li><a href="https://www.evm.codes/#57" target="_blank" rel="noopener noreffer ">JUMPI</a></li>
+<li><a href="https://www.evm.codes/#5a" target="_blank" rel="noopener noreffer ">GAS</a></li>
+<li><a href="https://www.evm.codes/#60" target="_blank" rel="noopener noreffer ">PUSH1</a></li>
+<li><a href="https://www.evm.codes/#61" target="_blank" rel="noopener noreffer ">PUSH2</a></li>
+<li><a href="https://www.evm.codes/#80" target="_blank" rel="noopener noreffer ">DUP1</a></li>
+<li><a href="https://www.evm.codes/#90" target="_blank" rel="noopener noreffer ">SWAP1</a></li>
+<li><a href="https://www.evm.codes/#94" target="_blank" rel="noopener noreffer ">SWAP5</a></li>
+<li><a href="https://www.evm.codes/#f0" target="_blank" rel="noopener noreffer ">CREATE</a></li>
+<li><a href="https://www.evm.codes/#f1" target="_blank" rel="noopener noreffer ">CALL</a></li>
+<li><a href="https://www.evm.codes/#f3" target="_blank" rel="noopener noreffer ">RETURN</a></li>
+</ul></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on September 4, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/evm-puzzles_solutions/" data-title="EVM Puzzles solutions" data-via="_d3lla_" data-hashtags="EVM puzzles,CTF,Solidity,Blockchain,EVM"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/evm-puzzles_solutions/" data-hashtag="EVM puzzles"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/evm-puzzles_solutions/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/evm-puzzles/">EVM puzzles</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/solidity/">Solidity</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a>,&nbsp;<a href="/tags/evm/">EVM</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/damnvulnerabledefi_01_unstoppable/" class="prev" rel="prev" title="Damn Vulnerable DeFi - Challenge #1 - Unstoppable"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Damn Vulnerable DeFi - Challenge #1 - Unstoppable</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"data":{"id-10":"\n\\[ x = 4 \\]\n\\[ y = 2 \\]\n","id-11":"\n\\[ 27 \u003e x \\]\n","id-12":"\n\\[ y \\bmod 3 = 0 \\]\n\\[ x + 10 = 25 \\]\n","id-13":"\n\\[ y \\bmod 3 = 0 \\]\n\\[ x + 10 = 25 \\]\n\\[ 27 \u003e x \\]\n","id-14":"\n\\[ x = 15 \\]\n\\[ y = {0, 3, 6, 9, ...} \\]\n","id-2":"\n\\[ 0a - x = 6 \\\\ x = 0a - 6 \\]\n","id-3":"\n\\[ x = 10 - 6 = 4 \\]\n","id-4":"\n\\[ 0c \\oplus x = 0a \\\\ x = 0a \\oplus 0c \\]\n","id-5":"\n\\[ \n    \\text{Hex} \\quad \\text{Decimal} \\quad \\text{Binary} \\\\ \n    \\quad\\quad\\quad 0a \\quad\\quad 10 \\quad\\quad\\quad 1010 \\quad\\quad \\oplus \\\\\n    \\quad\\quad\\quad 0c \\quad\\quad 12 \\quad\\quad\\quad 1100 \\quad\\quad = \\\\\n    \\quad\\quad-------------- \\\\\n    \\quad\\quad\\quad 06 \\quad\\quad 06 \\quad\\quad\\quad 0110 \\quad\\quad \\,\\,\\,\\,\\,\\,\n\\]\n","id-6":"\n\\[ x * x = 0100 \\]\n\\[ x^2 = 256 \\]\n\\[ x  = \\sqrt256 \\]\n\\[ x  = 16 \\]\n","id-7":"\n\\[ x \u003e 3 \\]\n","id-8":"\n\\[ x * y = 8 \\]\n","id-9":"\n\\[ x * y = 8 \\]\n\\[ x \u003e 3 \\]\n"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
