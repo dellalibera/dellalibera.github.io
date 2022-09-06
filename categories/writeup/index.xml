@@ -3,7 +3,15 @@
         <title>Writeup - Category - della&#39;s blog</title>
         <link>https://dellalibera.github.io/categories/writeup/</link>
         <description>Writeup - Category - della&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 04 Sep 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/categories/writeup/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 06 Sep 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/categories/writeup/" rel="self" type="application/rss+xml" /><item>
+    <title>Damn Vulnerable DeFi - Challenge #2 - Naive receiver</title>
+    <link>https://dellalibera.github.io/posts/damnvulnerabledefi_02_naive-receiver/</link>
+    <pubDate>Tue, 06 Sep 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/posts/damnvulnerabledefi_02_naive-receiver/</guid>
+    <description><![CDATA[<div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #2 - Naive receiver&rdquo;.</div>]]></description>
+</item>
+<item>
     <title>EVM Puzzles solutions</title>
     <link>https://dellalibera.github.io/posts/evm-puzzles_solutions/</link>
     <pubDate>Sun, 04 Sep 2022 00:00:00 &#43;0000</pubDate>
