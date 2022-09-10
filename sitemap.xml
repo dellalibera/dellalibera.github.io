@@ -2,16 +2,17 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://dellalibera.github.io/tags/blockchain/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/categories/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/tags/ctf/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/tags/damn-vulnerable-defi/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/blockchain/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/categories/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/ctf/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/damn-vulnerable-defi/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/posts/damnvulnerabledefi_04_side-entrance/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/posts/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/solidity/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/categories/writeup/</loc><lastmod>2022-09-10T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dellalibera.github.io/posts/damnvulnerabledefi_03_truster/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/posts/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/tags/solidity/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/tags/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/categories/writeup/</loc><lastmod>2022-09-08T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dellalibera.github.io/posts/damnvulnerabledefi_02_naive-receiver/</loc><lastmod>2022-09-06T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dellalibera.github.io/tags/evm/</loc><lastmod>2022-09-04T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dellalibera.github.io/tags/evm-puzzles/</loc><lastmod>2022-09-04T00:00:00&#43;00:00</lastmod></url><url>

