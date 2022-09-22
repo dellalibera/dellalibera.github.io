@@ -3,9 +3,17 @@
         <title>della&#39;s blog</title>
         <link>https://dellalibera.github.io/</link>
         <description>della&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 20 Sep 2022 00:00:00 &#43;0000</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 22 Sep 2022 00:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://dellalibera.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Offensive Vyper - Challenge 0 - Password Vault</title>
+    <link>https://dellalibera.github.io/posts/offensivevyper_00_passwordvault/</link>
+    <pubDate>Thu, 22 Sep 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/posts/offensivevyper_00_passwordvault/</guid>
+    <description><![CDATA[<div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 0 - Password Vault&rdquo;.</div>]]></description>
+</item>
+<item>
     <title>Damn Vulnerable DeFi - Challenge #8 - Puppet</title>
     <link>https://dellalibera.github.io/posts/damnvulnerabledefi_08_puppet/</link>
     <pubDate>Tue, 20 Sep 2022 00:00:00 &#43;0000</pubDate>

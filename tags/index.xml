@@ -3,10 +3,10 @@
         <title>Tags - Tag - della&#39;s blog</title>
         <link>https://dellalibera.github.io/tags/</link>
         <description>Tags - Tag - della&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 20 Sep 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 22 Sep 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/tags/" rel="self" type="application/rss+xml" /><item>
     <title>Blockchain</title>
     <link>https://dellalibera.github.io/tags/blockchain/</link>
-    <pubDate>Tue, 20 Sep 2022 00:00:00 &#43;0000</pubDate>
+    <pubDate>Thu, 22 Sep 2022 00:00:00 &#43;0000</pubDate>
     <author>della</author>
     <guid>https://dellalibera.github.io/tags/blockchain/</guid>
     <description><![CDATA[]]></description>
@@ -14,9 +14,25 @@
 <item>
     <title>CTF</title>
     <link>https://dellalibera.github.io/tags/ctf/</link>
-    <pubDate>Tue, 20 Sep 2022 00:00:00 &#43;0000</pubDate>
+    <pubDate>Thu, 22 Sep 2022 00:00:00 &#43;0000</pubDate>
     <author>della</author>
     <guid>https://dellalibera.github.io/tags/ctf/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>Offensive Vyper</title>
+    <link>https://dellalibera.github.io/tags/offensive-vyper/</link>
+    <pubDate>Thu, 22 Sep 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/tags/offensive-vyper/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>Vyper</title>
+    <link>https://dellalibera.github.io/tags/vyper/</link>
+    <pubDate>Thu, 22 Sep 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/tags/vyper/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
