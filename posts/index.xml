@@ -3,7 +3,15 @@
         <title>All Posts - della&#39;s blog</title>
         <link>https://dellalibera.github.io/posts/</link>
         <description>All Posts | della&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 22 Sep 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 24 Sep 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Offensive Vyper - Challenge 1 - Unstoppable Auction</title>
+    <link>https://dellalibera.github.io/posts/offensivevyper_01_unstoppableauction/</link>
+    <pubDate>Sat, 24 Sep 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/posts/offensivevyper_01_unstoppableauction/</guid>
+    <description><![CDATA[<div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 1 - Unstoppable Auction&rdquo;.</div>]]></description>
+</item>
+<item>
     <title>Offensive Vyper - Challenge 0 - Password Vault</title>
     <link>https://dellalibera.github.io/posts/offensivevyper_00_passwordvault/</link>
     <pubDate>Thu, 22 Sep 2022 00:00:00 &#43;0000</pubDate>
@@ -74,14 +82,6 @@
     <author>della</author>
     <guid>https://dellalibera.github.io/posts/evm-puzzles_solutions/</guid>
     <description><![CDATA[<div id="id-1">Solution for EVM puzzles.</div>]]></description>
-</item>
-<item>
-    <title>Damn Vulnerable DeFi - Challenge #1 - Unstoppable</title>
-    <link>https://dellalibera.github.io/posts/damnvulnerabledefi_01_unstoppable/</link>
-    <pubDate>Sun, 28 Aug 2022 00:00:00 &#43;0000</pubDate>
-    <author>della</author>
-    <guid>https://dellalibera.github.io/posts/damnvulnerabledefi_01_unstoppable/</guid>
-    <description><![CDATA[<div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #1 - Unstoppable&rdquo;.</div>]]></description>
 </item>
 </channel>
 </rss>
