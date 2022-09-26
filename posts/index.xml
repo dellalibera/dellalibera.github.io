@@ -3,7 +3,15 @@
         <title>All Posts - della&#39;s blog</title>
         <link>https://dellalibera.github.io/posts/</link>
         <description>All Posts | della&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 24 Sep 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 26 Sep 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Offensive Vyper - Challenge 2 - Coin Flipper</title>
+    <link>https://dellalibera.github.io/posts/offensivevyper_02_coinflipper/</link>
+    <pubDate>Mon, 26 Sep 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/posts/offensivevyper_02_coinflipper/</guid>
+    <description><![CDATA[<div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 2 - Coin Flipper&rdquo;.</div>]]></description>
+</item>
+<item>
     <title>Offensive Vyper - Challenge 1 - Unstoppable Auction</title>
     <link>https://dellalibera.github.io/posts/offensivevyper_01_unstoppableauction/</link>
     <pubDate>Sat, 24 Sep 2022 00:00:00 &#43;0000</pubDate>
@@ -74,14 +82,6 @@
     <author>della</author>
     <guid>https://dellalibera.github.io/posts/damnvulnerabledefi_02_naive-receiver/</guid>
     <description><![CDATA[<div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #2 - Naive receiver&rdquo;.</div>]]></description>
-</item>
-<item>
-    <title>EVM Puzzles solutions</title>
-    <link>https://dellalibera.github.io/posts/evm-puzzles_solutions/</link>
-    <pubDate>Sun, 04 Sep 2022 00:00:00 &#43;0000</pubDate>
-    <author>della</author>
-    <guid>https://dellalibera.github.io/posts/evm-puzzles_solutions/</guid>
-    <description><![CDATA[<div id="id-1">Solution for EVM puzzles.</div>]]></description>
 </item>
 </channel>
 </rss>

