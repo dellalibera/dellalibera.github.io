@@ -19,7 +19,7 @@
 <meta name="application-name" content="della&#39;s blog">
 <meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/" /><link rel="prev" href="https://dellalibera.github.io/posts/offensivevyper_03_ethervault/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/" /><link rel="prev" href="https://dellalibera.github.io/posts/offensivevyper_03_ethervault/" /><link rel="next" href="https://dellalibera.github.io/posts/offensivevyper_05_flashreceiver/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
@@ -30,7 +30,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_04_etherflashloan\/"
-        },"genre": "posts","keywords": "Offensive Vyper, CTF, Vyper, Blockchain","wordcount":  784 ,
+        },"genre": "posts","keywords": "Offensive Vyper, CTF, Vyper, Blockchain","wordcount":  778 ,
         "url": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_04_etherflashloan\/","datePublished": "2022-10-01T00:00:00+00:00","dateModified": "2022-10-01T00:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -69,7 +69,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title">Offensive Vyper - Challenge 4 - Ether Flash Loan</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="October 1, 2022">October 1, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;784 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="October 1, 2022">October 1, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;778 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
@@ -279,7 +279,6 @@
 <p>All these functions are decorated with <code>nonreentrant</code> meaning they&rsquo;re guarded against reentrancy attacks.</p>
 <p>To withdraw, we need first to have some amount deposited. The amount deposited is stored in the <code>deposits</code> variable inside the <code>deposit</code> function.</p>
 <p>So if we can deposit some ETH, we can later withdraw them. Of course, we can use the <code>flash_loan</code> function to request some ETH. Also, once we receive them, in the same transaction, we can <code>deposit</code> them. In this case, if we deposit the ETH borrowed, we both updates the <code>deposits</code> variable, but we also pay the loan back because the <code>deposit</code> function is a payable function. However, once we have paid back the loan, the <code>deposits</code> variable will still hold the amount we have deposited. So if we then call the <code>withdraw</code> function, the condition at line <code>44</code> will be true, and thus we will be able to steal all the account ETH.</p>
-<p>For a similar challenge, see THIS.</p>
 <h2 id="3-solution">3) Solution</h2>
 <p>The solution consists of the following steps:</p>
 <ul>
@@ -402,7 +401,8 @@
         </section>
     </div>
 
-    <div class="post-nav"><a href="/posts/offensivevyper_03_ethervault/" class="prev" rel="prev" title="Offensive Vyper - Challenge 3 - Ether Vault"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Offensive Vyper - Challenge 3 - Ether Vault</a></div>
+    <div class="post-nav"><a href="/posts/offensivevyper_03_ethervault/" class="prev" rel="prev" title="Offensive Vyper - Challenge 3 - Ether Vault"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Offensive Vyper - Challenge 3 - Ether Vault</a>
+            <a href="/posts/offensivevyper_05_flashreceiver/" class="next" rel="next" title="Offensive Vyper - Challenge 5 - Flash Receiver">Offensive Vyper - Challenge 5 - Flash Receiver<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">

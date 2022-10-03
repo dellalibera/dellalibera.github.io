@@ -3,9 +3,17 @@
         <title>della&#39;s blog</title>
         <link>https://dellalibera.github.io/</link>
         <description>della&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 01 Oct 2022 00:00:00 &#43;0000</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 03 Oct 2022 00:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://dellalibera.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Offensive Vyper - Challenge 5 - Flash Receiver</title>
+    <link>https://dellalibera.github.io/posts/offensivevyper_05_flashreceiver/</link>
+    <pubDate>Mon, 03 Oct 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/posts/offensivevyper_05_flashreceiver/</guid>
+    <description><![CDATA[<div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 5 - Flash Receiver&rdquo;.</div>]]></description>
+</item>
+<item>
     <title>Offensive Vyper - Challenge 4 - Ether Flash Loan</title>
     <link>https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/</link>
     <pubDate>Sat, 01 Oct 2022 00:00:00 &#43;0000</pubDate>
@@ -76,14 +84,6 @@
     <author>della</author>
     <guid>https://dellalibera.github.io/posts/damnvulnerabledefi_05_the-rewarder/</guid>
     <description><![CDATA[<div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #5 - The rewarder&rdquo;.</div>]]></description>
-</item>
-<item>
-    <title>Damn Vulnerable DeFi - Challenge #4 - Side entrance</title>
-    <link>https://dellalibera.github.io/posts/damnvulnerabledefi_04_side-entrance/</link>
-    <pubDate>Sat, 10 Sep 2022 00:00:00 &#43;0000</pubDate>
-    <author>della</author>
-    <guid>https://dellalibera.github.io/posts/damnvulnerabledefi_04_side-entrance/</guid>
-    <description><![CDATA[<div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #4 - Side entrance&rdquo;.</div>]]></description>
 </item>
 </channel>
 </rss>
