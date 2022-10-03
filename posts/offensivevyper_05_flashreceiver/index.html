@@ -397,7 +397,7 @@
 </ul>
 <p>Anyone can call this function, and there are no checks on the flash loan amount.</p>
 <p>Every time the <code>initiate_flash_loan</code> function is called, the receiver contract has to pay back the loan plus the additional <code>10 ETH</code> fee. However, even if the <code>execute</code> function can be called only by the <code>pool</code> contract, anyone can call the <code>initiate_flash_loan</code> function. Also, there are no checks on the amount in the <code>execute</code> function, meaning the receiver can pay <code>10 ETH</code> fee even for a <code>0</code> loan request.</p>
-<p>It means that if we call the <code>initiate_flash_loan</code> function multiple times with a <code>0</code> amount, the recevier will pay <code>10 ETH</code> each time. Since the pool has <code>100 ETH</code>, if we call the <code>initiate_flash_loan</code> function <code>10</code> times, we will drain all its tokens.</p>
+<p>It means that if we call the <code>initiate_flash_loan</code> function multiple times with a <code>0</code> amount, the receiver will pay <code>10 ETH</code> each time. Since the pool has <code>100 ETH</code>, if we call the <code>initiate_flash_loan</code> function <code>10</code> times, we will drain all its tokens.</p>
 <h2 id="3-solution">3) Solution</h2>
 <p>The solution consists of calling the <code>initiate_flash_loan</code> function <code>10</code> times with a <code>0</code> amount.
 <code>flash-receiver.challenge.js</code>:
