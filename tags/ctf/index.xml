@@ -3,7 +3,15 @@
         <title>CTF - Tag - della&#39;s blog</title>
         <link>https://dellalibera.github.io/tags/ctf/</link>
         <description>CTF - Tag - della&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 03 Oct 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/tags/ctf/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 06 Oct 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/tags/ctf/" rel="self" type="application/rss+xml" /><item>
+    <title>Offensive Vyper - Challenge 6 - Ownable Proxy</title>
+    <link>https://dellalibera.github.io/posts/offensivevyper_06_ownableproxy/</link>
+    <pubDate>Thu, 06 Oct 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/posts/offensivevyper_06_ownableproxy/</guid>
+    <description><![CDATA[<div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 6 - Ownable Proxy&rdquo;.</div>]]></description>
+</item>
+<item>
     <title>Offensive Vyper - Challenge 5 - Flash Receiver</title>
     <link>https://dellalibera.github.io/posts/offensivevyper_05_flashreceiver/</link>
     <pubDate>Mon, 03 Oct 2022 00:00:00 &#43;0000</pubDate>
@@ -74,14 +82,6 @@
     <author>della</author>
     <guid>https://dellalibera.github.io/posts/damnvulnerabledefi_06_selfie/</guid>
     <description><![CDATA[<div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #6 - Selfie&rdquo;.</div>]]></description>
-</item>
-<item>
-    <title>Damn Vulnerable DeFi - Challenge #5 - The rewarder</title>
-    <link>https://dellalibera.github.io/posts/damnvulnerabledefi_05_the-rewarder/</link>
-    <pubDate>Sun, 11 Sep 2022 00:00:00 &#43;0000</pubDate>
-    <author>della</author>
-    <guid>https://dellalibera.github.io/posts/damnvulnerabledefi_05_the-rewarder/</guid>
-    <description><![CDATA[<div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #5 - The rewarder&rdquo;.</div>]]></description>
 </item>
 </channel>
 </rss>
