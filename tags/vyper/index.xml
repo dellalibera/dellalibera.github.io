@@ -3,7 +3,15 @@
         <title>Vyper - Tag - della&#39;s blog</title>
         <link>https://dellalibera.github.io/tags/vyper/</link>
         <description>Vyper - Tag - della&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 06 Oct 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/tags/vyper/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 08 Oct 2022 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dellalibera.github.io/tags/vyper/" rel="self" type="application/rss+xml" /><item>
+    <title>Offensive Vyper - Challenge 7 - Meta Token</title>
+    <link>https://dellalibera.github.io/posts/offensivevyper_07_metatoken/</link>
+    <pubDate>Sat, 08 Oct 2022 00:00:00 &#43;0000</pubDate>
+    <author>della</author>
+    <guid>https://dellalibera.github.io/posts/offensivevyper_07_metatoken/</guid>
+    <description><![CDATA[<div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 7 - Meta Token&rdquo;.</div>]]></description>
+</item>
+<item>
     <title>Offensive Vyper - Challenge 6 - Ownable Proxy</title>
     <link>https://dellalibera.github.io/posts/offensivevyper_06_ownableproxy/</link>
     <pubDate>Thu, 06 Oct 2022 00:00:00 &#43;0000</pubDate>

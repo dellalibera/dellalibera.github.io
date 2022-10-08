@@ -2,16 +2,17 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://dellalibera.github.io/tags/blockchain/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/categories/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/tags/ctf/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/tags/offensive-vyper/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/blockchain/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/categories/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/ctf/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/offensive-vyper/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/posts/offensivevyper_07_metatoken/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/posts/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/tags/vyper/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dellalibera.github.io/categories/writeup/</loc><lastmod>2022-10-08T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dellalibera.github.io/posts/offensivevyper_06_ownableproxy/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/posts/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/tags/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/tags/vyper/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dellalibera.github.io/categories/writeup/</loc><lastmod>2022-10-06T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dellalibera.github.io/posts/offensivevyper_05_flashreceiver/</loc><lastmod>2022-10-03T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dellalibera.github.io/posts/offensivevyper_04_etherflashloan/</loc><lastmod>2022-10-01T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dellalibera.github.io/posts/offensivevyper_03_ethervault/</loc><lastmod>2022-09-29T00:00:00&#43;00:00</lastmod></url><url>
